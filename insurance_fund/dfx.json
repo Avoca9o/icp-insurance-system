@@ -1,8 +1,15 @@
 {
   "canisters": {
-    "insurance_fund_backend": {
-      "main": "src/insurance_fund_backend/main.mo",
-      "type": "motoko"
+    "icp_ledger_canister": {
+      "type": "custom",
+      "candid": "https://raw.githubusercontent.com/dfinity/ic/aba60ffbc46acfc8990bf4d5685c1360bd7026b9/rs/ledger_suite/icp/ledger.did",
+      "wasm": "https://download.dfinity.systems/ic/aba60ffbc46acfc8990bf4d5685c1360bd7026b9/canisters/ledger-canister.wasm.gz",
+      "remote": {
+        "id": {
+          "ic": "ryjl3-tyaaa-aaaaa-aaaba-cai"
+        }
+      },
+      "init_arg" : "(variant { Init = record { minting_account = \"d7f77c8ef9b51b4dc0c3c622be82084d43bcfe395043cda4672ed031f91452e9\"; initial_values = vec { record { \"967bf74698dbff03326638f52334cb93808f6f2e9ce6bc1966bb163bb9290b58\"; record { e8s = 10_000_000_000 : nat64; }; }; }; send_whitelist = vec {}; transfer_fee = opt record { e8s = 10_000 : nat64; }; token_symbol = opt \"LICP\"; token_name = opt \"Local ICP\"; } })"
     }
   },
   "defaults": {
