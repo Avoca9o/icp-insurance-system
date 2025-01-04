@@ -9,7 +9,6 @@ module Types {
         let map = HashMap.HashMap<InsurerWalletAddress, InsurerInfo>(16, Principal.equal, Principal.hash);
 
         public func put(key: InsurerWalletAddress, value: InsurerInfo): () {
-            value.addTokens(60);
             map.put(key, value);
         };
 
