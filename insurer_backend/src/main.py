@@ -11,7 +11,12 @@ from models.v1_authorize_request import AuthorizationRequest
 from models.v1_add_user_request import AddUserRequest
 from models.v1_update_user_request import UpdateUserRequest
 
+from config.db_config import engine
+
+db_client.Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
+
 icp = icp_client.ICPClient()
 db = db_client.DBClient()
 
@@ -20,6 +25,15 @@ db = db_client.DBClient()
 def handle_ping():
     content = {"message": "Hello world"}
     return JSONResponse(content=content, status_code=200)
+
+
+@app.get("/check-db")
+def check_db_connection():
+    try:
+        content = db_client.execute_query()
+        return JSONResponse(content=content, status_code=200)
+    except Exception as e:
+        return JSONResponse(content=str(e), status_code=500)
 
 
 # Adds insurance company to system with unique names

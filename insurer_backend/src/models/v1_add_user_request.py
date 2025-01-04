@@ -24,8 +24,8 @@ class AddUserRequest(BaseModel):
             raise ValueError("Insurer schema name cannot be empty")
 
     def as_user_info(self):
-        return UserInfo(self.phone_number,
-                        self.payout_address,
-                        self.insurer_login,
-                        self.insurer_schema,
-                        self.secondary_filters)
+        return UserInfo(phone=self.phone_number,
+                        payout_address=self.payout_address,
+                        insurer=self.insurer_login,
+                        secondary_filters=str(self.secondary_filters),
+                        schema=self.insurer_schema)
