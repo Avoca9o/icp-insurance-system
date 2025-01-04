@@ -1,7 +1,7 @@
 {
   "canisters": {
-    "insurance_fund_backend": {
-      "main": "src/insurance_fund_backend/main.mo",
+    "insurance_manager": {
+      "main": "src/insurance_manager/main.mo",
       "type": "motoko"
     }
   },
