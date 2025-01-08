@@ -12,8 +12,8 @@ module Types {
             map.put(key, value);
         };
 
-        public func get(key: InsurerWalletAddress): ?Nat {
-            return do ? {((map.get(key))!).getTokenBalance()};
+        public func get(key: InsurerWalletAddress): ?InsurerInfo {
+            return map.get(key);
         };
 
         public func keys(): [InsurerWalletAddress] {
@@ -21,8 +21,8 @@ module Types {
         };
     };
 
-    public class InsurerInfo(initialBalance: Nat) {
-        var tokenBalance: Nat = initialBalance;
+    public class InsurerInfo() {
+        var tokenBalance: Nat = 0;
 
         let coefficients = HashMap.HashMap<DamageId, Float>(16, Principal.equal, Principal.hash);
 
@@ -32,6 +32,10 @@ module Types {
 
         public func get(key: DamageId): ?Float {
             return coefficients.get(key);
+        };
+
+        public func size(): Nat {
+            return coefficients.size();
         };
 
         public func keys(): [DamageId] {

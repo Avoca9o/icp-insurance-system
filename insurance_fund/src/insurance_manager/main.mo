@@ -10,6 +10,26 @@ import Text "mo:base/Text";
 import Types "Types";
 
 actor {
+    let insurers_data = Types.InsurersData();
+
+    public func register_insurer(wallet_address: Types.InsurerWalletAddress, damageIds: [Types.DamageId], coefficients: [Float]) : async () {
+        let insurer_info = Types.InsurerInfo();
+        if (damageIds.size() == coefficients.size()) {
+            var i = 0;
+            while (i != damageIds.size()) {
+                insurer_info.put(damageIds[i], coefficients[i]);
+                i += 1;
+            }
+        };
+        insurers_data.put(wallet_address, insurer_info);
+    };
+
+    public query func get_insurer_balance(wallet_address: Types.InsurerWalletAddress): async ?Nat {
+        return do ? {
+            insurers_data.get(wallet_address)!.getTokenBalance()
+        };
+    };
+
     public query func transform(raw : Types.TransformArgs) : async Types.CanisterHttpResponsePayload {
         let transformed : Types.CanisterHttpResponsePayload = {
             status = raw.response.status;
