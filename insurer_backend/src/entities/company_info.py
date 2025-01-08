@@ -6,7 +6,7 @@ class CompanyInfo(Base):
     __tablename__ = 'companies'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    login = Column(String(64), nullable=False)
+    login = Column(String(64), nullable=False, unique=True)
     name = Column(String(64), nullable=False)
     password = Column(String(64), nullable=False)
     email = Column(String(64), nullable=False)

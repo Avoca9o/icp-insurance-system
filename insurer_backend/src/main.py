@@ -1,3 +1,4 @@
+import json
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
@@ -10,6 +11,11 @@ from models.v1_register_request import RegisterRequest
 from models.v1_authorize_request import AuthorizationRequest
 from models.v1_add_user_request import AddUserRequest
 from models.v1_update_user_request import UpdateUserRequest
+from models.v1_add_schema_request import AddSchemaRequest
+from models.v1_get_schemas_request import GetSchemasRequest
+from models.v1_get_schemas_request import GetSchemaRequest
+from models.v1_get_users_request import GetUsersRequest
+from models.v1_get_users_request import GetUserRequest
 
 from config.db_config import engine
 
@@ -134,6 +140,66 @@ def handle_v1_update_user(req: UpdateUserRequest):
         db.update_user(req.as_user_info())
 
         return JSONResponse(content=None, status_code=200)
+    except ValueError as e:
+        return JSONResponse(content={"message": str(e)}, status_code=400)
+    except Exception as e:
+        return JSONResponse(content={"message": str(e)}, status_code=500)
+
+
+@app.get("/v1/get-users")
+def handle_v1_get_users(req: GetUsersRequest):
+    try:
+        res = db.get_users(req.company_id)
+
+        return JSONResponse(content=res, status_code=200)
+    except ValueError as e:
+        return JSONResponse(content={"message": str(e)}, status_code=400)
+    except Exception as e:
+        return JSONResponse(content={"message": str(e)}, status_code=500)
+
+
+@app.get("/v1/get-user")
+def handle_v1_get_users(req: GetUserRequest):
+    try:
+        res = db.get_user(req.phone)
+
+        return JSONResponse(content=res, status_code=200)
+    except ValueError as e:
+        return JSONResponse(content={"message": str(e)}, status_code=400)
+    except Exception as e:
+        return JSONResponse(content={"message": str(e)}, status_code=500)
+
+
+@app.post("/v1/add-scheme")
+def handle_v1_add_scheme(req: AddSchemaRequest):
+    try:
+        db.add_scheme(req.as_insurer_scheme())
+
+        return JSONResponse(content=None, status_code=200)
+    except ValueError as e:
+        return JSONResponse(content={"message": str(e)}, status_code=400)
+    except Exception as e:
+        return JSONResponse(content={"message": str(e)}, status_code=500)
+
+
+@app.get("/v1/get-schemas")
+def handle_v1_get_schemas(req: GetSchemasRequest):
+    try:
+        res = db.get_schemas(req.company_id)
+        res = str(res)
+        return JSONResponse(content=res, status_code=200)
+    except ValueError as e:
+        return JSONResponse(content={"message": str(e)}, status_code=400)
+    except Exception as e:
+        return JSONResponse(content={"message": str(e)}, status_code=500)
+
+
+@app.get("/v1/get-schema")
+def handle_v1_get_schema(req: GetSchemaRequest):
+    try:
+        res = db.get_schema(req.global_scheme_version)
+        print(res)
+        return JSONResponse(content=res, status_code=200)
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)
     except Exception as e:
