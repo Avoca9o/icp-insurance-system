@@ -12,7 +12,7 @@ import Types "Types";
 actor {
     let insurers_data = Types.InsurersData();
 
-    public func register_insurer(wallet_address: Types.InsurerWalletAddress, damageIds: [Types.DamageId], coefficients: [Float]) : async () {
+    public func register_insurer(wallet_address: Types.InsurerWalletAddress, damageIds: [Types.DamageId], coefficients: [Float]): async () {
         let insurer_info = Types.InsurerInfo();
         if (damageIds.size() == coefficients.size()) {
             var i = 0;
@@ -27,6 +27,12 @@ actor {
     public query func get_insurer_balance(wallet_address: Types.InsurerWalletAddress): async ?Nat {
         return do ? {
             insurers_data.get(wallet_address)!.getTokenBalance()
+        };
+    };
+
+    public func top_up_insurer(wallet_address: Types.InsurerWalletAddress, amount: Nat): async ?() {
+        do ? {
+            insurers_data.get(wallet_address)!.addTokens(amount)
         };
     };
 
