@@ -36,6 +36,15 @@ def check_db_connection():
         return JSONResponse(content=str(e), status_code=500)
 
 
+@app.get("/check-canister-health")
+def check_canister_health():
+    try:
+        icp.check_canister_health()
+        return JSONResponse(content=None, status_code=200)
+    except Exception as e:
+        return JSONResponse(content={"message": str(e)}, status_code=500)
+
+
 # Adds insurance company to system with unique names
 @app.post("/v1/register")
 def handle_v1_register(req: RegisterRequest):
