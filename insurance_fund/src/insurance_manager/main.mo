@@ -1,3 +1,4 @@
+import ICPLedger "canister:icp_ledger_canister";
 import Debug "mo:base/Debug";
 import Blob "mo:base/Blob";
 import Cycles "mo:base/ExperimentalCycles";
@@ -6,6 +7,9 @@ import Array "mo:base/Array";
 import Nat8 "mo:base/Nat8";
 import Nat64 "mo:base/Nat64";
 import Text "mo:base/Text";
+import Result "mo:base/Result";
+import Principal "mo:base/Principal";
+import Nat "mo:base/Nat";
 
 import Types "Types";
 
@@ -34,6 +38,45 @@ actor {
         do ? {
             insurers_data.get(wallet_address)!.addTokens(amount)
         };
+    };
+
+    public func get_balance_from_ledger(user: Principal): async Result.Result<Nat, Text> {
+        try {
+            let balance = await ICPLedger.icrc1_balance_of({
+                owner=user;
+                subaccount=null;
+            });
+            return #ok(balance);
+        } catch (error) {
+            return #err(Error.message(error));
+        }
+    };
+
+    public func send_icp_tokens(recipient: Principal, payout: Nat): async Result.Result<(), Text> {
+        try {
+            let transferResult = await ICPLedger.icrc1_transfer({
+                to={
+                    owner=recipient;
+                    subaccount=null;
+                };
+                amount=payout;
+                fee=null;
+                memo=null;
+                from_subaccount=null;
+                created_at_time=null;
+            });
+
+            switch (transferResult) {
+                case(#Ok(results)) {
+                    return #ok();
+                };
+                case(#Err(error)) {
+                    return #err("Error in trasnfering tokens");
+                }
+            }
+        } catch (error) {
+            return #err(Error.message(error));
+        }
     };
 
     public query func transform(raw : Types.TransformArgs) : async Types.CanisterHttpResponsePayload {
