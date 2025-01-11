@@ -1,7 +1,5 @@
 import logging
-from random import randint
-from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
+from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ConversationHandler, MessageHandler, filters
 
 import handlers
 from config import BOT_TOKEN
@@ -18,9 +16,18 @@ logger = logging.getLogger(__name__)
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
-    application.add_handler(CommandHandler("start", handlers.start_command))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.echo_message))
-    application.add_handler(CommandHandler("help", handlers.help_command))
+    address_conversation_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(handlers.callback_handler, pattern='^set_icp_address$')],
+        states={
+            handlers.SET_ADDRESS_STATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.input_icp_address)],
+        },
+        fallbacks=[CommandHandler('cancel', handlers.cancel_converasation)],
+    )
+
+    application.add_handler(CommandHandler('start', handlers.start_command))
+    application.add_handler(CommandHandler('menu', handlers.menu_command))
+    application.add_handler(address_conversation_handler)
+    application.add_handler(CallbackQueryHandler(handlers.callback_handler))
 
     logger.info("Bot is running!")
     application.run_polling()
