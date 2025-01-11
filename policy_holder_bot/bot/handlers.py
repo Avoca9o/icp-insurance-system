@@ -29,6 +29,17 @@ async def help_command(message: Message, context: ContextTypes.DEFAULT_TYPE):
         '/help - Show the list of available commands'
     )
 
+async def show_icp_address(message: Message, context: ContextTypes.DEFAULT_TYPE):
+    wallet_address = context.user_data.get('wallet_address', None)
+
+    if wallet_address:
+        await message.reply_text(
+            f'Your ICP cryptowallet address {wallet_address}'
+        )
+    else:
+        await message.reply_text(
+            f'Your ICP cryptowallet address is not set yet'
+        )
 
 async def input_icp_address(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Get ICP cryptowallet address from user and validate it'''
@@ -72,3 +83,5 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == 'set_icp_address':
         await query.message.reply_text('Please, input your ICP cryptowallet address:')
         return SET_ADDRESS_STATE
+    elif query.data == 'show_icp_address':
+        await show_icp_address(query.message, context)

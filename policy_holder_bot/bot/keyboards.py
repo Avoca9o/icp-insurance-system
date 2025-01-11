@@ -8,7 +8,8 @@ def main_menu_keyboard():
             InlineKeyboardButton('Help', callback_data='help'),
         ],
         [
-            InlineKeyboardButton('Set ICP Address', callback_data='set_icp_address')
+            InlineKeyboardButton('Set ICP Address', callback_data='set_icp_address'),
+            InlineKeyboardButton('Show ICP Address', callback_data='show_icp_address')
         ]
     ]
     return InlineKeyboardMarkup(keyboard)
