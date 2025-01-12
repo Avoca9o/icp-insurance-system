@@ -3,6 +3,7 @@ import Principal "mo:base/Principal";
 import Iter "mo:base/Iter";
 import Nat "mo:base/Nat";
 import Float "mo:base/Float";
+import Text "mo:base/Text";
 
 module Types {
     public class InsurersData() {
@@ -24,7 +25,7 @@ module Types {
     public class InsurerInfo() {
         var tokenBalance: Nat = 0;
 
-        let coefficients = HashMap.HashMap<DamageId, Float>(16, Principal.equal, Principal.hash);
+        let coefficients = HashMap.HashMap<DamageId, Float>(16, Text.equal, Text.hash);
 
         public func put(key: DamageId, value: Float): () {
             coefficients.put(key, value);
@@ -57,7 +58,7 @@ module Types {
 
     public type InsurerWalletAddress = Principal;
 
-    public type DamageId = Principal;
+    public type DamageId = Text;
 
     public type Timestamp = Nat64;
 

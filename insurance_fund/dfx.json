@@ -13,7 +13,8 @@
     },
     "insurance_manager": {
       "main": "src/insurance_manager/main.mo",
-      "type": "motoko"
+      "type": "motoko",
+      "dependencies": ["icp_ledger_canister"]
     }
   },
   "defaults": {
