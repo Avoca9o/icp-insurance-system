@@ -1,6 +1,7 @@
 from typing import Dict
 from entities.company_info import CompanyInfo
 from entities.user_info import UserInfo
+from entities.insurer_scheme import InsurerScheme
 
 from config.db_config import Base, SessionLocal
 
@@ -62,3 +63,49 @@ class DBClient:
 
         session.commit()
         session.close()
+
+    @staticmethod
+    def add_scheme(scheme: InsurerScheme):
+        session = SessionLocal()
+
+        session.add(scheme)
+        session.commit()
+        session.close()
+
+    @staticmethod
+    def get_schemas(company_id: int):
+        session = SessionLocal()
+
+        res = session.query(InsurerScheme).filter(InsurerScheme.company_id == company_id).all()
+        session.close()
+
+        res = [x.global_version_num for x in res]
+
+        return res
+
+    @staticmethod
+    def get_schema(global_scheme_version: int):
+        session = SessionLocal()
+
+        res = session.query(InsurerScheme).filter(InsurerScheme.global_version_num == global_scheme_version).first()
+        session.close()
+
+        return res.diagnoses_coefs
+
+    @staticmethod
+    def get_users(company_id: int):
+        session = SessionLocal()
+
+        res = session.query(UserInfo).filter(UserInfo.insurer_id == company_id).all()
+        session.close()
+
+        return [x.phone for x in res]
+
+    @staticmethod
+    def get_user(phone: str):
+        session = SessionLocal()
+
+        res = session.query(UserInfo).filter(UserInfo.phone == phone).first()
+        session.close()
+
+        return {'phone': res.phone, 'scheme_version': res.schema_version}
