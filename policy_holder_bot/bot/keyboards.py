@@ -1,5 +1,25 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
+def cancel_keyboard():
+    '''Creates keyboard to cancel action'''
+    keyboard = [
+        [
+            InlineKeyboardButton('Cancel', callback_data='cancel')
+        ]
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
+
+def sign_in_keyboard():
+    '''Creates keyboard for sign-in'''
+    keyboard = [
+        [
+            InlineKeyboardButton('Sign in', callback_data='sign_in'),
+        ],
+    ]
+    return InlineKeyboardMarkup(keyboard)
+ 
+
 def main_menu_keyboard():
     '''Creates keyborad for main menu'''
     keyboard = [
