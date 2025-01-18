@@ -20,14 +20,6 @@ actor {
     let insurers_data = HashMap.HashMap<Types.InsurerWalletAddress, Types.InsurerTokensAmount>(16, Principal.equal, Principal.hash);
     let insurers_top_up_info = HashMap.HashMap<Types.InsurerWalletAddress, Types.InsurerLastTransactionId>(16, Principal.equal, Principal.hash);
 
-    public func get_account_identifier(): async Text {
-        let principal = Principal.fromActor(this);
-        let subaccount: [Nat8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        let hash_input = Principal.toBlob(principal);
-        let hash_output = Hash.sha224(hash_input);
-        return Text.encodeUtf8(hashOutput);
-    };
-
     public func register_insurer(wallet_address: Types.InsurerWalletAddress) : async Result.Result<(), Text> {
         try {
             let insurer = insurers_data.get(wallet_address);
