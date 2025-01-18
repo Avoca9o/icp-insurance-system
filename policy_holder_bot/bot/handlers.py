@@ -1,3 +1,4 @@
+import os
 import re
 from datetime import datetime
 from telegram import Update
@@ -27,6 +28,19 @@ async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = get_authorization_keyboard()
 
     await update.message.reply_text(welcome_message, reply_markup=reply_markup)
+
+
+async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    video_path = os.path.join('media', 'help_video_extra.mp4')
+
+    try:
+        await update.message.reply_video(
+            video=open(video_path, 'rb'),
+            caption='Here is a help video. 🎥 If you have further questions, let us know!',
+        )
+    except Exception as e:
+        logger.error(f'Failed to send help video: {e}')
+        await update.message.reply_text('Sorry, I could not send the help video. Please try again later.')
 
 
 async def handle_authorize_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -276,7 +290,8 @@ async def cancel_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 def register_handlers(application: Application):
-    application.add_handler(CommandHandler("start", start_handler))
+    application.add_handler(CommandHandler('start', start_handler))
+    application.add_handler(CommandHandler('help', help_handler))
 
     conversation_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(handle_authorize_button, pattern='^authorize$')],
