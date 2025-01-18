@@ -78,8 +78,14 @@ class ICPClient:
         agent = Agent(identity, client)
         self.canister = Canister(agent=agent, canister_id=ICP_CANISTER_ID, candid=candid)
 
-    def payout_request(self, policy_number: int, trauma_code: str, trauma_time: datetime) -> bool:
-        response = self.canister.validate_insurance_case()
+    def payout_request(
+        self,
+        policy_number: int,
+        trauma_code: str,
+        trauma_time: datetime,
+        crypto_wallet: str,
+    ) -> bool:
+        response = self.canister.validate_insurance_case(crypto_wallet)
         logger.info(response)
         if response:
             logger.info('Canister is alive')

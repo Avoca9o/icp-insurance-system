@@ -8,7 +8,7 @@ from keyboards import get_action_menu_keyboard, get_authorization_keyboard, get_
 from utils import logger, validate_policy_number, validate_trauma_code
 
 REQUEST_EMAIL = 0
-REQUEST_INSURANCE_POLICY, REQUEST_TRAUMA_CODE, REQUEST_TRAUMA_TIME, PROCESS_PAYOUT = range(4)
+REQUEST_INSURANCE_POLICY, REQUEST_TRAUMA_CODE, REQUEST_TRAUMA_TIME, REQUEST_CRYPTO_WALLET = range(4)
 
 db_client = DBClient()
 icp_client = ICPClient()
@@ -223,6 +223,15 @@ async def request_trauma_time(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     context.user_data['trauma_time'] = trauma_time
 
+    await update.message.reply_text('Please enter the cryptowallet address principal:')
+    return REQUEST_CRYPTO_WALLET
+
+
+async def request_crypto_wallet(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    crypto_wallet = update.message.text
+
+    context.user_data['crypto_wallet'] = crypto_wallet
+
     await update.message.reply_text('Processing payout request. Please wait...')
     return await process_payout(update, context)
 
@@ -231,26 +240,32 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
     policy_number = context.user_data['policy_number']
     trauma_code = context.user_data['trauma_code']
     trauma_time = context.user_data['trauma_time']
+    crypto_wallet = context.user_data['crypto_wallet']
 
     try:
         is_valid = icp_client.payout_request(
             policy_number=policy_number,
             trauma_code=trauma_code,
             trauma_time=trauma_time,
+            crypto_wallet=crypto_wallet,
         )
 
+        reply_markup = get_main_menu_keyboard()
         if is_valid:
             await update.message.reply_text(
-                f'Your claim is approved! 🎉\n\n'
+                f'Your claim is approved! 🎉\n\n',
+                reply_markup=reply_markup,
             )
         else:
             await update.message.reply_text(
-                f'Your claim is denied. ❌\n\n'
+                f'Your claim is denied. ❌\n\n',
+                reply_markup=reply_markup,
             )
     except Exception as e:
         logger.error(f'Error while validating payout: {e}', exc_info=True)
         await update.message.reply_text(
-            'An error occurred while processing your request. Please try again later.'
+            'An error occurred while processing your request. Please try again later.',
+            reply_markup=reply_markup
         )
     
     return ConversationHandler.END
@@ -285,6 +300,7 @@ def register_handlers(application: Application):
             REQUEST_INSURANCE_POLICY: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_insurance_policy)],
             REQUEST_TRAUMA_CODE: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_trauma_code)],
             REQUEST_TRAUMA_TIME: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_trauma_time)],
+            REQUEST_CRYPTO_WALLET: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_crypto_wallet)],
         },
         fallbacks=[CommandHandler('cancel', cancel_payout)],
     )
