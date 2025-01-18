@@ -6,28 +6,20 @@ import Array "mo:base/Array";
 import Nat8 "mo:base/Nat8";
 import Nat64 "mo:base/Nat64";
 import Text "mo:base/Text";
+import HashMap "mo:base/HashMap";
+import Principal "mo:base/Principal";
 
 import Types "Types";
 
 actor {
-    let insurers_data = Types.InsurersData();
+    let insurers_data = HashMap.HashMap<Types.InsurerWalletAddress, Types.InsurerTokensAmount>(16, Principal.equal, Principal.hash);
 
-    public func register_insurer(wallet_address: Types.InsurerWalletAddress, damageIds: [Types.DamageId], coefficients: [Float]) : async () {
-        let insurer_info = Types.InsurerInfo();
-        if (damageIds.size() == coefficients.size()) {
-            var i = 0;
-            while (i != damageIds.size()) {
-                insurer_info.put(damageIds[i], coefficients[i]);
-                i += 1;
-            }
-        };
-        insurers_data.put(wallet_address, insurer_info);
+    public func register_insurer(wallet_address: Types.InsurerWalletAddress) : async () {
+        insurers_data.put(wallet_address, 0);
     };
 
-    public query func get_insurer_balance(wallet_address: Types.InsurerWalletAddress): async ?Nat {
-        return do ? {
-            insurers_data.get(wallet_address)!.getTokenBalance()
-        };
+    public query func get_insurer_balance(wallet_address: Types.InsurerWalletAddress): async ?Types.InsurerTokensAmount {
+        return insurers_data.get(wallet_address)
     };
 
     public query func transform(raw : Types.TransformArgs) : async Types.CanisterHttpResponsePayload {
