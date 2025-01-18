@@ -1,8 +1,13 @@
-from typing import Dict
+from datetime import datetime
+from ic.canister import Canister
+from ic.client import Client
+from ic.identity import Identity
+from ic.agent import Agent
+from ic.candid import Types
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from config import Base, DATABASE_URL
+from config import Base, DATABASE_URL, ICP_CANISTER_ID, ICP_CANISTER_URL, candid
 from models import CompanyInfo, InsurerScheme, UserInfo
 from utils import logger
 
@@ -65,19 +70,20 @@ class DBClient:
         finally:
             session.close()
 
-# class ICPClient:
-#     @staticmethod
-#     def get_balance(company: str):
-#         return 0
-    
-#     @staticmethod
-#     def withdraw(company: str):
-#         return None
-    
-#     @staticmethod
-#     def check_canister_health():
-#         response = canister.get_insurance_case_info()
-#         if response:
-#             print('Canister is alive')
-#         else:
-#             print('Canister is not alive')
+
+class ICPClient:
+    def __init__(self):
+        identity = Identity()
+        client = Client(url=ICP_CANISTER_URL)
+        agent = Agent(identity, client)
+        self.canister = Canister(agent=agent, canister_id=ICP_CANISTER_ID, candid=candid)
+
+    def payout_request(self, policy_number: int, trauma_code: str, trauma_time: datetime) -> bool:
+        response = self.canister.validate_insurance_case()
+        logger.info(response)
+        if response:
+            logger.info('Canister is alive')
+            return True
+        else:
+            logger.error('Canister is not alive')
+            return False

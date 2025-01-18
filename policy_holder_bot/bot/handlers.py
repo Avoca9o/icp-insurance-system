@@ -1,13 +1,17 @@
 import re
+from datetime import datetime
 from telegram import Update
 from telegram.ext import Application, ContextTypes, CommandHandler, CallbackQueryHandler, MessageHandler, ConversationHandler, filters
 
-from clients import DBClient
+from clients import DBClient, ICPClient
 from keyboards import get_action_menu_keyboard, get_authorization_keyboard, get_main_menu_keyboard
+from utils import logger, validate_policy_number, validate_trauma_code
 
 REQUEST_EMAIL = 0
+REQUEST_INSURANCE_POLICY, REQUEST_TRAUMA_CODE, REQUEST_TRAUMA_TIME, PROCESS_PAYOUT = range(4)
 
 db_client = DBClient()
+icp_client = ICPClient()
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
@@ -154,6 +158,108 @@ async def view_contract_handler(update: Update, context: ContextTypes.DEFAULT_TY
         await query.edit_message_text(info_message, reply_markup=reply_markup)
 
 
+async def request_payout_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    telegram_id = query.from_user.id
+    user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+    if not user:
+        await query.edit_message_text(
+            'You are not authorized. Please authorize using the /start command.'
+        )
+        return ConversationHandler.END
+    
+    if not user.is_approved:
+        await query.edit_message_text(
+            'Your contract information is not approved yet. Please confirm your information before requesting a payout.'
+        )
+        return ConversationHandler.END
+    
+    await query.edit_message_text('Please enter your insurance policy number:')
+    return REQUEST_INSURANCE_POLICY
+
+
+async def request_insurance_policy(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    policy_number = update.message.text
+
+    if not validate_policy_number(policy_number=policy_number):
+        await update.message.reply_text(
+            'Invalid insurance policy number. Try again:'
+        )
+        return REQUEST_INSURANCE_POLICY
+    
+    context.user_data['policy_number'] = policy_number
+
+    await update.message.reply_text('Please enter the trauma code:')
+    return REQUEST_TRAUMA_CODE
+
+
+async def request_trauma_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    trauma_code = update.message.text
+
+    if not validate_trauma_code(trauma_code=trauma_code):
+        await update.message.reply_text(
+            'Invalid trauma code. Try again using this source: https://www.cito-priorov.ru/cito/files/telemed/Perechen_kodov_MKB.pdf'
+        )
+        return REQUEST_TRAUMA_CODE
+
+    context.user_data['trauma_code'] = trauma_code
+
+    await update.message.reply_text('Please enter the registration time of the trauma (YYYY-MM-DD HH:MM):')
+    return REQUEST_TRAUMA_TIME
+
+
+async def request_trauma_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    trauma_time = update.message.text
+
+    try:
+        trauma_time = datetime.strptime(trauma_time, '%Y-%m-%d %H:%M')
+    except ValueError:
+        await update.message.reply_text(
+            'Invalid date format. Please use the format YYYY-MM-DD HH:MM'
+        )
+        return REQUEST_TRAUMA_TIME
+
+    context.user_data['trauma_time'] = trauma_time
+
+    await update.message.reply_text('Processing payout request. Please wait...')
+    return await process_payout(update, context)
+
+
+async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    policy_number = context.user_data['policy_number']
+    trauma_code = context.user_data['trauma_code']
+    trauma_time = context.user_data['trauma_time']
+
+    try:
+        is_valid = icp_client.payout_request(
+            policy_number=policy_number,
+            trauma_code=trauma_code,
+            trauma_time=trauma_time,
+        )
+
+        if is_valid:
+            await update.message.reply_text(
+                f'Your claim is approved! 🎉\n\n'
+            )
+        else:
+            await update.message.reply_text(
+                f'Your claim is denied. ❌\n\n'
+            )
+    except Exception as e:
+        logger.error(f'Error while validating payout: {e}', exc_info=True)
+        await update.message.reply_text(
+            'An error occurred while processing your request. Please try again later.'
+        )
+    
+    return ConversationHandler.END
+        
+
+async def cancel_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text('Payout request process canceled.')
+    return ConversationHandler.END
+
 def register_handlers(application: Application):
     application.add_handler(CommandHandler("start", start_handler))
 
@@ -172,3 +278,15 @@ def register_handlers(application: Application):
     application.add_handler(CallbackQueryHandler(approve_contract_handler, pattern='^approve_contract$'))
 
     application.add_handler(CallbackQueryHandler(view_contract_handler, pattern='^view_contract$'))
+
+    payout_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(request_payout_start, pattern='^request_payout$')],
+        states={
+            REQUEST_INSURANCE_POLICY: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_insurance_policy)],
+            REQUEST_TRAUMA_CODE: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_trauma_code)],
+            REQUEST_TRAUMA_TIME: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_trauma_time)],
+        },
+        fallbacks=[CommandHandler('cancel', cancel_payout)],
+    )
+
+    application.add_handler(payout_handler)
