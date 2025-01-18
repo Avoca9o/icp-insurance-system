@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 
-from bot.config import Base
+from config import Base
 
 
 class CompanyInfo(Base):
@@ -38,6 +38,7 @@ class UserInfo(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     phone = Column(String(16), nullable=False, unique=True)
+    email = Column(String(64), nullable=False, unique=True)
     insurance_amount = Column(Integer, nullable=False)
     insurer_id = Column(Integer, ForeignKey('companies.id'), nullable=False)
     schema_version = Column(Integer, ForeignKey('insurer_schemas.global_version_num'), nullable=False)
@@ -45,8 +46,9 @@ class UserInfo(Base):
     telegram_id = Column(Integer, nullable=True)
     is_approved = Column(Boolean, nullable=False)
 
-    def __init__(self, phone, insurance_amount, insurer_id, schema_version, secondary_filters):
+    def __init__(self, phone, email, insurance_amount, insurer_id, schema_version, secondary_filters):
         self.phone = phone
+        self.email = email
         self.insurance_amount = insurance_amount
         self.insurer_id = insurer_id
         self.schema_version = schema_version

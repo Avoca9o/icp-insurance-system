@@ -1,35 +1,33 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-def cancel_keyboard():
-    '''Creates keyboard to cancel action'''
+def get_authorization_keyboard() -> InlineKeyboardMarkup:
     keyboard = [
         [
-            InlineKeyboardButton('Cancel', callback_data='cancel')
-        ]
-    ]
-    return InlineKeyboardMarkup(keyboard)
-
-
-def sign_in_keyboard():
-    '''Creates keyboard for sign-in'''
-    keyboard = [
-        [
-            InlineKeyboardButton('Sign in', callback_data='sign_in'),
+            InlineKeyboardButton('🔘 Authorize', callback_data='authorize'),
         ],
     ]
     return InlineKeyboardMarkup(keyboard)
- 
 
-def main_menu_keyboard():
-    '''Creates keyborad for main menu'''
+
+def get_main_menu_keyboard() -> InlineKeyboardMarkup:
     keyboard = [
         [
-            InlineKeyboardButton('Get Info', callback_data='get_info'),
-            InlineKeyboardButton('Help', callback_data='help'),
+            InlineKeyboardButton('🔘 Main Menu', callback_data='main_menu'),
+        ],
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
+
+def get_action_menu_keyboard() -> InlineKeyboardMarkup:
+    keyboard = [
+        [
+            InlineKeyboardButton('🔘 View information about the contract', callback_data='view_contract'),
         ],
         [
-            InlineKeyboardButton('Set ICP Address', callback_data='set_icp_address'),
-            InlineKeyboardButton('Show ICP Address', callback_data='show_icp_address')
-        ]
+            InlineKeyboardButton('🔘 Approve information about the contract', callback_data='approve_contract'),
+        ],
+        [
+            InlineKeyboardButton('🔘 Request a payout', callback_data='request_payout'),
+        ],
     ]
     return InlineKeyboardMarkup(keyboard)

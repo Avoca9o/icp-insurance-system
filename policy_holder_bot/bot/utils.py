@@ -1,13 +1,19 @@
-import re
+import logging
 
-def is_principal_wallet(address: str) -> bool:
-    pattern = r'^([a-z2-7]{5}-){10}[a-z2-7]{3}[a-z2-7]?$'
-    return bool(re.match(pattern, address))
+logger = logging.getLogger('policy_holder_bot')
+logger.setLevel(logging.DEBUG)
 
-def is_account_wallet(address: str) -> bool:
-    pattern = r"^0x[a-fA-F0-9]{64}$"
-    return bool(re.match(pattern, address))
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 
-def is_valid_icp_address(address: str) -> bool:
-    '''Validate wallet address'''
-    return len(address) != 0
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)
+console_handler.setFormatter(formatter)
+
+file_handler = logging.FileHandler('bot.log', encoding='utf-8')
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(formatter)
+
+logger.addHandler(console_handler)
+logger.addHandler(file_handler)
