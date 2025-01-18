@@ -53,12 +53,14 @@ actor {
         }
     };
 
-    public func top_up_insurer(wallet_address: Types.InsurerWalletAddress): async Result.Result<(), Text> {
+    public func top_up_insurer(wallet_address: Types.InsurerWalletAddress): async Result.Result<Text, Text> {
         try {
             let insurer = insurers_data.get(wallet_address);
             if (insurer == null) {
                 return #err("Insurer does not exist");
             };
+
+            let last_transaction = insurers_top_up_info.get(wallet_address);
 
             let insurer_transactions = await ICPIndex.get_account_transactions({
                 max_results=10;
@@ -74,11 +76,16 @@ actor {
                     let transactions = insurer_transactions.transactions;
                     while (i < transactions.size()) {
                         let operation = transactions[i].transaction.operation;
+                        let transaction_id = transactions[i].id;
+                        if (last_transaction != null and last_transaction == transaction_id) {
+                            return #ok("Not BAM");
+                        };
                         switch (operation) {
                             case (#Transfer(operation)) {
                                 if (operation.to == "d0f2d8256377109703c1440adfa4b57aee61084b62d2ecaa6308b9c1cf69f10f") {
                                     insurers_data.put(wallet_address, operation.amount.e8s);
-                                    return #ok();
+                                    insurers_top_up_info.put(wallet_address, transaction_id);
+                                    return #ok("BAM");
                                 };
                             };
                             case _ {
