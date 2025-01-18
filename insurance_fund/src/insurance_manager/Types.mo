@@ -7,6 +7,8 @@ module Types {
 
     public type InsurerTokensAmount = Nat64;
 
+    public type InsurerLastTransactionId = Nat64;
+
     public type DamageId = Principal;
 
     public type Timestamp = Nat64;

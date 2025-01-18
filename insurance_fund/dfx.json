@@ -1,5 +1,15 @@
 {
   "canisters": {
+    "icp_index_canister": {
+      "type": "custom",
+      "candid": "https://raw.githubusercontent.com/dfinity/ic/aba60ffbc46acfc8990bf4d5685c1360bd7026b9/rs/ledger_suite/icp/index/index.did",
+      "wasm": "https://download.dfinity.systems/ic/aba60ffbc46acfc8990bf4d5685c1360bd7026b9/canisters/ic-icp-index-canister.wasm.gz",
+      "remote": {
+        "id": {
+          "ic": "qhbym-qaaaa-aaaaa-aaafq-cai"
+        }
+      }
+    },
     "icp_ledger_canister": {
       "type": "custom",
       "candid": "https://raw.githubusercontent.com/dfinity/ic/aba60ffbc46acfc8990bf4d5685c1360bd7026b9/rs/ledger_suite/icp/ledger.did",
@@ -14,7 +24,7 @@
     "insurance_manager": {
       "main": "src/insurance_manager/main.mo",
       "type": "motoko",
-      "dependencies": ["icp_ledger_canister"]
+      "dependencies": ["icp_index_canister", "icp_ledger_canister"]
     }
   },
   "defaults": {
