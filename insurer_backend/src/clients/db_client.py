@@ -109,3 +109,12 @@ class DBClient:
         session.close()
 
         return {'phone': res.phone, 'scheme_version': res.schema_version}
+
+    @staticmethod
+    def get_payouts(company: str):
+        # session = SessionLocal()
+        #
+        # res = session.query().filter(UserInfo.phone == phone).first()
+        # session.close()
+        # TODO: use payout table
+        return {}

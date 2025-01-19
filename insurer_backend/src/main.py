@@ -16,6 +16,7 @@ from models.v1_get_schemas_request import GetSchemasRequest
 from models.v1_get_schemas_request import GetSchemaRequest
 from models.v1_get_users_request import GetUsersRequest
 from models.v1_get_users_request import GetUserRequest
+from models.v1_get_operations import GetOperationsRequest
 
 from config.db_config import engine
 
@@ -57,6 +58,7 @@ def handle_v1_register(req: RegisterRequest):
     try:
         req.check_validity()
         db.add_company(req.as_company_info())
+        icp.register_company(req.pay_address)
         return JSONResponse(content=None, status_code=200)
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)
@@ -208,6 +210,16 @@ def handle_v1_get_schema(req: GetSchemaRequest):
     try:
         res = db.get_schema(req.global_scheme_version)
         print(res)
+        return JSONResponse(content=res, status_code=200)
+    except ValueError as e:
+        return JSONResponse(content={"message": str(e)}, status_code=400)
+    except Exception as e:
+        return JSONResponse(content={"message": str(e)}, status_code=500)
+
+@app.get("/v1/get-operations")
+def handle_v1_get_operations(req: GetOperationsRequest):
+    try:
+        res = db.get_payout(req.company)
         return JSONResponse(content=res, status_code=200)
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)

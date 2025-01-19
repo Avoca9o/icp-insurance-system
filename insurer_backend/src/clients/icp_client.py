@@ -35,4 +35,10 @@ class ICPClient:
         else:
             print("Canister is not alive")
 
+    @staticmethod
+    def register_company(payout_address: str):
+        # todo: воспользоваться нормально и обработать после того как станет доступно
+        # res = canister.register(payout_address)
+
+        return None
 
