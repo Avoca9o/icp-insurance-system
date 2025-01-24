@@ -13,19 +13,22 @@ import Principal "mo:base/Principal";
 import Nat "mo:base/Nat";
 import HashMap "mo:base/HashMap";
 import Hash "mo:base/Hash";
+import Bool "mo:base/Bool";
+import Option "mo:base/Option";
+import Timer "mo:base/Timer";
+import Iter "mo:base/Iter";
 
 import Types "Types";
 
 actor {
-    let insurers_data = HashMap.HashMap<Types.InsurerWalletAddress, Types.InsurerTokensAmount>(16, Principal.equal, Principal.hash);
-    let insurers_top_up_info = HashMap.HashMap<Types.InsurerWalletAddress, Types.InsurerLastTransactionId>(16, Principal.equal, Principal.hash);
+    let insurers_data = Types.InsurersData();
 
     public func register_insurer(wallet_address: Types.InsurerWalletAddress) : async Result.Result<(), Text> {
         try {
-            let insurer = insurers_data.get(wallet_address);
+            let insurer = insurers_data.get_balance(wallet_address);
             switch(insurer) {
                 case(null) {
-                    insurers_data.put(wallet_address, 0);
+                    insurers_data.set_balance(wallet_address, 0);
                     return #ok();
                 };
                 case(?insurer) {
@@ -39,7 +42,7 @@ actor {
 
     public query func get_insurer_balance(wallet_address: Types.InsurerWalletAddress): async Result.Result<Types.InsurerTokensAmount, Text> {
         try {
-            let insurer_balance = insurers_data.get(wallet_address);
+            let insurer_balance = insurers_data.get_balance(wallet_address);
             switch(insurer_balance) {
                 case(null) {
                     return #err("Insurer does not exist");
@@ -53,14 +56,14 @@ actor {
         }
     };
 
-    public func top_up_insurer(wallet_address: Types.InsurerWalletAddress): async Result.Result<Text, Text> {
+    public func refresh(wallet_address: Types.InsurerWalletAddress): async Result.Result<Text, Text> {
         try {
-            let insurer = insurers_data.get(wallet_address);
-            if (insurer == null) {
+            let insurer_amount = insurers_data.get_balance(wallet_address);
+            if (insurer_amount == null) {
                 return #err("Insurer does not exist");
             };
 
-            let last_transaction = insurers_top_up_info.get(wallet_address);
+            let last_transaction = insurers_data.get_last_transaction(wallet_address);
 
             let insurer_transactions = await ICPIndex.get_account_transactions({
                 max_results=10;
@@ -77,14 +80,14 @@ actor {
                     while (i < transactions.size()) {
                         let operation = transactions[i].transaction.operation;
                         let transaction_id = transactions[i].id;
-                        if (last_transaction != null and last_transaction == transaction_id) {
+                        if (last_transaction != null and Option.get(last_transaction, 0: Types.InsurerLastTransactionId) == transaction_id) {
                             return #ok("Not BAM");
                         };
                         switch (operation) {
                             case (#Transfer(operation)) {
-                                if (operation.to == "d0f2d8256377109703c1440adfa4b57aee61084b62d2ecaa6308b9c1cf69f10f") {
-                                    insurers_data.put(wallet_address, operation.amount.e8s);
-                                    insurers_top_up_info.put(wallet_address, transaction_id);
+                                if (operation.to == "9a2a49e111a1acd073e9b85b752cb0d54e6c3401e285d5019f9efacc77a83af4") {
+                                    insurers_data.set_balance(wallet_address, Option.get(insurer_amount, 0: Types.InsurerTokensAmount) + operation.amount.e8s);
+                                    insurers_data.set_last_transaction(wallet_address, transaction_id);
                                     return #ok("BAM");
                                 };
                             };
@@ -105,6 +108,13 @@ actor {
         }
     };
 
+    private func refresh_all(): async () {
+        let insurers = insurers_data.get_all_insurers();
+        for (insurer in insurers) {
+            let result = await refresh(insurer);
+        }
+    };
+
     public func get_balance_from_ledger(user: Principal): async Result.Result<Nat, Text> {
         try {
             let balance = await ICPLedger.icrc1_balance_of({
@@ -117,14 +127,14 @@ actor {
         }
     };
 
-    public func send_icp_tokens(recipient: Principal, payout: Nat): async Result.Result<(), Text> {
+    public func send_icp_tokens(recipient: Principal, payout: Nat64): async Result.Result<(), Text> {
         try {
             let transferResult = await ICPLedger.icrc1_transfer({
                 to={
                     owner=recipient;
                     subaccount=null;
                 };
-                amount=payout;
+                amount=Nat64.toNat(payout);
                 fee=null;
                 memo=null;
                 from_subaccount=null;
@@ -160,7 +170,7 @@ actor {
         transformed;
     };
 
-    public func validate_insurance_case(policy_holder: Principal) : async Result.Result<Text, Text> {
+    private func validate_insurance_case(diagnosis_code: Text, diagnosis_date: Text) : async Bool {
         let ic : Types.IC = actor ("aaaaa-aa");
         let ONE_MINUTE : Nat64 = 60;
         let host: Text = "example.com";
@@ -192,11 +202,34 @@ actor {
             case (?y) { y };
         };
 
-        if (response_status == 200) {
-            let result = await send_icp_tokens(policy_holder, 1000000);
-            return #ok("Tokens sent to policy holder");
-        } else {
-            return #err("Insurance case is not approved");
-        }
+        return response_status == 200;
     };
+
+    public func request_payout(diagnosis_code: Text, diagnosis_date: Text, insurer_crypto_wallet: Principal, policy_holder_crypto_wallet: Principal, amount: Nat64): async Result.Result<Text, Text> {
+        let validate_diagnosis_result = await validate_insurance_case(diagnosis_code, diagnosis_date);
+
+        if (validate_diagnosis_result) {
+            let transfer_result = await send_icp_tokens(policy_holder_crypto_wallet, amount);
+            switch (transfer_result) {
+                case (#Err(error)) {
+                    return #err("Transfer trouble")
+                };
+                case (_) {
+                    
+                }
+            };
+            let current_amount = insurers_data.get_balance(insurer_crypto_wallet);
+            if (current_amount != null) {
+                if (Option.get(current_amount, 0: Types.InsurerTokensAmount) < amount + 10000) {
+                    return #err("Insurer does not have enough money for transfer");
+                };
+                insurers_data.set_balance(insurer_crypto_wallet, Option.get(current_amount, 0: Types.InsurerTokensAmount) - amount - 10000);
+            };
+            return #ok("Transfer was approved");
+        } else {
+            return #err("Insurance case is not approved")
+        };
+    };
+
+    let timer = Timer.recurringTimer(#seconds 60, refresh_all);
 }

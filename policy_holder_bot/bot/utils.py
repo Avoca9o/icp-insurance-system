@@ -18,8 +18,5 @@ file_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
-def validate_policy_number(policy_number: int) -> bool:
-    return True
-
-def validate_trauma_code(trauma_code: str) -> bool:
+def validate_diagnosis_code(diagnosis_code: str) -> bool:
     return True
