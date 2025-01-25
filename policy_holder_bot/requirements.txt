@@ -1,2 +1,5 @@
+ic-py==1.0.1
+psycopg2==2.9.10
 python-telegram-bot==20.3
-python-dotenv
+python-dotenv==1.0.1
+sqlalchemy==2.0.37
