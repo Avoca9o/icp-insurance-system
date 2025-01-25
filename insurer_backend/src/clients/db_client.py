@@ -1,7 +1,11 @@
 from typing import Dict
+
+from sqlalchemy import and_, cast, Date
+
 from entities.company_info import CompanyInfo
 from entities.user_info import UserInfo
 from entities.insurer_scheme import InsurerScheme
+from entities.payout import Payout
 
 from config.db_config import Base, SessionLocal
 
@@ -19,6 +23,13 @@ class DBClient:
         session.close()
 
     @staticmethod
+    def get_company(comp_id: int) -> CompanyInfo:
+        session = SessionLocal()
+
+        company = session.query(CompanyInfo).filter(CompanyInfo.id == comp_id).first()
+        return company
+
+    @staticmethod
     def authorize_company(login: str, password: str):
         session = SessionLocal()
 
@@ -29,15 +40,19 @@ class DBClient:
         if company.password != password:
             raise ValueError("Invalid password")
 
+        company_id = company.id
+
         session.commit()
         session.close()
+
+        return company_id
 
     @staticmethod
     def add_user(user: UserInfo):
         session = SessionLocal()
 
-        if session.query(UserInfo).filter(UserInfo.phone == user.phone).first():
-            raise ValueError("user with phone number {} already exists".format(user.phone))
+        if session.query(UserInfo).filter(UserInfo.email == user.email).first():
+            raise ValueError("user with phone number {} already exists".format(user.email))
 
         session.add(user)
         session.commit()
@@ -47,16 +62,19 @@ class DBClient:
     def update_user(user: UserInfo):
         session = SessionLocal()
 
-        db_user = session.query(UserInfo).filter(UserInfo.phone == user.phone).first()
+        db_user = session.query(UserInfo).filter(UserInfo.email == user.email).first()
 
         if db_user is None:
-            raise ValueError("user with phone number {} not exists".format(user.phone))
+            raise ValueError("user with email {} not exists".format(user.email))
+
+        if db_user.is_approved:
+            raise ValueError("user with email {} has already approved his info, can't change info".format(user.email))
 
         if user.payout_address is not None:
             db_user.payout_address = user.payout_address
 
-        if user.schema is not None:
-            db_user.schema = user.schema
+        if user.schema_version is not None:
+            db_user.schema_version = user.schema_version
 
         if user.secondary_filters is not None:
             db_user.secondary_filters = user.secondary_filters
@@ -79,7 +97,8 @@ class DBClient:
         res = session.query(InsurerScheme).filter(InsurerScheme.company_id == company_id).all()
         session.close()
 
-        res = [x.global_version_num for x in res]
+        res = {'schemas': [{'id': x.global_version_num} for x in res]}
+        print(res)
 
         return res
 
@@ -90,7 +109,7 @@ class DBClient:
         res = session.query(InsurerScheme).filter(InsurerScheme.global_version_num == global_scheme_version).first()
         session.close()
 
-        return res.diagnoses_coefs
+        return res
 
     @staticmethod
     def get_users(company_id: int):
@@ -99,16 +118,32 @@ class DBClient:
         res = session.query(UserInfo).filter(UserInfo.insurer_id == company_id).all()
         session.close()
 
-        return [x.phone for x in res]
+        res = {'users': [{'email': x.email} for x in res]}
+        return res
 
     @staticmethod
-    def get_user(phone: str):
+    def get_user(email: str, company_id: int):
         session = SessionLocal()
 
-        res = session.query(UserInfo).filter(UserInfo.phone == phone).first()
+        res = session.query(UserInfo).filter(UserInfo.email == email).first()
         session.close()
 
-        return {'phone': res.phone, 'scheme_version': res.schema_version}
+        if res.insurer_id != company_id:
+            raise ValueError('User is not for this company')
+
+        return {'email': res.email, 'scheme_version': res.schema_version, 'insurance_amount': res.insurance_amount}
+
+    @staticmethod
+    def delete_user(email: str, company_id: int):
+        session = SessionLocal()
+
+        res = session.query(UserInfo).filter(UserInfo.email == email).first()
+
+        if res.insurer_id != company_id:
+            raise ValueError('User is not for this company')
+        session.delete(res)
+        session.commit()
+        session.close()
 
     @staticmethod
     def get_payouts(company: str):
@@ -118,3 +153,18 @@ class DBClient:
         # session.close()
         # TODO: use payout table
         return {}
+
+    @staticmethod
+    def get_payouts_by_company_and_date(company_id, target_date):
+        session = SessionLocal()
+
+        payouts = session.query(Payout).filter(
+            and_(
+                Payout.company_id == company_id,
+                cast(Payout.date, Date) == target_date
+            )
+        ).all()
+
+        session.close()
+
+        return [{'user': payout.user_id, 'amount': payout.amount, 'date': str(payout.date)} for payout in payouts]

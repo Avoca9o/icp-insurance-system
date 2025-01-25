@@ -1,5 +1,5 @@
 from config.db_config import Base
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 
 
 class UserInfo(Base):
@@ -13,3 +13,4 @@ class UserInfo(Base):
     insurer_id = Column(Integer, ForeignKey('companies.id'), nullable=False)
     schema_version = Column(Integer, ForeignKey('insurer_schemas.global_version_num'), nullable=False)
     secondary_filters = Column(String, nullable=True)
+    is_approved = Column(Boolean, nullable=False, default=False)
