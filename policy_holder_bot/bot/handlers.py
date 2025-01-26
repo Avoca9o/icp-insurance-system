@@ -1,3 +1,4 @@
+import json
 import os
 import re
 from datetime import datetime
@@ -6,10 +7,11 @@ from telegram.ext import Application, ContextTypes, CommandHandler, CallbackQuer
 
 from clients import DBClient, ICPClient
 from keyboards import get_action_menu_keyboard, get_authorization_keyboard, get_main_menu_keyboard
-from utils import logger, validate_policy_number, validate_trauma_code
+from models import Transaction
+from utils import logger, validate_diagnosis_code
 
 REQUEST_EMAIL = 0
-REQUEST_INSURANCE_POLICY, REQUEST_TRAUMA_CODE, REQUEST_TRAUMA_TIME, REQUEST_CRYPTO_WALLET = range(4)
+REQUEST_DIAGNOSIS_CODE, REQUEST_DIAGNOSIS_TIME, REQUEST_CRYPTO_WALLET = range(3)
 
 db_client = DBClient()
 icp_client = ICPClient()
@@ -110,6 +112,8 @@ async def approve_contract_handler(update: Update, context: ContextTypes.DEFAULT
 
     telegram_id = query.from_user.id
 
+    reply_markup = get_main_menu_keyboard()
+
     user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
     if not user:
         await query.edit_message_text(
@@ -119,7 +123,7 @@ async def approve_contract_handler(update: Update, context: ContextTypes.DEFAULT
         await query.edit_message_text(
             'Your information is already approved! ✅\n\n'
             'Use the buttton below to return to the main menu.',
-            reply_markup=get_main_menu_keyboard()
+            reply_markup=reply_markup,
         )
     else:
         user.is_approved = True
@@ -129,7 +133,6 @@ async def approve_contract_handler(update: Update, context: ContextTypes.DEFAULT
             'Your information has been successfully approved! ✅\n\n'
             'Use the button below to return to the main menu.'
         )
-        reply_markup = get_main_menu_keyboard()
 
         await query.edit_message_text(approve_message, reply_markup=reply_markup)
 
@@ -139,6 +142,8 @@ async def view_contract_handler(update: Update, context: ContextTypes.DEFAULT_TY
     await query.answer()
 
     telegram_id = query.from_user.id
+
+    reply_markup = get_main_menu_keyboard()
 
     user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
     if not user:
@@ -154,22 +159,43 @@ async def view_contract_handler(update: Update, context: ContextTypes.DEFAULT_TY
         insurance_company = db_client.get_insurance_company_by_id(insurer_id)
         company_name = insurance_company.name if insurance_company else 'Unknown'
 
-        payout_coefficients = 'N/A'
-        special_conditions = user.secondary_filters if user.secondary_filters else 'No special conditions.'
+        special_conditions = user.secondary_filters
+        special_conditions_flag = False
+        if user.secondary_filters:
+            special_conditions_flag = True
+        
         insurer_scheme = db_client.get_insurer_scheme(insurer_id=insurer_id, global_version_num=global_version_num)
+        insurer_scheme_flag = False
         if insurer_scheme and insurer_scheme.diagnoses_coefs:
-            payout_coefficients = insurer_scheme.diagnoses_coefs
+            insurer_scheme_flag = True
     
         info_message = (
             f'Insurance amount: 💰 {insurance_amount}\n'
             f'Insurance company: 🏢 {company_name}\n'
-            f'Payout coefficients: 📊 {payout_coefficients}\n'
-            f'Special conditions: 📝 {special_conditions}\n'
             f'User approval status: {is_approved}'
         )
-        reply_markup = get_main_menu_keyboard()
 
-        await query.edit_message_text(info_message, reply_markup=reply_markup)
+        if not insurer_scheme_flag:
+            info_message += f'Payout coefficients: 📊 N/A\n'
+        if not special_conditions_flag:
+            f'Special conditions: 📝 No special conditions\n'
+
+        if not (insurer_scheme_flag or special_conditions_flag):
+            await query.edit_message_text(info_message, reply_markup=reply_markup)
+            return
+        
+        await query.edit_message_text(info_message)
+        if insurer_scheme_flag:
+            with open(f'{telegram_id}-insurer-scheme.json', 'w', encoding='utf-8') as file:
+                file.write(insurer_scheme.diagnoses_coefs)
+            with open(f'{telegram_id}-insurer-scheme.json', 'rb') as file:
+                await query.message.reply_document(document=file, filename='insurer_scheme.json')
+        if special_conditions_flag:
+            with open(f'{telegram_id}-special-conditions.json', 'w', encoding='utf-8') as file:
+                file.write(special_conditions)
+            with open(f'{telegram_id}-special-conditions.json', 'rb') as file:
+                await query.message.reply_document(document=file, filename='special_conditions.json')
+        await query.message.reply_text('Return to main menu', reply_markup=reply_markup)
 
 
 async def request_payout_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -177,7 +203,12 @@ async def request_payout_start(update: Update, context: ContextTypes.DEFAULT_TYP
     await query.answer()
 
     telegram_id = query.from_user.id
+
+    reply_markup = get_main_menu_keyboard()
+
     user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+    context.user_data['telegram_id'] = telegram_id
+
     if not user:
         await query.edit_message_text(
             'You are not authorized. Please authorize using the /start command.'
@@ -186,56 +217,42 @@ async def request_payout_start(update: Update, context: ContextTypes.DEFAULT_TYP
     
     if not user.is_approved:
         await query.edit_message_text(
-            'Your contract information is not approved yet. Please confirm your information before requesting a payout.'
+            'Your contract information is not approved yet. Please confirm your information before requesting a payout.',
+            reply_markup=reply_markup,
         )
         return ConversationHandler.END
     
-    await query.edit_message_text('Please enter your insurance policy number:')
-    return REQUEST_INSURANCE_POLICY
+    await query.edit_message_text('Please enter your diagnosis code:')
+    return REQUEST_DIAGNOSIS_CODE
 
 
-async def request_insurance_policy(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    policy_number = update.message.text
+async def request_diagnosis_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    diagnosis_code = update.message.text
 
-    if not validate_policy_number(policy_number=policy_number):
+    if not validate_diagnosis_code(diagnosis_code=diagnosis_code):
         await update.message.reply_text(
-            'Invalid insurance policy number. Try again:'
+            'Invalid diagnosis code. Try again using this source: https://www.cito-priorov.ru/cito/files/telemed/Perechen_kodov_MKB.pdf'
         )
-        return REQUEST_INSURANCE_POLICY
-    
-    context.user_data['policy_number'] = policy_number
+        return REQUEST_DIAGNOSIS_CODE
 
-    await update.message.reply_text('Please enter the trauma code:')
-    return REQUEST_TRAUMA_CODE
+    context.user_data['diagnosis_code'] = diagnosis_code
 
-
-async def request_trauma_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    trauma_code = update.message.text
-
-    if not validate_trauma_code(trauma_code=trauma_code):
-        await update.message.reply_text(
-            'Invalid trauma code. Try again using this source: https://www.cito-priorov.ru/cito/files/telemed/Perechen_kodov_MKB.pdf'
-        )
-        return REQUEST_TRAUMA_CODE
-
-    context.user_data['trauma_code'] = trauma_code
-
-    await update.message.reply_text('Please enter the registration time of the trauma (YYYY-MM-DD HH:MM):')
-    return REQUEST_TRAUMA_TIME
+    await update.message.reply_text('Please enter the registration time of the diagnosis (YYYY-MM-DD):')
+    return REQUEST_DIAGNOSIS_TIME
 
 
-async def request_trauma_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    trauma_time = update.message.text
+async def request_diagnosis_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    diagnosis_date = update.message.text
 
     try:
-        trauma_time = datetime.strptime(trauma_time, '%Y-%m-%d %H:%M')
+        diagnosis_date = datetime.strptime(diagnosis_date, "%Y-%m-%d").date()
     except ValueError:
         await update.message.reply_text(
             'Invalid date format. Please use the format YYYY-MM-DD HH:MM'
         )
-        return REQUEST_TRAUMA_TIME
+        return REQUEST_DIAGNOSIS_TIME
 
-    context.user_data['trauma_time'] = trauma_time
+    context.user_data['diagnosis_date'] = diagnosis_date
 
     await update.message.reply_text('Please enter the cryptowallet address principal:')
     return REQUEST_CRYPTO_WALLET
@@ -247,25 +264,50 @@ async def request_crypto_wallet(update: Update, context: ContextTypes.DEFAULT_TY
     context.user_data['crypto_wallet'] = crypto_wallet
 
     await update.message.reply_text('Processing payout request. Please wait...')
-    return await process_payout(update, context)
+    return await process_payout(update=update, context=context)
 
 
 async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    policy_number = context.user_data['policy_number']
-    trauma_code = context.user_data['trauma_code']
-    trauma_time = context.user_data['trauma_time']
+    diagnosis_code = context.user_data['diagnosis_code']
+    diagnosis_date = context.user_data['diagnosis_date']
     crypto_wallet = context.user_data['crypto_wallet']
+    telegram_id = context.user_data['telegram_id']
+    reply_markup = get_main_menu_keyboard()
+
+    user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+
+    transaction = db_client.get_transaction(user_id=user.id, code=diagnosis_code, date=diagnosis_date)
+    if transaction:
+        await update.message.reply_text(
+            'Transfer was already made.',
+            reply_markup=reply_markup,
+        )
+        return ConversationHandler.END
+    
+    if user.secondary_filters:
+        secondary_filters = json.loads(user.secondary_filters)
+    else:
+        secondary_filters = {}
+    coefficient = 0
+    if diagnosis_code in secondary_filters:
+        coefficient = secondary_filters.get(diagnosis_code)
+    else:
+        schema = json.loads(db_client.get_insurer_scheme(user.insurer_id, user.schema_version).diagnoses_coefs)
+        coefficient = schema.get(diagnosis_code)
+    amount = user.insurance_amount * coefficient
+    insurer_crypto_wallet = db_client.get_insurance_company_by_id(user.insurer_id).pay_address
 
     try:
         is_valid = icp_client.payout_request(
-            policy_number=policy_number,
-            trauma_code=trauma_code,
-            trauma_time=trauma_time,
+            amount=amount,
+            diagnosis_code=diagnosis_code,
+            diagnosis_date=diagnosis_date,
             crypto_wallet=crypto_wallet,
+            insurer_crypto_wallet=insurer_crypto_wallet
         )
 
-        reply_markup = get_main_menu_keyboard()
         if is_valid:
+            db_client.add_transaction(transaction=Transaction(amount=amount, user_id=user.id, insurer_id=user.insurer_id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date))
             await update.message.reply_text(
                 f'Your claim is approved! 🎉\n\n',
                 reply_markup=reply_markup,
@@ -286,7 +328,8 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
 
 async def cancel_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text('Payout request process canceled.')
+    reply_markup = get_main_menu_keyboard()
+    await update.message.reply_text('Payout request process canceled.', reply_markup=reply_markup)
     return ConversationHandler.END
 
 def register_handlers(application: Application):
@@ -312,9 +355,8 @@ def register_handlers(application: Application):
     payout_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(request_payout_start, pattern='^request_payout$')],
         states={
-            REQUEST_INSURANCE_POLICY: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_insurance_policy)],
-            REQUEST_TRAUMA_CODE: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_trauma_code)],
-            REQUEST_TRAUMA_TIME: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_trauma_time)],
+            REQUEST_DIAGNOSIS_CODE: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_diagnosis_code)],
+            REQUEST_DIAGNOSIS_TIME: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_diagnosis_date)],
             REQUEST_CRYPTO_WALLET: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_crypto_wallet)],
         },
         fallbacks=[CommandHandler('cancel', cancel_payout)],

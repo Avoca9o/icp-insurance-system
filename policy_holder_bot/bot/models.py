@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String
 
 from config import Base
 
@@ -31,6 +31,17 @@ class InsurerScheme(Base):
     def __init__(self, company_id, diagnoses_coefs):
         self.company_id = company_id
         self.diagnoses_coefs = diagnoses_coefs
+
+
+class Transaction(Base):
+    __tablename__ = 'transactions'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    amount = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    insurer_id = Column(Integer, ForeignKey('companies.id'), nullable=False)
+    diagnosis_code = Column(String(64), nullable=False)
+    diagnosis_date = Column(Date, nullable=False)
 
 
 class UserInfo(Base):

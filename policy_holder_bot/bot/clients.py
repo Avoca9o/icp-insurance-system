@@ -3,12 +3,11 @@ from ic.canister import Canister
 from ic.client import Client
 from ic.identity import Identity
 from ic.agent import Agent
-from ic.candid import Types
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from config import Base, DATABASE_URL, ICP_CANISTER_ID, ICP_CANISTER_URL, candid
-from models import CompanyInfo, InsurerScheme, UserInfo
+from models import CompanyInfo, InsurerScheme, Transaction, UserInfo
 from utils import logger
 
 class DBClient:
@@ -69,6 +68,29 @@ class DBClient:
             logger.error(f'Failed to fetch insurance company for company_id {company_id}: {e}')
         finally:
             session.close()
+    
+    def get_transaction(self, user_id: int, code: str, date: datetime.date) -> Transaction:
+        session = self.Session()
+        try:
+            transaction = session.query(Transaction).filter_by(user_id=user_id, diagnosis_code=code, diagnosis_date=date).first()
+            return transaction
+        except Exception as e:
+            logger.error(f'Error during searching transaction: {e}')
+        finally:
+            session.close()
+
+    def add_transaction(self, transaction: Transaction) -> bool:
+        session = self.Session()
+        try:
+            session.add(transaction)
+            session.commit()
+            return True
+        except Exception as e:
+            session.rollback()
+            logger.error(f'Error during updating uses: {e}')
+            return False
+        finally:
+            session.close()
 
 
 class ICPClient:
@@ -80,12 +102,13 @@ class ICPClient:
 
     def payout_request(
         self,
-        policy_number: int,
-        trauma_code: str,
-        trauma_time: datetime,
+        amount: int,
+        diagnosis_code: str,
+        diagnosis_date: datetime.date,
         crypto_wallet: str,
+        insurer_crypto_wallet: str,
     ) -> bool:
-        response = self.canister.validate_insurance_case(crypto_wallet)
+        response = self.canister.request_payout(diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
         logger.info(response)
         if response:
             logger.info('Canister is alive')
