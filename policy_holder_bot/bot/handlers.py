@@ -307,7 +307,7 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         if is_valid:
-            db_client.add_transaction(transaction=Transaction(amount=amount, user_id=user.id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date))
+            db_client.add_transaction(transaction=Transaction(amount=amount, user_id=user.id, insurer_id=user.insurer_id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date))
             await update.message.reply_text(
                 f'Your claim is approved! 🎉\n\n',
                 reply_markup=reply_markup,

@@ -39,6 +39,7 @@ class Transaction(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     amount = Column(Integer, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    insurer_id = Column(Integer, ForeignKey('companies.id'), nullable=False)
     diagnosis_code = Column(String(64), nullable=False)
     diagnosis_date = Column(Date, nullable=False)
 
