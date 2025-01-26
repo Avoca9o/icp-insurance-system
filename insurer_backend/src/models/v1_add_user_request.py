@@ -4,24 +4,23 @@ from entities.user_info import UserInfo
 
 
 class AddUserRequest(BaseModel):
-    phone: str
+    email: str
     insurance_amount: int
     payout_address: str
-    insurer_id: int
     schema_version: int
     secondary_filters: dict = {}
 
     def check_validity(self):
-        if self.phone is None or len(self.phone) == 0:
+        if self.email is None or len(self.email) == 0:
             raise ValueError("Phone number name cannot be empty")
 
         if self.payout_address is None or len(self.payout_address) == 0:
             raise ValueError("Payout address name cannot be empty")
 
-    def as_user_info(self):
-        return UserInfo(phone=self.phone,
+    def as_user_info(self, insurer_id):
+        return UserInfo(email=self.email,
                         insurance_amount=self.insurance_amount,
                         payout_address=self.payout_address,
-                        insurer_id=self.insurer_id,
+                        insurer_id=insurer_id,
                         schema_version=self.schema_version,
                         secondary_filters=str(self.secondary_filters))

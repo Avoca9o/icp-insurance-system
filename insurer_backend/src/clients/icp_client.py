@@ -9,17 +9,21 @@ from ic.candid import Types
 
 from config.canister_did import candid
 
+CANISTER_ID = "bkyz2-fmaaa-aaaaa-qaaaq-cai"
+
 iden = Identity()
 client = Client(url="http://127.0.0.1:4943")
 agent = Agent(iden, client)
 
-canister = Canister(agent=agent, canister_id="bkyz2-fmaaa-aaaaa-qaaaq-cai", candid=candid)
+canister = Canister(agent=agent, canister_id=CANISTER_ID, candid=candid)
 
 
 class ICPClient:
     @staticmethod
-    def get_balance(company: str):
-        return random.randint(0, 100000)
+    def get_balance(company_pay_address: str):
+        res = canister.get_insurer_balance(company_pay_address)
+
+        return res[0]['ok']
 
     @staticmethod
     def withdraw(company: str):
@@ -35,4 +39,9 @@ class ICPClient:
         else:
             print("Canister is not alive")
 
+    @staticmethod
+    def register_company(payout_address: str):
+        canister.register_insurer(payout_address)
+
+        return None
 
