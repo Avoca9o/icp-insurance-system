@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from config import Base, DATABASE_URL, ICP_CANISTER_ID, ICP_CANISTER_URL, candid
-from models import CompanyInfo, InsurerScheme, Transaction, UserInfo
+from models import CompanyInfo, InsurerScheme, Payout, UserInfo
 from utils import logger
 
 class DBClient:
@@ -69,20 +69,20 @@ class DBClient:
         finally:
             session.close()
     
-    def get_transaction(self, user_id: int, code: str, date: datetime.date) -> Transaction:
+    def get_payout(self, user_id: int, diagnosis_code: str, diagnosis_date: datetime.date) -> Payout:
         session = self.Session()
         try:
-            transaction = session.query(Transaction).filter_by(user_id=user_id, diagnosis_code=code, diagnosis_date=date).first()
-            return transaction
+            payout = session.query(Payout).filter_by(user_id=user_id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date).first()
+            return payout
         except Exception as e:
-            logger.error(f'Error during searching transaction: {e}')
+            logger.error(f'Error during searching payout: {e}')
         finally:
             session.close()
 
-    def add_transaction(self, transaction: Transaction) -> bool:
+    def add_payout(self, payout: Payout) -> bool:
         session = self.Session()
         try:
-            session.add(transaction)
+            session.add(payout)
             session.commit()
             return True
         except Exception as e:

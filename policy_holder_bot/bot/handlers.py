@@ -7,7 +7,7 @@ from telegram.ext import Application, ContextTypes, CommandHandler, CallbackQuer
 
 from clients import DBClient, ICPClient
 from keyboards import get_action_menu_keyboard, get_authorization_keyboard, get_main_menu_keyboard
-from models import Transaction
+from models import Payout
 from utils import logger, validate_diagnosis_code
 
 REQUEST_EMAIL = 0
@@ -276,7 +276,7 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
 
-    transaction = db_client.get_transaction(user_id=user.id, code=diagnosis_code, date=diagnosis_date)
+    transaction = db_client.get_payout(user_id=user.id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date)
     if transaction:
         await update.message.reply_text(
             'Transfer was already made.',
@@ -288,12 +288,12 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
         secondary_filters = json.loads(user.secondary_filters)
     else:
         secondary_filters = {}
-    coefficient = 0
-    if diagnosis_code in secondary_filters:
-        coefficient = secondary_filters.get(diagnosis_code)
-    else:
-        schema = json.loads(db_client.get_insurer_scheme(user.insurer_id, user.schema_version).diagnoses_coefs)
-        coefficient = schema.get(diagnosis_code)
+    coefficient = 0.5
+    # if diagnosis_code in secondary_filters:
+    #     coefficient = secondary_filters.get(diagnosis_code)
+    # else:
+    #     schema = json.loads(db_client.get_insurer_scheme(user.insurer_id, user.schema_version).diagnoses_coefs)
+    #     coefficient = schema.get(diagnosis_code)
     amount = user.insurance_amount * coefficient
     insurer_crypto_wallet = db_client.get_insurance_company_by_id(user.insurer_id).pay_address
 
@@ -307,7 +307,7 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         if is_valid:
-            db_client.add_transaction(transaction=Transaction(amount=amount, user_id=user.id, insurer_id=user.insurer_id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date))
+            db_client.add_payout(payout=Payout(transaction_id='999', amount=amount, user_id=user.id, date=datetime.now(), company_id=user.insurer_id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date))
             await update.message.reply_text(
                 f'Your claim is approved! 🎉\n\n',
                 reply_markup=reply_markup,

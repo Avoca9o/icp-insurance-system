@@ -7,7 +7,7 @@ class UserInfo(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     email = Column(String(64), nullable=False, unique=True)
-    tg_id = Column(String(64), nullable=True)
+    telegram_id = Column(Integer, nullable=True)
     insurance_amount = Column(Integer, nullable=False)
     payout_address = Column(String(64), nullable=False)
     insurer_id = Column(Integer, ForeignKey('companies.id'), nullable=False)
