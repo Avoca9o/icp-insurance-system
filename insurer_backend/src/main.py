@@ -11,7 +11,6 @@ from models.v1_authorize_request import AuthorizationRequest
 from models.v1_add_user_request import AddUserRequest
 from models.v1_update_user_request import UpdateUserRequest
 from models.v1_add_schema_request import AddSchemaRequest
-from models.v1_get_operations import GetOperationsRequest
 
 from config.db_config import engine
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,7 +44,7 @@ db = db_client.DBClient()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -87,6 +86,7 @@ def handle_v1_register(req: RegisterRequest):
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)
     except Exception as e:
+        print(str(e))
         return JSONResponse(content={"message": str(e)}, status_code=500)
 
 
@@ -266,9 +266,9 @@ def handle_v1_get_schema(global_version_id: int, token: str = Depends(oauth2_sch
         if res.company_id != company_id:
             raise ValueError("schema is not for that company")
 
-        dc = res.diagnoses_coefs
+        dc = str(json.loads(res.diagnoses_coefs))
         dc = dc.replace("'", '"')
-        return JSONResponse(content={'scheme': json.loads(dc)}, status_code=200)
+        return JSONResponse(content={'scheme': dc}, status_code=200)
     except ValueError as e:
         print(str(e))
         return JSONResponse(content={"message": str(e)}, status_code=400)

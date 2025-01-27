@@ -1,5 +1,5 @@
 from config.db_config import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, Date, DateTime
 
 
 class Payout(Base):
@@ -11,3 +11,5 @@ class Payout(Base):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     date = Column(DateTime, nullable=False)
     company_id = Column(Integer, ForeignKey('companies.id'), nullable=False)
+    diagnosis_code = Column(String(16), nullable=False)
+    diagnosis_date = Column(Date, nullable=False)

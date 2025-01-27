@@ -17,6 +17,7 @@ class DBClient:
 
         if session.query(CompanyInfo).filter(CompanyInfo.login == company.login).first():
             raise ValueError("company with login {} already exists".format(company.login))
+        print('im here')
 
         session.add(company)
         session.commit()
@@ -84,6 +85,7 @@ class DBClient:
 
     @staticmethod
     def add_scheme(scheme: InsurerScheme):
+        print(scheme.diagnoses_coefs)
         session = SessionLocal()
 
         session.add(scheme)

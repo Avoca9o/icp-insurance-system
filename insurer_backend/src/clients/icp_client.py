@@ -9,7 +9,8 @@ from ic.candid import Types
 
 from config.canister_did import candid
 
-CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai"
+# CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai"
+CANISTER_ID = "bkyz2-fmaaa-aaaaa-qaaaq-cai"
 
 iden = Identity()
 client = Client(url="http://127.0.0.1:4943")
@@ -41,7 +42,9 @@ class ICPClient:
 
     @staticmethod
     def register_company(payout_address: str):
+        print('trying to register company in canister')
         canister.register_insurer(payout_address)
+        print('company is registered in canister')
 
         return None
 
