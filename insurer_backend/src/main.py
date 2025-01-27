@@ -14,7 +14,6 @@ from models.v1_add_schema_request import AddSchemaRequest
 from models.v1_get_operations import GetOperationsRequest
 
 from config.db_config import engine
-
 from fastapi.middleware.cors import CORSMiddleware
 
 from jose import jwt
@@ -170,6 +169,7 @@ def handle_v1_add_user(req: AddUserRequest, token: str = Depends(oauth2_scheme))
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)
     except Exception as e:
+        print(str(e))
         return JSONResponse(content={"message": str(e)}, status_code=500)
 
 

@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
 
 from config import Base
 
@@ -33,14 +33,16 @@ class InsurerScheme(Base):
         self.diagnoses_coefs = diagnoses_coefs
 
 
-class Transaction(Base):
-    __tablename__ = 'transactions'
+class Payout(Base):
+    __tablename__ = 'payouts'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    transaction_id = Column(String(64), nullable=False, unique=True)
     amount = Column(Integer, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    insurer_id = Column(Integer, ForeignKey('companies.id'), nullable=False)
-    diagnosis_code = Column(String(64), nullable=False)
+    date = Column(DateTime, nullable=False)
+    company_id = Column(Integer, ForeignKey('companies.id'), nullable=False)
+    diagnosis_code = Column(String(16), nullable=False)
     diagnosis_date = Column(Date, nullable=False)
 
 
@@ -48,19 +50,20 @@ class UserInfo(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    phone = Column(String(16), nullable=False, unique=True)
     email = Column(String(64), nullable=False, unique=True)
+    telegram_id = Column(Integer, nullable=True)
     insurance_amount = Column(Integer, nullable=False)
+    payout_address = Column(String(64), nullable=False)
     insurer_id = Column(Integer, ForeignKey('companies.id'), nullable=False)
     schema_version = Column(Integer, ForeignKey('insurer_schemas.global_version_num'), nullable=False)
     secondary_filters = Column(String, nullable=True)
-    telegram_id = Column(Integer, nullable=True)
-    is_approved = Column(Boolean, nullable=False)
+    is_approved = Column(Boolean, nullable=False, default=False)
 
-    def __init__(self, phone, email, insurance_amount, insurer_id, schema_version, secondary_filters):
+    def __init__(self, phone, email, insurance_amount, payout_address, insurer_id, schema_version, secondary_filters):
         self.phone = phone
         self.email = email
         self.insurance_amount = insurance_amount
+        self.payout_address = payout_address
         self.insurer_id = insurer_id
         self.schema_version = schema_version
         self.secondary_filters = secondary_filters

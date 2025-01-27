@@ -9,7 +9,7 @@ from ic.candid import Types
 
 from config.canister_did import candid
 
-CANISTER_ID = "bkyz2-fmaaa-aaaaa-qaaaq-cai"
+CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai"
 
 iden = Identity()
 client = Client(url="http://127.0.0.1:4943")
