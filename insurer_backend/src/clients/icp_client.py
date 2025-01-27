@@ -10,6 +10,8 @@ from ic.candid import Types
 from config.canister_did import candid
 
 CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai"
+# diman
+# CANISTER_ID = "bkyz2-fmaaa-aaaaa-qaaaq-cai"
 
 iden = Identity()
 client = Client(url="http://127.0.0.1:4943")
@@ -21,7 +23,7 @@ canister = Canister(agent=agent, canister_id=CANISTER_ID, candid=candid)
 class ICPClient:
     @staticmethod
     def get_balance(company_pay_address: str):
-        res = canister.get_insurer_balance(company_pay_address)
+        res = canister.get_insurer_balance(cony_pay_address)
 
         return res[0]['ok']
 
@@ -41,7 +43,9 @@ class ICPClient:
 
     @staticmethod
     def register_company(payout_address: str):
+        print('trying to register company in canister')
         canister.register_insurer(payout_address)
+        print('company is registered in canister')
 
         return None
 

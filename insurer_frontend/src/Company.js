@@ -39,11 +39,8 @@ const Company = () => {
     // Добавление схемы
     const addScheme = async () => {
       try {
-        // Парсинг данных схемы (JSON)
-        const parsedData = JSON.parse(schemeData);
-
         // Отправляем данные схемы на сервер
-        await fetchApi("/v1/add-scheme", "POST", { diagnoses_coefs: parsedData });
+        await fetchApi("/v1/add-scheme", "POST", { diagnoses_coefs: schemeData });
         alert("Схема добавлена успешно!");
 
         // Закрываем модальное окно и обновляем список схем
@@ -159,7 +156,7 @@ const Company = () => {
                   <textarea
                     value={schemeData}
                     onChange={(e) => setSchemeData(e.target.value)}
-                    placeholder='Введите JSON, например: [{"diagnoses": "SF432.2", "coef": 0.5}]'
+                    placeholder='Введите JSON, например: {"CN52": 0.44, "GZ45": 0.5}'
                     rows="5"
                     cols="40"
                   />
@@ -181,25 +178,26 @@ const Company = () => {
           )}
           {selectedScheme.length > 0 && (
             <div>
-              <h3>Детали схемы</h3>
-              {selectedScheme.map((item, index) => (
-                <div
-                  key={index}
-                  style={{
-                    marginBottom: "10px",
-                    borderBottom: "1px solid #ccc",
-                    paddingBottom: "10px",
-                  }}
-                >
-                  <p>
-                    <strong>Диагноз:</strong> {item.diagnoses}
-                  </p>
-                  <p>
-                    <strong>Коэффициент:</strong> {item.coef}
-                  </p>
-                </div>
-              ))}
-            </div>
+            <h3>Детали схемы</h3>
+            {Object.entries(JSON.parse(selectedScheme)).map(([diagnosis, coefficient], index) => (
+              <div
+                key={index}
+                style={{
+                  marginBottom: "10px",
+                  borderBottom: "1px solid #ccc",
+                  paddingBottom: "10px",
+                }}
+              >
+                <p>
+                  <strong>Диагноз:</strong> {diagnosis}
+                </p>
+                <p>
+                  <strong>Коэффициент:</strong> {coefficient}
+                </p>
+              </div>
+            ))}
+          </div>
+          
           )}
         </section>
 
