@@ -288,12 +288,14 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
         secondary_filters = json.loads(user.secondary_filters)
     else:
         secondary_filters = {}
-    coefficient = 0.5
-    # if diagnosis_code in secondary_filters:
-    #     coefficient = secondary_filters.get(diagnosis_code)
-    # else:
-    #     schema = json.loads(db_client.get_insurer_scheme(user.insurer_id, user.schema_version).diagnoses_coefs)
-    #     coefficient = schema.get(diagnosis_code)
+
+    coefficient = 0
+    if diagnosis_code in secondary_filters:
+        coefficient = secondary_filters.get(diagnosis_code)
+    else:
+        schema = json.loads(db_client.get_insurer_scheme(user.insurer_id, user.schema_version).diagnoses_coefs)
+        coefficient = schema.get(diagnosis_code)
+    
     amount = user.insurance_amount * coefficient
     insurer_crypto_wallet = db_client.get_insurance_company_by_id(user.insurer_id).pay_address
 
