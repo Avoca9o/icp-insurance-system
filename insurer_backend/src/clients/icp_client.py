@@ -23,7 +23,7 @@ canister = Canister(agent=agent, canister_id=CANISTER_ID, candid=candid)
 class ICPClient:
     @staticmethod
     def get_balance(company_pay_address: str):
-        res = canister.get_insurer_balance(cony_pay_address)
+        res = canister.get_insurer_balance(company_pay_address)
 
         return res[0]['ok']
 
