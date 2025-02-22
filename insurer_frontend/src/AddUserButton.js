@@ -6,7 +6,6 @@ const AddUserModal = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     email: "",
     insurance_amount: "",
-    payout_address: "",
     schema_version: "",
     secondary_filters: "",
   });
@@ -29,7 +28,6 @@ const AddUserModal = ({ onClose, onSubmit }) => {
       onSubmit({
         email: formData.email,
         insurance_amount: parseFloat(formData.insurance_amount),
-        payout_address: formData.payout_address,
         schema_version: parseInt(formData.schema_version, 10),
         secondary_filters: secondaryFiltersObject,
       });
@@ -61,18 +59,6 @@ const AddUserModal = ({ onClose, onSubmit }) => {
           value={formData.insurance_amount}
           onChange={handleInputChange}
           placeholder="Введите сумму"
-          required
-        />
-      </label>
-      <br />
-      <label>
-        Адрес выплат:
-        <input
-          type="text"
-          name="payout_address"
-          value={formData.payout_address}
-          onChange={handleInputChange}
-          placeholder="Введите payout address"
           required
         />
       </label>

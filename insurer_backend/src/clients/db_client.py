@@ -71,9 +71,6 @@ class DBClient:
         if db_user.is_approved:
             raise ValueError("user with email {} has already approved his info, can't change info".format(user.email))
 
-        if user.payout_address is not None:
-            db_user.payout_address = user.payout_address
-
         if user.schema_version is not None:
             db_user.schema_version = user.schema_version
 
@@ -146,15 +143,6 @@ class DBClient:
         session.delete(res)
         session.commit()
         session.close()
-
-    @staticmethod
-    def get_payouts(company: str):
-        # session = SessionLocal()
-        #
-        # res = session.query().filter(UserInfo.phone == phone).first()
-        # session.close()
-        # TODO: use payout table
-        return {}
 
     @staticmethod
     def get_payouts_by_company_and_date(company_id, target_date):
