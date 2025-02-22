@@ -5,7 +5,6 @@ from entities.user_info import UserInfo
 
 class UpdateUserRequest(BaseModel):
     email: str
-    payout_address: str = None
     insurer_schema: int = None
     secondary_filters: dict = {}
 
@@ -15,6 +14,5 @@ class UpdateUserRequest(BaseModel):
 
     def as_user_info(self):
         return UserInfo(email=self.email,
-                        payout_address=self.payout_address,
                         secondary_filters=str(self.secondary_filters),
                         schema_version=self.insurer_schema)
