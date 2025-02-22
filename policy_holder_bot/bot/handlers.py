@@ -33,16 +33,7 @@ async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    video_path = os.path.join('media', 'help_video_extra.mp4')
-
-    try:
-        await update.message.reply_video(
-            video=open(video_path, 'rb'),
-            caption='Here is a help video. 🎥 If you have further questions, let us know!',
-        )
-    except Exception as e:
-        logger.error(f'Failed to send help video: {e}')
-        await update.message.reply_text('Sorry, I could not send the help video. Please try again later.')
+    await update.message.reply_text('Contact your insurance company for help.')
 
 
 async def handle_authorize_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -190,11 +181,13 @@ async def view_contract_handler(update: Update, context: ContextTypes.DEFAULT_TY
                 file.write(insurer_scheme.diagnoses_coefs)
             with open(f'{telegram_id}-insurer-scheme.json', 'rb') as file:
                 await query.message.reply_document(document=file, filename='insurer_scheme.json')
+            os.remove(f'{telegram_id}-insurer-scheme.json')
         if special_conditions_flag:
             with open(f'{telegram_id}-special-conditions.json', 'w', encoding='utf-8') as file:
                 file.write(special_conditions)
             with open(f'{telegram_id}-special-conditions.json', 'rb') as file:
                 await query.message.reply_document(document=file, filename='special_conditions.json')
+            os.remove(f'{telegram_id}-special-conditions.json')
         await query.message.reply_text('Return to main menu', reply_markup=reply_markup)
 
 
