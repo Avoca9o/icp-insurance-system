@@ -56,7 +56,7 @@ actor {
         }
     };
 
-    public func refresh(wallet_address: Types.InsurerWalletAddress): async Result.Result<Text, Text> {
+    public func refresh_balance(wallet_address: Types.InsurerWalletAddress): async Result.Result<Text, Text> {
         try {
             let insurer_amount = insurers_data.get_balance(wallet_address);
             if (insurer_amount == null) {
@@ -81,14 +81,13 @@ actor {
                         let operation = transactions[i].transaction.operation;
                         let transaction_id = transactions[i].id;
                         if (last_transaction != null and Option.get(last_transaction, 0: Types.InsurerLastTransactionId) == transaction_id) {
-                            return #ok("Not BAM");
+                            return #ok("The last saved transaction has been detected. The balance has been replenished.");
                         };
                         switch (operation) {
                             case (#Transfer(operation)) {
                                 if (operation.to == "9a2a49e111a1acd073e9b85b752cb0d54e6c3401e285d5019f9efacc77a83af4") {
                                     insurers_data.set_balance(wallet_address, Option.get(insurer_amount, 0: Types.InsurerTokensAmount) + operation.amount.e8s);
                                     insurers_data.set_last_transaction(wallet_address, transaction_id);
-                                    return #ok("BAM");
                                 };
                             };
                             case _ {
@@ -97,7 +96,7 @@ actor {
                         };
                         i += 1;
                     };
-                    return #err("Cannot find transaction");
+                    return #ok("The last saved transaction has not been detected. The balance has been replenished.");
                 };
                 case(#Err(insurer_transactions)) {
                     return #err("Error while listing transactions")
@@ -111,7 +110,7 @@ actor {
     private func refresh_all(): async () {
         let insurers = insurers_data.get_all_insurers();
         for (insurer in insurers) {
-            let result = await refresh(insurer);
+            let result = await refresh_balance(insurer);
         }
     };
 

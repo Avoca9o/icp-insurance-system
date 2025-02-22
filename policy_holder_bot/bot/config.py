@@ -62,12 +62,6 @@ type CanisterHttpResponsePayload =
    status: nat;
  };
 service : {
-  get_balance_from_ledger: (principal) -> (Result_3);
-  get_insurer_balance: (InsurerWalletAddress) -> (Result_2) query;
-  refresh: (InsurerWalletAddress) -> (Result_1);
-  register_insurer: (InsurerWalletAddress) -> (Result);
   request_payout: (text, text, principal, principal, nat64) -> (Result_1);
-  send_icp_tokens: (principal, nat64) -> (Result);
-  transform: (TransformArgs) -> (CanisterHttpResponsePayload) query;
 }
 '''
