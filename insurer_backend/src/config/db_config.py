@@ -1,10 +1,16 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-DATABASE_URL = "postgresql://postgres:KaKaDu-2106@localhost:5432/postgres"
-# diman
-# DATABASE_URL = "postgresql://vladimirovdma:postgres@localhost:5432/postgres"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# DATABASE_URL = "postgresql://postgres:KaKaDu-2106@localhost:5432/postgres"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

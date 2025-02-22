@@ -1,6 +1,20 @@
+from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
+
+from pydantic import BaseModel
+
+from clients import db_client, icp_client
+from entities.insurer_scheme import InsurerScheme
+from utils.jwt import oauth2_scheme, decode_jwt_token
+
 from pydantic import BaseModel
 
 from entities.company_info import CompanyInfo
+
+router = APIRouter()
+
+db = db_client.DBClient()
+icp = icp_client.ICPClient()
 
 
 class RegisterRequest(BaseModel):
@@ -28,3 +42,17 @@ class RegisterRequest(BaseModel):
 
     def as_company_info(self):
         return CompanyInfo(self.login, self.password, self.name, self.email, self.pay_address)
+
+
+@router.post("/v1/register")
+def handle_v1_register(req: RegisterRequest):
+    try:
+        req.check_validity()
+        icp.register_company(req.pay_address)
+        db.add_company(req.as_company_info())
+        return JSONResponse(content=None, status_code=200)
+    except ValueError as e:
+        return JSONResponse(content={"message": str(e)}, status_code=400)
+    except Exception as e:
+        print(str(e))
+        return JSONResponse(content={"message": str(e)}, status_code=500)
