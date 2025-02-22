@@ -3,6 +3,7 @@ import Nat "mo:base/Nat";
 import Nat64 "mo:base/Nat64";
 import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
+import Text "mo:base/Text";
 
 module Types {
     public class InsurersData() {
@@ -44,7 +45,7 @@ module Types {
         url : Text;
         max_response_bytes : ?Nat64;
         headers : [HttpHeader];
-        body : ?[Nat8];
+        body : ?Blob;
         method : HttpMethod;
         transform : ?TransformRawResponseFunction;
     };
