@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { fetchApi } from "./api";
 
 const AddUserModal = ({ onClose, onSubmit }) => {
-  // Локальное состояние для управления вводом данных
   const [formData, setFormData] = useState({
     email: "",
     insurance_amount: "",
@@ -10,21 +8,17 @@ const AddUserModal = ({ onClose, onSubmit }) => {
     secondary_filters: "",
   });
 
-  // Обработчик ввода в поля
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // Обработка отправки
   const handleSubmit = () => {
-    // Преобразуем строку `secondary_filters` в объект
     try {
       const secondaryFiltersObject = formData.secondary_filters
         ? JSON.parse(formData.secondary_filters)
         : {};
-      
-      // Передаём корректно форматированные данные наверх, вызывая `onSubmit`
+
       onSubmit({
         email: formData.email,
         insurance_amount: parseFloat(formData.insurance_amount),
@@ -93,38 +87,6 @@ const AddUserModal = ({ onClose, onSubmit }) => {
   );
 };
 
-const AddUserButton = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false); // Управление модальным окном
-
-  // Добавление пользователя
-  const addUser = async (userData) => {
-    try {
-      await fetchApi("/v1/add-user", "POST", userData);
-      alert("Пользователь добавлен успешно!");
-    } catch (error) {
-      alert("Ошибка добавления пользователя: " + error.message);
-    }
-  };
-
-  return (
-    <div>
-      <button onClick={() => setIsModalOpen(true)}>Добавить пользователя</button>
-      
-      {/* Модальное окно */}
-      {isModalOpen && (
-        <AddUserModal
-          onClose={() => setIsModalOpen(false)} // Закрываем окно
-          onSubmit={(userData) => {
-            addUser(userData); // Вызываем функцию для отправки данных на сервер
-          }}
-        />
-      )}
-    </div>
-  );
-};
-
-export default AddUserButton;
-
 // Стили для модального окна
 const modalStyles = {
   position: "fixed",
@@ -137,3 +99,5 @@ const modalStyles = {
   boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
   zIndex: 1000,
 };
+
+export default AddUserModal;

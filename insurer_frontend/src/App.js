@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import Home from './Home';
-import Company from './Company';
+import Home from './pages/Home';
+import Company from './pages/Company';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const App = () => {
