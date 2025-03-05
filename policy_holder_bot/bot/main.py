@@ -1,8 +1,7 @@
 from telegram.ext import Application
 
-from config import BOT_TOKEN
-from handlers import register_handlers
-from utils import logger
+from config.bot_config import BOT_TOKEN
+from utils.register_handlers import logger, register_handlers
 
 def main():
     application =  Application.builder().token(BOT_TOKEN).build()

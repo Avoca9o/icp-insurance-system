@@ -1,20 +1,8 @@
 import os
 from dotenv import load_dotenv
-from ic.canister import Canister
-from ic.client import Client
-from ic.identity import Identity
-from ic.agent import Agent
-from ic.candid import Types
-from sqlalchemy.ext.declarative import declarative_base
 
-load_dotenv()
-
-BOT_TOKEN = os.getenv('BOT_TOKEN')
-DATABASE_URL = os.getenv('DATABASE_URL')
 ICP_CANISTER_ID = os.getenv('ICP_CANISTER_ID')
 ICP_CANISTER_URL = os.getenv('ICP_CANISTER_URL')
-
-Base = declarative_base()
 
 candid='''
 type TransformArgs = 
