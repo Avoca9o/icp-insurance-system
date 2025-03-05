@@ -17,6 +17,3 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
-
-def validate_diagnosis_code(diagnosis_code: str) -> bool:
-    return True
