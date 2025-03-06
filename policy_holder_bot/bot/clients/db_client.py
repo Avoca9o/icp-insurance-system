@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 
 from config.db_config import Base, DATABASE_URL
@@ -65,6 +65,26 @@ class DBClient:
             return company
         except Exception as e:
             logger.error(f'Failed to fetch insurance company for company_id {company_id}: {e}')
+        finally:
+            session.close()
+    
+    def get_most_popular_insurers(self):
+        session = self.Session()
+        try:
+            top_companies = (
+                session.query(
+                    CompanyInfo,
+                    func.count(UserInfo.id).label('client_count')
+                )
+                .outerjoin(UserInfo)
+                .group_by(CompanyInfo.id)
+                .order_by(func.count(UserInfo.id).desc())
+                .limit(7)
+                .all()
+            )
+            return top_companies
+        except Exception as e:
+            logger.error(f'Failed to fetch most popular insurance companies: {e}')
         finally:
             session.close()
     

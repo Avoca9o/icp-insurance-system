@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
 
+load_dotenv()
+
 ICP_CANISTER_ID = os.getenv('ICP_CANISTER_ID')
 ICP_CANISTER_URL = os.getenv('ICP_CANISTER_URL')
 

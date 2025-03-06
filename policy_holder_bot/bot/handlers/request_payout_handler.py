@@ -7,7 +7,8 @@ from clients.db_client import DBClient
 from clients.icp_client import ICPClient
 from keyboards.main_menu_keyboard import get_main_menu_keyboard
 from models.payout import Payout
-from utils.validation import logger, validate_diagnosis_code
+from utils.logger import logger
+from utils.validation import validate_diagnosis_code
 
 db_client = DBClient()
 icp_client = ICPClient()
