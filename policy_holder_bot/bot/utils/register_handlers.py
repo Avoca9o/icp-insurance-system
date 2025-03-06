@@ -5,6 +5,7 @@ from handlers.authorization_handler import authorization_handler, request_email,
 from handlers.cancel_authorization_handler import cancel_authorization_handler
 from handlers.cancel_payout_handler import cancel_payout_handler
 from handlers.help_handler import help_handler
+from handlers.insurers_list_handler import insurers_list_handler
 from handlers.main_menu_handler import main_menu_handler
 from handlers.request_payout_handler import request_payout_handler, request_crypto_wallet, request_diagnosis_code, request_diagnosis_date, REQUEST_CRYPTO_WALLET, REQUEST_DIAGNOSIS_CODE, REQUEST_DIAGNOSIS_TIME
 from handlers.start_handler import start_handler
@@ -23,6 +24,8 @@ def register_handlers(application: Application):
     )
 
     application.add_handler(conversation_handler)
+
+    application.add_handler(CallbackQueryHandler(insurers_list_handler, pattern='^insurers_list$'))
 
     application.add_handler(CallbackQueryHandler(main_menu_handler, pattern='^main_menu$'))
 
