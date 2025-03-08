@@ -8,12 +8,12 @@ from clients.icp_client import ICPClient
 from keyboards.main_menu_keyboard import get_main_menu_keyboard
 from models.payout import Payout
 from utils.logger import logger
-from utils.validation import validate_diagnosis_code
+from utils.validation import validate_diagnosis_code, validate_policy_number
 
 db_client = DBClient()
 icp_client = ICPClient()
 
-REQUEST_DIAGNOSIS_CODE, REQUEST_DIAGNOSIS_TIME, REQUEST_CRYPTO_WALLET = range(3)
+REQUEST_POLICY_NUMBER, REQUEST_DIAGNOSIS_CODE, REQUEST_DIAGNOSIS_TIME, REQUEST_CRYPTO_WALLET = range(4)
 
 async def request_payout_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -39,9 +39,23 @@ async def request_payout_handler(update: Update, context: ContextTypes.DEFAULT_T
         )
         return ConversationHandler.END
     
-    await query.edit_message_text('Please enter your diagnosis code:')
-    return REQUEST_DIAGNOSIS_CODE
+    await query.edit_message_text('Please enter your policy number:')
+    return REQUEST_POLICY_NUMBER
 
+
+async def request_policy_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    policy_number = update.message.text
+
+    if not validate_policy_number(policy_number=policy_number):
+        await update.message.reply_text(
+            'Invalid policy number. Try again'
+        )
+        return REQUEST_POLICY_NUMBER
+    
+    context.user_data['policy_number'] = policy_number
+
+    await update.message.reply_text('Please enter the diagnosis code:')
+    return REQUEST_DIAGNOSIS_CODE
 
 async def request_diagnosis_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
     diagnosis_code = update.message.text
@@ -85,6 +99,7 @@ async def request_crypto_wallet(update: Update, context: ContextTypes.DEFAULT_TY
 
 
 async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    policy_number = context.user_data['policy_number']
     diagnosis_code = context.user_data['diagnosis_code']
     diagnosis_date = context.user_data['diagnosis_date']
     crypto_wallet = context.user_data['crypto_wallet']
@@ -111,7 +126,7 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
         coefficient = secondary_filters.get(diagnosis_code)
     else:
         schema = json.loads(db_client.get_insurer_scheme(user.insurer_id, user.schema_version).diagnoses_coefs)
-        coefficient = schema.get(diagnosis_code)
+        coefficient = schema.get(diagnosis_code, 0)
     
     amount = user.insurance_amount * coefficient
     insurer_crypto_wallet = db_client.get_insurance_company_by_id(user.insurer_id).pay_address
@@ -119,6 +134,7 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         is_valid = icp_client.payout_request(
             amount=amount,
+            policy_number=policy_number,
             diagnosis_code=diagnosis_code,
             diagnosis_date=diagnosis_date,
             crypto_wallet=crypto_wallet,
