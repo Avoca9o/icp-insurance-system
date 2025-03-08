@@ -1,9 +1,11 @@
+import json
 import os
 from telegram import Update
 from telegram.ext import ContextTypes
 
 from clients.db_client import DBClient
 from keyboards.main_menu_keyboard import get_main_menu_keyboard
+from utils.docx_creator import create_docx_file
 
 db_client = DBClient()
 
@@ -56,15 +58,13 @@ async def view_contract_handler(update: Update, context: ContextTypes.DEFAULT_TY
         
         await query.edit_message_text(info_message)
         if insurer_scheme_flag:
-            with open(f'{telegram_id}-insurer-scheme.json', 'w', encoding='utf-8') as file:
-                file.write(insurer_scheme.diagnoses_coefs)
-            with open(f'{telegram_id}-insurer-scheme.json', 'rb') as file:
-                await query.message.reply_document(document=file, filename='insurer_scheme.json')
-            os.remove(f'{telegram_id}-insurer-scheme.json')
+            create_docx_file(f'{telegram_id}-insurer-scheme', json.loads(insurer_scheme.diagnoses_coefs))
+            with open(f'{telegram_id}-insurer-scheme.docx', 'rb') as file:
+                await query.message.reply_document(document=file, filename='insurer_scheme.docx')
+            os.remove(f'{telegram_id}-insurer-scheme.docx')
         if special_conditions_flag:
-            with open(f'{telegram_id}-special-conditions.json', 'w', encoding='utf-8') as file:
-                file.write(special_conditions)
-            with open(f'{telegram_id}-special-conditions.json', 'rb') as file:
-                await query.message.reply_document(document=file, filename='special_conditions.json')
-            os.remove(f'{telegram_id}-special-conditions.json')
+            create_docx_file(f'{telegram_id}-special-conditions', json.loads(special_conditions))
+            with open(f'{telegram_id}-special-conditions.docx', 'rb') as file:
+                await query.message.reply_document(document=file, filename='special_conditions.docx')
+            os.remove(f'{telegram_id}-special-conditions.docx')
         await query.message.reply_text('Return to main menu', reply_markup=reply_markup)
