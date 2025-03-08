@@ -14,6 +14,18 @@ class ICPClient:
         agent = Agent(identity, client)
         self.canister = Canister(agent=agent, canister_id=ICP_CANISTER_ID, candid=candid)
 
+    def add_approved_client(
+        self,
+        insurer_wallet_address: str,
+        policy_holder_id: int,
+        checksum: str,
+    ) -> bool:
+        response = self.canister.add_approved_client(insurer_wallet_address, policy_holder_id, checksum)
+        if response:
+            return True
+        else:
+            return False
+
     def payout_request(
         self,
         amount: int,

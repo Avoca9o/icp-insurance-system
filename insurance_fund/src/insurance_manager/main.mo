@@ -230,7 +230,7 @@ actor {
         };
     };
 
-    public func withdraw(wallet_address: Principal): async Result.Result<(), Text> {
+    public func withdraw(wallet_address: Types.InsurerWalletAddress): async Result.Result<(), Text> {
         try {
             let insurer_balance = insurers_data.get_balance(wallet_address);
             switch(insurer_balance) {
@@ -264,6 +264,23 @@ actor {
                     return #err("Error in withdraw operation");
                 };
             };
+        } catch (error) {
+            return #err(Error.message(error));
+        }
+    };
+
+    public func add_approved_client(insurer: Types.InsurerWalletAddress, client_id: Nat, checksum: Types.Checksum): async Result.Result<(), Text> {
+        try {
+            insurers_data.add_client(insurer, Nat.toText(client_id), checksum);
+            return #ok();
+        } catch (error) {
+            return #err(Error.message(error));
+        }
+    };
+
+    public func get_checksum(insurer: Types.InsurerWalletAddress, client_id: Nat): async Result.Result<?Types.Checksum, Text> {
+        try{
+            return #ok(insurers_data.get_checksum(insurer, Nat.toText(client_id)));
         } catch (error) {
             return #err(Error.message(error));
         }

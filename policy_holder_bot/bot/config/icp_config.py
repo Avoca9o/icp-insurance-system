@@ -12,10 +12,15 @@ type TransformArgs =
    context: blob;
    response: HttpResponsePayload;
  };
-type Result_3 = 
+type Result_4 = 
  variant {
    err: text;
    ok: nat;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: opt Checksum;
  };
 type Result_2 = 
  variant {
@@ -45,6 +50,7 @@ type HttpHeader =
    name: text;
    value: text;
  };
+type Checksum = text;
 type CanisterHttpResponsePayload = 
  record {
    body: vec nat8;
@@ -52,6 +58,15 @@ type CanisterHttpResponsePayload =
    status: nat;
  };
 service : {
+  add_approved_client: (InsurerWalletAddress, nat, Checksum) -> (Result);
+  get_balance_from_ledger: (principal) -> (Result_4);
+  get_checksum: (InsurerWalletAddress, nat) -> (Result_3);
+  get_insurer_balance: (InsurerWalletAddress) -> (Result_2) query;
+  refresh_balance: (InsurerWalletAddress) -> (Result_1);
+  register_insurer: (InsurerWalletAddress) -> (Result);
   request_payout: (text, text, principal, principal, nat64) -> (Result_1);
+  send_icp_tokens: (principal, nat64) -> (Result);
+  transform: (TransformArgs) -> (CanisterHttpResponsePayload) query;
+  withdraw: (InsurerWalletAddress) -> (Result);
 }
 '''
