@@ -1,7 +1,7 @@
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ConversationHandler, MessageHandler, filters
 
 from handlers.approve_contract_handler import approve_contract_handler
-from handlers.authorization_handler import authorization_handler, request_email, REQUEST_EMAIL
+from handlers.authorization_handler import authorization_handler, request_email, verify_code, REQUEST_EMAIL, REQUEST_VERIFICATION_CODE
 from handlers.cancel_authorization_handler import cancel_authorization_handler
 from handlers.cancel_payout_handler import cancel_payout_handler
 from handlers.help_handler import help_handler
@@ -19,6 +19,7 @@ def register_handlers(application: Application):
         entry_points=[CallbackQueryHandler(authorization_handler, pattern='^authorize$')],
         states={
             REQUEST_EMAIL: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_email)],
+            REQUEST_VERIFICATION_CODE: [MessageHandler(filters.TEXT & ~filters.COMMAND, verify_code)],
         },
         fallbacks=[CommandHandler('cancel', cancel_authorization_handler)],
     )
