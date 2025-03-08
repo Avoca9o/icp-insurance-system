@@ -230,5 +230,44 @@ actor {
         };
     };
 
+    public func withdraw(wallet_address: Principal): async Result.Result<(), Text> {
+        try {
+            let insurer_balance = insurers_data.get_balance(wallet_address);
+            switch(insurer_balance) {
+                case(null) {
+                    return #err("Insurer does not exist");
+                };
+                case(_) {
+
+                }
+            };
+
+            insurers_data.set_balance(wallet_address, 0);
+
+            let transferResult = await ICPLedger.icrc1_transfer({
+                to={
+                    owner=wallet_address;
+                    subaccount=null;
+                };
+                amount=Nat64.toNat(Option.get(insurer_balance, 0: Types.InsurerTokensAmount));
+                fee=null;
+                memo=null;
+                from_subaccount=null;
+                created_at_time=null;
+            });
+
+            switch (transferResult) {
+                case(#Ok(results)) {
+                    return #ok();
+                };
+                case(#Err(error)) {
+                    return #err("Error in withdraw operation");
+                };
+            };
+        } catch (error) {
+            return #err(Error.message(error));
+        }
+    };
+
     let timer = Timer.recurringTimer(#seconds 60, refresh_all);
 }
