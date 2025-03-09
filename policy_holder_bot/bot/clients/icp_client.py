@@ -29,16 +29,15 @@ class ICPClient:
     def payout_request(
         self,
         amount: int,
+        policy_number: str,
         diagnosis_code: str,
         diagnosis_date: datetime.date,
         crypto_wallet: str,
         insurer_crypto_wallet: str,
     ) -> bool:
-        response = self.canister.request_payout(diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
+        response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
         logger.info(response)
-        if response:
-            logger.info('Canister is alive')
+        if 'Insurance case is not approved' in response:
             return True
         else:
-            logger.error('Canister is not alive')
             return False
