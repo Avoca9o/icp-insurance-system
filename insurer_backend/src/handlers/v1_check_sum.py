@@ -20,6 +20,10 @@ def handle_v1_check_sum(email: str, token: str = Depends(oauth2_scheme)):
         company_id = decode_jwt_token(token)
 
         user = db.get_user(email, company_id)
+
+        if not user["is_approved"]:
+            raise ValueError("can't validate check sum while user's contract is not approved")
+
         schema = db.get_schema(user['scheme_version'])
 
         check_sum = checksum(str(schema), str(user['secondary_filters']))

@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 
 from clients import db_client
 from utils.jwt import oauth2_scheme, decode_jwt_token
+from utils.request_validations import check_secondary_filters
 
 from pydantic import BaseModel
 
@@ -11,16 +12,6 @@ from entities.user_info import UserInfo
 router = APIRouter()
 
 db = db_client.DBClient()
-
-
-def check_secondary_filters(filters):
-    if not isinstance(filters, dict):
-        raise ValueError("Secondary filters is not a dictionary")
-    if not all(
-        isinstance(k, str) and isinstance(v, float)
-        for k, v in filters.items()
-    ):
-        raise ValueError("Secondary filters must be a dictionary of <string>:<float>")
 
 
 class AddUserRequest(BaseModel):
