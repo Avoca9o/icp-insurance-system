@@ -11,7 +11,7 @@ async def insurers_list_handler(update: Update, context: ContextTypes.DEFAULT_TY
     await query.answer()
 
     top_companies = db_client.get_most_popular_insurers()
-    message = 'Below are the 7 most popular companies among users:\n'
+    message = 'Below are the most popular companies among users:\n'
 
     for company, client_count in top_companies:
         message += f"""

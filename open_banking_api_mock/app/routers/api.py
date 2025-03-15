@@ -15,7 +15,7 @@ fake_users = {
     "johndoe": {
         "username": "johndoe",
         "full_name": "John Doe",
-        "email": "johndoe@example.com",
+        "base64_email": "johndoe@example.com",
         "hashed_password": pwd_context.hash("secret"),
         "disabled": False,
     }
