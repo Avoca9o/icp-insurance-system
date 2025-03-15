@@ -13,6 +13,16 @@ router = APIRouter()
 db = db_client.DBClient()
 
 
+def check_secondary_filters(filters):
+    if not isinstance(filters, dict):
+        raise ValueError("Secondary filters is not a dictionary")
+    if not all(
+        isinstance(k, str) and isinstance(v, float)
+        for k, v in filters.items()
+    ):
+        raise ValueError("Secondary filters must be a dictionary of <string>:<float>")
+
+
 class AddUserRequest(BaseModel):
     email: str
     insurance_amount: int
@@ -22,6 +32,7 @@ class AddUserRequest(BaseModel):
     def check_validity(self):
         if self.email is None or len(self.email) == 0:
             raise ValueError("Phone number name cannot be empty")
+        check_secondary_filters(self.secondary_filters)
 
     def as_user_info(self, insurer_id):
         return UserInfo(email=self.email,
