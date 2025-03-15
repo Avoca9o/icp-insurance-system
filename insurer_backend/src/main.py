@@ -17,6 +17,7 @@ from handlers.v1_update_user import router as handle_v1_update_user
 from handlers.v1_user import router as handle_v1_user
 from handlers.v1_users import router as handle_v1_users_get
 from handlers.v1_withdraw import router as handle_v1_withdraw_post
+from handlers.v1_check_sum import router as handle_v1_check_sum
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -49,3 +50,4 @@ app.include_router(handle_v1_user)
 app.include_router(handle_v1_user)
 app.include_router(handle_v1_users_get)
 app.include_router(handle_v1_withdraw_post)
+app.include_router(handle_v1_check_sum)
