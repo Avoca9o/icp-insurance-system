@@ -23,11 +23,21 @@ const BalanceController = () => {
       }
     };
 
+    const withdraw = async () => {
+      try {
+        await fetchApi("/v1/withdraw", "POST");
+        alert("Средства успешно выведены");
+      } catch (error) {
+        alert("Ошибка вывода средств: " + error.message);
+      }
+    };
+
     return (
     <div>
     <section>
       <h2>Баланс компании</h2>
       <button onClick={getBalance}>Получить баланс</button>
+      <button onClick={withdraw}>Вывести все средства</button>
       {balance !== null && <p>{balance}</p>}
     </section>
     <section>

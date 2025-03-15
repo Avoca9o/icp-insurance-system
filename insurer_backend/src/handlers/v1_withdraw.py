@@ -1,29 +1,30 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
-from clients import icp_client
+from clients import icp_client, db_client
 
-from pydantic import BaseModel
+from utils.jwt import oauth2_scheme, decode_jwt_token
 
 router = APIRouter()
 
 icp = icp_client.ICPClient()
-
-
-class WithdrawRequest(BaseModel):
-    company: str
-
-    def check_validity(self):
-        if self.company is None or len(self.company) == 0:
-            raise ValueError("Company name cannot be empty")
+db = db_client.DBClient()
 
 
 @router.post("/v1/withdraw")
-def handle_v1_withdraw_post(req: WithdrawRequest):
+def handle_v1_withdraw_post(token: str = Depends(oauth2_scheme)):
     try:
-        req.check_validity()
-        # TODO: check company's number of clients, if there're some of them there cannot be an opportunity to withdraw
-        icp.withdraw(req.company)
+        company_id = decode_jwt_token(token)
+        insurer = db.get_company(company_id)
+
+        users = db.get_users(company_id)['users']
+        for user in users:
+            db_user = db.get_user(user["email"], company_id)
+            if db_user['is_approved']:
+                raise ValueError('insurer has approved users, cannot withdraw money')
+
+        icp.withdraw(insurer.pay_address)
+        print("money withdrew successfully")
         return JSONResponse(content=None, status_code=200)
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)

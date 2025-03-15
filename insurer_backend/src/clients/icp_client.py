@@ -28,9 +28,10 @@ class ICPClient:
         return res[0]['ok']
 
     @staticmethod
-    def withdraw(company: str):
-        # make request to icppp
-        # raise exception if not success
+    def withdraw(payout_address: str):
+        # res = canister.withdraw(payout_address)
+        # if "Err" in res:
+        #     raise Exception(res["Err"])
         return None
 
     @staticmethod
