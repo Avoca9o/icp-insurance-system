@@ -53,7 +53,7 @@ service : {
   get_insurer_balance: (InsurerWalletAddress) -> (Result_2) query;
   refresh_balance: (InsurerWalletAddress) -> (Result_1);
   register_insurer: (InsurerWalletAddress) -> (Result);
-  request_payout: (text, text, text, principal, principal, nat64) ->
+  request_payout: (text, text, text, principal, principal, nat64, text) ->
    (Result_1);
   send_icp_tokens: (principal, nat64) -> (Result);
   transform: (record {

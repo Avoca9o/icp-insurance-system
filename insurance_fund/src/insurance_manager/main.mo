@@ -167,52 +167,51 @@ actor {
         "UUID-123456789";
     };
 
-    private func get_oauth_token(): async Text {
-        let host: Text = "127.0.0.1:8000";
-        let url = "http://127.0.0.1:8000/open-data/v1.0/mfsp/token";
+    // private func get_oauth_token(): async Text {
+    //     let host: Text = "127.0.0.1:8000";
+    //     let url = "http://127.0.0.1:8000/open-data/v1.0/mfsp/token";
 
-        let idempotency_key : Text = generateUUID();
-        let request_headers = [
-            { name = "User-Agent"; value = "http_post_sample" },
-            { name = "Content-Type"; value = "application/json" },
-            { name = "Idempotency-Key"; value = idempotency_key },
-        ];
+    //     let idempotency_key : Text = generateUUID();
+    //     let request_headers = [
+    //         { name = "User-Agent"; value = "http_post_sample" },
+    //         { name = "Content-Type"; value = "application/json" },
+    //         { name = "Idempotency-Key"; value = idempotency_key },
+    //     ];
 
-        let request_body_json : Text = "{ \"username\" : \"johndoe\", \"password\" : \"secret\" }";
-        let request_body = Text.encodeUtf8(request_body_json); 
+    //     let request_body_json : Text = "{ \"username\" : \"johndoe\", \"password\" : \"secret\" }";
+    //     let request_body = Text.encodeUtf8(request_body_json); 
 
-        let http_request : IC.http_request_args = {
-            url = url;
-            max_response_bytes = null;
-            headers = request_headers;
-            body = ?request_body;
-            method = #post;
-            transform = ?{
-                function = transform;
-                context = Blob.fromArray([]);
-            };
-        };
+    //     let http_request : IC.http_request_args = {
+    //         url = url;
+    //         max_response_bytes = null;
+    //         headers = request_headers;
+    //         body = ?request_body;
+    //         method = #post;
+    //         transform = ?{
+    //             function = transform;
+    //             context = Blob.fromArray([]);
+    //         };
+    //     };
 
-        Cycles.add<system>(20_949_972_000);
+    //     Cycles.add<system>(20_949_972_000);
 
-        let http_response: IC.http_request_result = await IC.http_request(http_request);
-        let decoded_text: Text = switch (Text.decodeUtf8(http_response.body)) {
-            case (null) {"No value returned"};
-            case (?y) { y };
-        };
+    //     let http_response: IC.http_request_result = await IC.http_request(http_request);
+    //     let decoded_text: Text = switch (Text.decodeUtf8(http_response.body)) {
+    //         case (null) {"No value returned"};
+    //         case (?y) { y };
+    //     };
 
-        let tmp = Text.stripStart(decoded_text, #char '\"');
-        let result = Text.stripEnd(Option.get(tmp, ""), #char '\"');
-        return Option.get(result, "");
-    };
+    //     let tmp = Text.stripStart(decoded_text, #char '\"');
+    //     let result = Text.stripEnd(Option.get(tmp, ""), #char '\"');
+    //     return Option.get(result, "");
+    // };
 
-    private func validate_insurance_case(policy_number: Text, diagnosis_code: Text, date: Text): async Bool {
+    private func validate_insurance_case(policy_number: Text, diagnosis_code: Text, date: Text, oauth_token: Text): async Bool {
         let host : Text = "127.0.0.1:8000";
         let url = "http://" # host # "/open-data/v1.0/mfsp/insurance-cases?policy_number=" # policy_number # "&diagnosis_code=" # diagnosis_code # "&date=" # date;
 
-        let token = await get_oauth_token();
         let request_headers = [
-            { name = "Authorization"; value = "Bearer " # token },
+            { name = "Authorization"; value = "Bearer " # oauth_token },
         ];
 
         let http_request : IC.http_request_args = {
@@ -233,8 +232,8 @@ actor {
         return http_response.status == 200;
     };
 
-    public func request_payout(policy_number: Text, diagnosis_code: Text, diagnosis_date: Text, insurer_crypto_wallet: Principal, policy_holder_crypto_wallet: Principal, amount: Nat64): async Result.Result<Text, Text> {
-        let validate_diagnosis_result = await validate_insurance_case(policy_number, diagnosis_code, diagnosis_date);
+    public func request_payout(policy_number: Text, diagnosis_code: Text, diagnosis_date: Text, insurer_crypto_wallet: Principal, policy_holder_crypto_wallet: Principal, amount: Nat64, oauth_token: Text): async Result.Result<Text, Text> {
+        let validate_diagnosis_result = await validate_insurance_case(policy_number, diagnosis_code, diagnosis_date, oauth_token);
 
         if (validate_diagnosis_result) {
             let transfer_result = await send_icp_tokens(policy_holder_crypto_wallet, amount);

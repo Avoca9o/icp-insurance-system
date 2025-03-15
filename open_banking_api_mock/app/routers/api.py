@@ -12,10 +12,10 @@ router = APIRouter()
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 fake_users = {
-    "johndoe": {
+    "johndoe@example.com": {
         "username": "johndoe",
         "full_name": "John Doe",
-        "base64_email": "johndoe@example.com",
+        "email": "johndoe@example.com",
         "hashed_password": pwd_context.hash("secret"),
         "disabled": False,
     }
@@ -38,7 +38,7 @@ fake_cases = {
                             'documentName': 'Полис ОМС',
                             'documentNumber': 1111,
                             'date': '2024-06-25',
-                            'diagnosisCode': 'C94.2',
+                            'diagnosisCode': 'B23.0',
                             'registrationClinicId': 256,
                             'registrationClinic': 'Медицинский центр имени Бурназяна',
                         },
@@ -47,7 +47,7 @@ fake_cases = {
                             'documentName': 'Полис ОМС',
                             'documentNumber': 2135,
                             'date': '2025-01-01',
-                            'diagnosisCode': 'B23.1',
+                            'diagnosisCode': 'A00.0',
                             'registrationClinicId': 160,
                             'registrationClinic': 'Центральная клиническая больница гражданской авиации',
                         },
@@ -68,9 +68,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='api/token')
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-def get_user(db, username: str):
-    if username in db:
-        return db[username]
+def get_user(db, email: str):
+    if email in db:
+        return db[email]
     return None
 
 @router.post('/open-data/v1.0/mfsp/token')

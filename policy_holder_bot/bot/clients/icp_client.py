@@ -34,10 +34,11 @@ class ICPClient:
         diagnosis_date: datetime.date,
         crypto_wallet: str,
         insurer_crypto_wallet: str,
+        oauth_token: str,
     ) -> bool:
-        response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
+        response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
         logger.info(response)
-        if 'Insurance case is not approved' in response:
+        if 'Transfer was approved' in str(response):
             return True
         else:
             return False
