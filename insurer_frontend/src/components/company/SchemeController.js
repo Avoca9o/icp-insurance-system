@@ -1,5 +1,6 @@
 import React, { useState}  from "react";
 import { fetchApi } from "../../services/Api";
+import { CsvUploader } from "../../services/CsvUploader";
 
 const SchemeController = () => {
     const [schemes, setSchemes] = useState([]);
@@ -51,10 +52,23 @@ const SchemeController = () => {
         <section>
           <h2>Схемы</h2>
           <button onClick={fetchSchemes}>Список схем</button>
+          {schemes.length > 0 && (
+            <ul>
+              {schemes.map((scheme) => (
+                <li key={scheme.id}>
+                  Схема ID: {scheme.id}{" "}
+                  <button onClick={() => getScheme(scheme.id)}>Открыть</button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <h3>Добавить новую схему (CSV)</h3>
+          <CsvUploader></CsvUploader>
+          <h3>Добавить новую схему (JSON)</h3>
           <button onClick={() => setIsModalOpen(true)}>Добавить схему</button>
             {isModalOpen && (
               <div style={modalStyles}>
-                <h3>Добавить новую схему</h3>
+                <h3>Добавить новую схему (JSON)</h3>
                 <br />
                 <label>
                   Данные схемы (JSON):
@@ -71,16 +85,6 @@ const SchemeController = () => {
                 <button onClick={() => setIsModalOpen(false)}>Отмена</button>
               </div>
             )}
-          {schemes.length > 0 && (
-            <ul>
-              {schemes.map((scheme) => (
-                <li key={scheme.id}>
-                  Схема ID: {scheme.id}{" "}
-                  <button onClick={() => getScheme(scheme.id)}>Открыть</button>
-                </li>
-              ))}
-            </ul>
-          )}
           {selectedScheme.length > 0 && (
             <div>
             <h3>Детали схемы</h3>
