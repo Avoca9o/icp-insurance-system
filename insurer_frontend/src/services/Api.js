@@ -24,9 +24,10 @@ export const fetchApi = async (url, method = "GET", body = null) => {
   }
 
   const response = await fetch(`http://localhost:8000${url}`, options);
+  const responseData = await response.json();
 
   if (!response.ok) {
-    throw new Error(`Ошибка: ${response.statusText}`);
+    throw new Error(`Ошибка: ${response.statusText}: ${responseData.message}`);
   }
 
   return await response.json();

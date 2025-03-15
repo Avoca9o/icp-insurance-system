@@ -26,7 +26,7 @@ const AddUserModal = ({ onClose, onSubmit }) => {
         secondary_filters: secondaryFiltersObject,
       });
     } catch (error) {
-      alert("Ошибка в формате JSON для вторичных фильтров. Проверьте и повторите попытку.");
+      alert("Ошибка в формате JSON для вторичных фильтров");
     }
   };
 

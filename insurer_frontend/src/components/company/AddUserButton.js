@@ -10,6 +10,7 @@ const AddUserButton = () => {
     try {
       await fetchApi("/v1/add-user", "POST", userData);
       alert("Пользователь добавлен успешно!");
+      
     } catch (error) {
       alert("Ошибка добавления пользователя: " + error.message);
     }
