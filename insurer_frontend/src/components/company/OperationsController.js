@@ -5,19 +5,27 @@ const OperationsController = () => {
     const [selectedDate, setSelectedDate] = useState(""); // Состояние для хранения выбранной даты    
     const [operations, setOperations] = useState([]); // Состояние для хранения списка операций
 
-    const fetchOperationsByDate = async () => {
+    const token = localStorage.getItem("authToken");
+
+    const fetchOperations = () => {
       if (!selectedDate) {
         return alert("Пожалуйста, выберите дату");
       }
-    
-      try {
-        // API-запрос с датой в теле
-        const data = await fetchApi(`/v1/operations?date=${selectedDate}`, "GET");
-    
-        setOperations(data.operations); // Обновить состояние операций
-      } catch (error) {
-        alert("Ошибка получения операций: " + error.message);
-      }
+
+      fetch(`http://localhost:8000/v1/operations?date=${selectedDate}`, {headers: {
+        "Authorization": `Bearer ${token}`
+      }})
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'data.csv');
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode.removeChild(link);
+        })
+        .catch(error => console.error('Error downloading the file:', error));
     };
 
     return (
@@ -34,7 +42,7 @@ const OperationsController = () => {
             />
           </label>
         </div>
-        <button onClick={fetchOperationsByDate}>Получить операции</button>
+        <button onClick={fetchOperations}>Получить операции</button>
           
         {operations.length > 0 ? (
           <div style={{ marginTop: "20px" }}>
