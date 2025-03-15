@@ -30,6 +30,20 @@ const UserController = () => {
       }
     };
 
+    const isCheckSumValid = async (userEmail) => {
+      try {
+        const response = await fetchApi(`/v1/check-sum?email=${userEmail}`, "GET");
+  
+        if (response['is_valid']) {
+          alert("Чек сумма совпадает!");
+        } else {
+          alert("Чек сумма НЕ совпадает!");
+        }
+      } catch (error) {
+        alert("Ошибка при проверке: " + error.message);
+      }
+    };
+
     const fetchUsers = async () => {
       try {
         const data = await fetchApi("/v1/users", "GET");
@@ -63,6 +77,7 @@ const UserController = () => {
             <p>Сумма страхования: {selectedUser.insurance_amount}</p>
 
             <button onClick={() => deleteUser(selectedUser.email)}>Удалить пользователя</button>
+            <button onClick={() => isCheckSumValid(selectedUser.email)}>Сверить чек сумму</button>
           </div>
         )}
       </section>

@@ -130,7 +130,13 @@ class DBClient:
         if res.insurer_id != company_id:
             raise ValueError('User is not for this company')
 
-        return {'email': res.email, 'scheme_version': res.schema_version, 'insurance_amount': res.insurance_amount}
+        return {'email': res.email,
+                'scheme_version': res.schema_version,
+                'insurance_amount': res.insurance_amount,
+                'secondary_filters': res.secondary_filters,
+                'telegram_id': res.telegram_id
+                }
+
 
     @staticmethod
     def delete_user(email: str, company_id: int):
