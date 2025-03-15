@@ -30,7 +30,7 @@ export const fetchApi = async (url, method = "GET", body = null) => {
     throw new Error(`Ошибка: ${response.statusText}: ${responseData.message}`);
   }
 
-  return await response.json();
+  return responseData;
 };
 
 export const logIn = async (login, password) => {
