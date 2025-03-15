@@ -5,6 +5,7 @@ from config.db_config import engine
 
 from handlers.ping import router as handle_ping
 from handlers.v1_add_schema import router as handle_v1_add_scheme
+from handlers.v1_add_schema import router as handle_v1_add_scheme_csv
 from handlers.v1_icp_address import router as handle_v1_icp_address_get
 from handlers.v1_add_user import router as handle_v1_add_user
 from handlers.v1_authorize import router as handle_v1_authorize
@@ -37,6 +38,7 @@ app.add_middleware(
 
 app.include_router(handle_ping)
 app.include_router(handle_v1_add_scheme)
+app.include_router(handle_v1_add_scheme_csv)
 app.include_router(handle_v1_icp_address_get)
 app.include_router(handle_v1_add_user)
 app.include_router(handle_v1_authorize)
@@ -46,7 +48,6 @@ app.include_router(handle_v1_register)
 app.include_router(handle_v1_schema)
 app.include_router(handle_v1_schemas)
 app.include_router(handle_v1_update_user)
-app.include_router(handle_v1_user)
 app.include_router(handle_v1_user)
 app.include_router(handle_v1_users_get)
 app.include_router(handle_v1_withdraw_post)

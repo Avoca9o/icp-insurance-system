@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile, File
 from fastapi.responses import JSONResponse
 
 from pydantic import BaseModel
@@ -6,6 +6,8 @@ from pydantic import BaseModel
 from clients import db_client
 from entities.insurer_scheme import InsurerScheme
 from utils.jwt import oauth2_scheme, decode_jwt_token
+
+import pandas as pd
 
 router = APIRouter()
 
@@ -25,6 +27,26 @@ def handle_v1_add_scheme(req: AddSchemaRequest, token: str = Depends(oauth2_sche
         company_id = decode_jwt_token(token)
         db.add_scheme(req.as_insurer_scheme(company_id))
 
+        return JSONResponse(content=None, status_code=200)
+    except ValueError as e:
+        return JSONResponse(content={"message": str(e)}, status_code=400)
+    except Exception as e:
+        return JSONResponse(content={"message": str(e)}, status_code=500)
+
+
+@router.post("/v1/add-scheme-csv")
+async def handle_v1_add_scheme_csv(file: UploadFile = File(...), token: str = Depends(oauth2_scheme)):
+    try:
+        if file.content_type != 'text/csv':
+            raise ValueError("Неверный формат файла. Требуется .csv")
+
+        file.file.seek(0)
+
+        df = pd.read_csv(file.file)
+        result_dict = pd.Series(df.Coefficient.values, index=df.Code).to_dict()
+        print(result_dict)
+        company_id = decode_jwt_token(token)
+        db.add_scheme(InsurerScheme(diagnoses_coefs=str(result_dict).replace("'", '"'), company_id=company_id))
         return JSONResponse(content=None, status_code=200)
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)
