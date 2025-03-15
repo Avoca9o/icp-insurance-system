@@ -1,10 +1,12 @@
 import React, { useState}  from "react";
 import { fetchApi } from "../../services/Api";
 import AddUserButton from "./AddUserButton";
+import UpdateUserModal from "./UpdateUserModal";
 
 const UserController = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false); // Управление модальным окном
 
     const getUser = async (userId) => {
       try {
@@ -13,6 +15,17 @@ const UserController = () => {
       } catch (error) {
         alert("Ошибка получения пользователя: " + error.message);
       }
+    };
+
+    const updateUser = async (userEmail, userData) => {
+      try {
+        userData["email"] = userEmail;
+        await fetchApi(`/v1/update-user`, "POST", userData);
+        alert("Пользователь обновлен успешно!");
+      } catch (error) {
+        alert("Ошибка обновления пользователя: " + error.message);
+      }
+      fetchUsers();
     };
 
     const deleteUser = async (userId) => {
@@ -65,6 +78,18 @@ const UserController = () => {
               <li>
                 {user.email}{" "}
                 <button onClick={() => getUser(user.email)}>Открыть</button>
+                <button onClick={() => { setSelectedUser(user.email); setIsModalOpen(true)}}>Обновить</button>
+
+                {/* Модальное окно */}
+                {isModalOpen && (
+                  <UpdateUserModal
+                    onClose={() => setIsModalOpen(false)} // Закрываем окно
+                    onSubmit={(userData) => {
+                      updateUser(selectedUser, userData); // Вызываем функцию для отправки данных на сервер
+                      setIsModalOpen(false);
+                    }}
+                  />
+                )}
               </li>
             ))}
           </ul>

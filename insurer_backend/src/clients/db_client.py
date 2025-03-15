@@ -60,7 +60,7 @@ class DBClient:
         session.close()
 
     @staticmethod
-    def update_user(user: UserInfo):
+    def update_user(user: UserInfo, company_id: int):
         session = SessionLocal()
 
         db_user = session.query(UserInfo).filter(UserInfo.email == user.email).first()
@@ -68,8 +68,16 @@ class DBClient:
         if db_user is None:
             raise ValueError("user with email {} not exists".format(user.email))
 
+        if db_user.insurer_id != company_id:
+            raise ValueError("user with email {} is not in company's users list".format(user.email))
+
         if db_user.is_approved:
             raise ValueError("user with email {} has already approved his info, can't change info".format(user.email))
+
+        print(user.email, user.insurance_amount)
+
+        if user.insurance_amount is not None:
+            db_user.insurance_amount = user.insurance_amount
 
         if user.schema_version is not None:
             db_user.schema_version = user.schema_version
@@ -77,6 +85,7 @@ class DBClient:
         if user.secondary_filters is not None:
             db_user.secondary_filters = user.secondary_filters
 
+        session.add(db_user)
         session.commit()
         session.close()
 
@@ -134,7 +143,8 @@ class DBClient:
                 'scheme_version': res.schema_version,
                 'insurance_amount': res.insurance_amount,
                 'secondary_filters': res.secondary_filters,
-                'telegram_id': res.telegram_id
+                'telegram_id': res.telegram_id,
+                'is_approved': res.is_approved
                 }
 
 
