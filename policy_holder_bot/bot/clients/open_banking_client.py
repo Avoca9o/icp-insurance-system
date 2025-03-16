@@ -9,7 +9,7 @@ class OpenBankingClient:
     async def get_oauth_token(self):
         api_url = f'{self.url}/open-data/v1.0/mfsp/token'
         payload ={
-            'username': 'johndoe',
+            'username': 'johndoe@example.com',
             'password': 'secret',
         }
         headers = {
