@@ -35,8 +35,8 @@ def handle_v1_operations(date: str, token: str = Depends(oauth2_scheme)):
         data = {
             "User": [x['user'] for x in res],
             "Amount": [x['amount'] for x in res],
-            "Date": [x['date'] for x in res],
-            "Diagnoses": [x['diagnose'] for x in res]
+            "Date": [x['date'][:11] for x in res],
+            "Diagnoses": [x['diagnoses'] for x in res]
         }
         df = pd.DataFrame(data)
 

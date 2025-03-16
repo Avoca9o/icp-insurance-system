@@ -31,7 +31,7 @@ async def view_contract_handler(update: Update, context: ContextTypes.DEFAULT_TY
         insurance_company = db_client.get_insurance_company_by_id(insurer_id)
         company_name = insurance_company.name if insurance_company else 'Unknown'
 
-        special_conditions = user.secondary_filters
+        special_conditions = user.secondary_filters.replace('\'', '\"')
         special_conditions_flag = False
         if user.secondary_filters:
             special_conditions_flag = True

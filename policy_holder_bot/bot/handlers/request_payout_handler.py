@@ -142,7 +142,7 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
     
     if user.secondary_filters:
-        secondary_filters = json.loads(user.secondary_filters)
+        secondary_filters = json.loads(user.secondary_filters.replace('\'', '\"'))
     else:
         secondary_filters = {}
 
