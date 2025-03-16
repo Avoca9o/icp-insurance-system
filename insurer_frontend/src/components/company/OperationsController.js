@@ -12,7 +12,7 @@ const OperationsController = () => {
         return alert("Пожалуйста, выберите дату");
       }
 
-      fetch(`http://localhost:8000/v1/operations?date=${selectedDate}`, {headers: {
+      fetch(`http://localhost:8001/v1/operations?date=${selectedDate}`, {headers: {
         "Authorization": `Bearer ${token}`
       }})
         .then(response => response.blob())
@@ -44,9 +44,8 @@ const OperationsController = () => {
         </div>
         <button onClick={fetchOperations}>Получить операции</button>
           
-        {operations.length > 0 ? (
+        {(
           <div style={{ marginTop: "20px" }}>
-            <h3>Операции за {selectedDate}</h3>
             <ul>
               {operations.map((operation, index) => (
                 <li key={index} style={{ marginBottom: "10px" }}>
@@ -63,11 +62,8 @@ const OperationsController = () => {
               ))}
             </ul>
           </div>
-        ) : (
-          selectedDate && (
-            <p>Нет доступных операций для даты {selectedDate}.</p>
-          )
-        )}
+        )
+        }
       </section>
         </div>
     )

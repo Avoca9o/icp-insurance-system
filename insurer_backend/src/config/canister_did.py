@@ -1,55 +1,57 @@
 candid="""
-type TransformArgs =
+type http_request_result = 
  record {
-   context: blob;
-   response: HttpResponsePayload;
- };
-type Result_3 =
- variant {
-   err: text;
-   ok: nat;
- };
-type Result_2 =
- variant {
-   err: text;
-   ok: InsurerTokensAmount;
- };
-type Result_1 =
- variant {
-   err: text;
-   ok;
- };
-type Result =
- variant {
-   err: text;
-   ok: text;
- };
-type InsurerWalletAddress = principal;
-type InsurerTokensAmount = nat64;
-type HttpResponsePayload =
- record {
-   body: vec nat8;
-   headers: vec HttpHeader;
+   body: blob;
+   headers: vec http_header;
    status: nat;
  };
-type HttpHeader =
+type http_header = 
  record {
    name: text;
    value: text;
  };
-type CanisterHttpResponsePayload =
- record {
-   body: vec nat8;
-   headers: vec HttpHeader;
-   status: nat;
+type Result_4 = 
+ variant {
+   err: text;
+   ok: nat;
  };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: opt Checksum;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: InsurerTokensAmount;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: text;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type InsurerWalletAddress = principal;
+type InsurerTokensAmount = nat64;
+type Checksum = text;
 service : {
-  get_balance_from_ledger: (principal) -> (Result_3);
+  add_approved_client: (InsurerWalletAddress, nat, Checksum) -> (Result);
+  get_balance_from_ledger: (principal) -> (Result_4);
+  get_checksum: (InsurerWalletAddress, nat) -> (Result_3);
   get_insurer_balance: (InsurerWalletAddress) -> (Result_2) query;
-  register_insurer: (InsurerWalletAddress) -> (Result_1);
-  send_icp_tokens: (principal, nat) -> (Result_1);
-  top_up_insurer: (InsurerWalletAddress) -> (Result);
-  transform: (TransformArgs) -> (CanisterHttpResponsePayload) query;
-  validate_insurance_case: (principal) -> (Result);
+  refresh_balance: (InsurerWalletAddress) -> (Result_1);
+  register_insurer: (InsurerWalletAddress) -> (Result);
+  request_payout: (text, text, text, principal, principal, nat64, text) ->
+   (Result_1);
+  send_icp_tokens: (principal, nat64) -> (Result);
+  transform: (record {
+                context: blob;
+                response: http_request_result;
+              }) -> (http_request_result) query;
+  withdraw: (InsurerWalletAddress) -> (Result);
 }
 """

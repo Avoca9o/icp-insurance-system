@@ -9,9 +9,9 @@ from ic.candid import Types
 
 from config.canister_did import candid
 
-# CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai"
+CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai"
 # diman
-CANISTER_ID = "bkyz2-fmaaa-aaaaa-qaaaq-cai"
+#CANISTER_ID = "bkyz2-fmaaa-aaaaa-qaaaq-cai"
 
 iden = Identity()
 client = Client(url="http://127.0.0.1:4943")
@@ -29,9 +29,9 @@ class ICPClient:
 
     @staticmethod
     def withdraw(payout_address: str):
-        # res = canister.withdraw(payout_address)
-        # if "Err" in res:
-        #     raise Exception(res["Err"])
+        res = canister.withdraw(payout_address)
+        if "Err" in res:
+            raise Exception(res["Err"])
         return None
 
     @staticmethod
@@ -53,5 +53,5 @@ class ICPClient:
     @staticmethod
     def is_checksum_valid(company_id, user_tg_id, current_sum):
         # res = canister.check_sum(company_id, user_tg_id, current_sum)
-
+        # print(f'>>> {res}')
         return random.choice([True, False])

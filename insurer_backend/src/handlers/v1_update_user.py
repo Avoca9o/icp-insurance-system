@@ -18,7 +18,7 @@ class UpdateUserRequest(BaseModel):
     email: str
     insurance_amount: int = None
     insurer_schema: int = None
-    secondary_filters: dict = {}
+    secondary_filters: dict = None
 
     def check_validity(self):
         if self.email is None or len(self.email) == 0:

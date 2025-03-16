@@ -23,7 +23,7 @@ export const fetchApi = async (url, method = "GET", body = null) => {
     options.body = JSON.stringify(body);
   }
 
-  const response = await fetch(`http://localhost:8000${url}`, options);
+  const response = await fetch(`http://localhost:8001${url}`, options);
   const responseData = await response.json();
 
   if (!response.ok) {
@@ -34,7 +34,7 @@ export const fetchApi = async (url, method = "GET", body = null) => {
 };
 
 export const logIn = async (login, password) => {
-  const response = await fetch("http://localhost:8000/v1/authorize", {
+  const response = await fetch("http://localhost:8001/v1/authorize", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export const logIn = async (login, password) => {
 };
 
 export const register = async (formData) => {
-  const response = await fetch("http://127.0.0.1:8000/v1/register", {
+  const response = await fetch("http://127.0.0.1:8001/v1/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
