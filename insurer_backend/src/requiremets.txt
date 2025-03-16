@@ -3,3 +3,5 @@ psycopg2
 python-jose
 ic-py
 python-dotenv
+python-multipart
+pandas

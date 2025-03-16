@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 
 from clients import db_client
 from utils.jwt import oauth2_scheme, decode_jwt_token
+from utils.request_validations import check_secondary_filters
 
 from pydantic import BaseModel
 
@@ -22,6 +23,7 @@ class AddUserRequest(BaseModel):
     def check_validity(self):
         if self.email is None or len(self.email) == 0:
             raise ValueError("Phone number name cannot be empty")
+        check_secondary_filters(self.secondary_filters)
 
     def as_user_info(self, insurer_id):
         return UserInfo(email=self.email,

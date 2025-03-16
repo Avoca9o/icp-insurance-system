@@ -14,7 +14,6 @@ router = APIRouter()
 db = db_client.DBClient()
 
 
-
 @router.get("/v1/schema")
 def handle_v1_schema(global_version_id: int, token: str = Depends(oauth2_scheme)):
     try:

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-const AddUserModal = ({ onClose, onSubmit }) => {
+const UpdateUserModal = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
-    email: "",
     insurance_amount: "",
     schema_version: "",
     secondary_filters: "",
@@ -20,7 +19,6 @@ const AddUserModal = ({ onClose, onSubmit }) => {
         : {};
 
       onSubmit({
-        email: formData.email,
         insurance_amount: parseFloat(formData.insurance_amount),
         schema_version: parseInt(formData.schema_version, 10),
         secondary_filters: secondaryFiltersObject,
@@ -32,19 +30,7 @@ const AddUserModal = ({ onClose, onSubmit }) => {
 
   return (
     <div style={modalStyles}>
-      <h3>Добавить нового пользователя</h3>
-      <label>
-        Email:
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          placeholder="Введите email"
-          required
-        />
-      </label>
-      <br />
+      <h3>Обновить информацию о пользователе</h3>
       <label>
         Страховая сумма:
         <input
@@ -100,4 +86,4 @@ const modalStyles = {
   zIndex: 1000,
 };
 
-export default AddUserModal;
+export default UpdateUserModal;
