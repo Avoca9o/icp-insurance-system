@@ -94,6 +94,6 @@ async def get_data(policy_number: int,  diagnosis_code: str, date: str, user: di
     if user:
         for case in fake_cases['Data']['InsuranceCasesList']['InsuranceCases'][0]['InsuranceCaseInformation']:
             if case['documentName'] == 'Полис ОМС' and case['documentNumber'] == policy_number and case['date'] == date and case['diagnosisCode'] == diagnosis_code:
-                return case  
-        print('>>>>')     
+                return case
+    
         raise HTTPException(status_code=400, detail='Case does not exist')
