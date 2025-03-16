@@ -5,6 +5,8 @@ from telegram.ext import ContextTypes, ConversationHandler
 
 from clients.db_client import DBClient
 from clients.icp_client import ICPClient
+from clients.open_banking_client import OpenBankingClient
+from keyboards.approve_access_keyboard import approve_access_keyboard
 from keyboards.main_menu_keyboard import get_main_menu_keyboard
 from models.payout import Payout
 from utils.logger import logger
@@ -12,8 +14,9 @@ from utils.validation import validate_diagnosis_code, validate_policy_number
 
 db_client = DBClient()
 icp_client = ICPClient()
+open_banking_client = OpenBankingClient()
 
-REQUEST_POLICY_NUMBER, REQUEST_DIAGNOSIS_CODE, REQUEST_DIAGNOSIS_TIME, REQUEST_CRYPTO_WALLET = range(4)
+APPROVE_ACCESS, REQUEST_POLICY_NUMBER, REQUEST_DIAGNOSIS_CODE, REQUEST_DIAGNOSIS_TIME, REQUEST_CRYPTO_WALLET = range(5)
 
 async def request_payout_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -39,8 +42,28 @@ async def request_payout_handler(update: Update, context: ContextTypes.DEFAULT_T
         )
         return ConversationHandler.END
     
-    await query.edit_message_text('Please enter your policy number:')
-    return REQUEST_POLICY_NUMBER
+    reply_markup = approve_access_keyboard()
+
+    await query.edit_message_text(
+        'To process payout request, please confirm that you provide access to your personal information:',
+        reply_markup=reply_markup,
+    )
+    return APPROVE_ACCESS
+
+async def approve_access(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    oauth_token = await open_banking_client.get_oauth_token()
+    context.user_data['oauth_token'] = oauth_token
+
+    if query.data == 'confirm_personal_data':
+        await query.edit_message_text('Personal data access confirmed. ✅\n\nPlease enter your policy number:')
+        return REQUEST_POLICY_NUMBER
+    else:
+        reply_markup = get_main_menu_keyboard()
+        await query.edit_message_text('Payout request canceled. ❌', reply_markup=reply_markup)
+        return ConversationHandler.END
 
 
 async def request_policy_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -56,6 +79,7 @@ async def request_policy_number(update: Update, context: ContextTypes.DEFAULT_TY
 
     await update.message.reply_text('Please enter the diagnosis code:')
     return REQUEST_DIAGNOSIS_CODE
+
 
 async def request_diagnosis_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
     diagnosis_code = update.message.text
@@ -104,6 +128,7 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
     diagnosis_date = context.user_data['diagnosis_date']
     crypto_wallet = context.user_data['crypto_wallet']
     telegram_id = context.user_data['telegram_id']
+    oauth_token = context.user_data['oauth_token']
     reply_markup = get_main_menu_keyboard()
 
     user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
@@ -138,7 +163,8 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
             diagnosis_code=diagnosis_code,
             diagnosis_date=diagnosis_date,
             crypto_wallet=crypto_wallet,
-            insurer_crypto_wallet=insurer_crypto_wallet
+            insurer_crypto_wallet=insurer_crypto_wallet,
+            oauth_token=oauth_token,
         )
 
         if is_valid:
