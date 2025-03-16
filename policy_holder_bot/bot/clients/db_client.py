@@ -1,14 +1,13 @@
 from datetime import datetime
-from ic.canister import Canister
-from ic.client import Client
-from ic.identity import Identity
-from ic.agent import Agent
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 
-from config import Base, DATABASE_URL, ICP_CANISTER_ID, ICP_CANISTER_URL, candid
-from models import CompanyInfo, InsurerScheme, Payout, UserInfo
-from utils import logger
+from config.db_config import Base, DATABASE_URL
+from models.company_info import CompanyInfo
+from models.insurer_scheme import InsurerScheme
+from models.payout import Payout
+from models.user_info import UserInfo
+from utils.logger import logger
 
 class DBClient:
     def __init__(self):
@@ -69,6 +68,26 @@ class DBClient:
         finally:
             session.close()
     
+    def get_most_popular_insurers(self):
+        session = self.Session()
+        try:
+            top_companies = (
+                session.query(
+                    CompanyInfo,
+                    func.count(UserInfo.id).label('client_count')
+                )
+                .outerjoin(UserInfo)
+                .group_by(CompanyInfo.id)
+                .order_by(func.count(UserInfo.id).desc())
+                .limit(7)
+                .all()
+            )
+            return top_companies
+        except Exception as e:
+            logger.error(f'Failed to fetch most popular insurance companies: {e}')
+        finally:
+            session.close()
+    
     def get_payout(self, user_id: int, diagnosis_code: str, diagnosis_date: datetime.date) -> Payout:
         session = self.Session()
         try:
@@ -91,28 +110,3 @@ class DBClient:
             return False
         finally:
             session.close()
-
-
-class ICPClient:
-    def __init__(self):
-        identity = Identity()
-        client = Client(url=ICP_CANISTER_URL)
-        agent = Agent(identity, client)
-        self.canister = Canister(agent=agent, canister_id=ICP_CANISTER_ID, candid=candid)
-
-    def payout_request(
-        self,
-        amount: int,
-        diagnosis_code: str,
-        diagnosis_date: datetime.date,
-        crypto_wallet: str,
-        insurer_crypto_wallet: str,
-    ) -> bool:
-        response = self.canister.request_payout(diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
-        logger.info(response)
-        if response:
-            logger.info('Canister is alive')
-            return True
-        else:
-            logger.error('Canister is not alive')
-            return False

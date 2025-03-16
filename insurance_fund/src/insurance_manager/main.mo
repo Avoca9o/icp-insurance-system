@@ -18,6 +18,7 @@ import Option "mo:base/Option";
 import Timer "mo:base/Timer";
 import Iter "mo:base/Iter";
 
+import IC "ic:aaaaa-aa";
 import Types "Types";
 
 actor {
@@ -56,7 +57,7 @@ actor {
         }
     };
 
-    public func refresh(wallet_address: Types.InsurerWalletAddress): async Result.Result<Text, Text> {
+    public func refresh_balance(wallet_address: Types.InsurerWalletAddress): async Result.Result<Text, Text> {
         try {
             let insurer_amount = insurers_data.get_balance(wallet_address);
             if (insurer_amount == null) {
@@ -81,14 +82,13 @@ actor {
                         let operation = transactions[i].transaction.operation;
                         let transaction_id = transactions[i].id;
                         if (last_transaction != null and Option.get(last_transaction, 0: Types.InsurerLastTransactionId) == transaction_id) {
-                            return #ok("Not BAM");
+                            return #ok("The last saved transaction has been detected. The balance has been replenished.");
                         };
                         switch (operation) {
                             case (#Transfer(operation)) {
                                 if (operation.to == "9a2a49e111a1acd073e9b85b752cb0d54e6c3401e285d5019f9efacc77a83af4") {
                                     insurers_data.set_balance(wallet_address, Option.get(insurer_amount, 0: Types.InsurerTokensAmount) + operation.amount.e8s);
                                     insurers_data.set_last_transaction(wallet_address, transaction_id);
-                                    return #ok("BAM");
                                 };
                             };
                             case _ {
@@ -97,7 +97,7 @@ actor {
                         };
                         i += 1;
                     };
-                    return #err("Cannot find transaction");
+                    return #ok("The last saved transaction has not been detected. The balance has been replenished.");
                 };
                 case(#Err(insurer_transactions)) {
                     return #err("Error while listing transactions")
@@ -111,7 +111,7 @@ actor {
     private func refresh_all(): async () {
         let insurers = insurers_data.get_all_insurers();
         for (insurer in insurers) {
-            let result = await refresh(insurer);
+            let result = await refresh_balance(insurer);
         }
     };
 
@@ -154,59 +154,86 @@ actor {
         }
     };
 
-    public query func transform(raw : Types.TransformArgs) : async Types.CanisterHttpResponsePayload {
-        let transformed : Types.CanisterHttpResponsePayload = {
-            status = raw.response.status;
-            body = raw.response.body;
-            headers = [
-                { name = "Content-Security-Policy"; value = "default-src 'self'" },
-                { name = "Referrer-Policy"; value = "strict-origin" },
-                { name = "Permission-Policy"; value = "geolocation=(self)" },
-                { name = "Strict-Transport-Security"; value = "max-age=63072000" },
-                { name = "X-Frame-Options"; value = "DENY" },
-                { name = "X-Content-Type-Options"; value = "nosniff" },
-            ];
+    public query func transform({
+        context : Blob;
+        response : IC.http_request_result;
+    }) : async IC.http_request_result {
+        {
+            response with headers = []; // not intersted in the headers
         };
-        transformed;
     };
 
-    private func validate_insurance_case(diagnosis_code: Text, diagnosis_date: Text) : async Bool {
-        let ic : Types.IC = actor ("aaaaa-aa");
-        let ONE_MINUTE : Nat64 = 60;
-        let host: Text = "example.com";
-        let url = "https://" # host # "/";
+    func generateUUID() : Text {
+        "UUID-123456789";
+    };
 
-        let request_headers = [];
+    // private func get_oauth_token(): async Text {
+    //     let host: Text = "127.0.0.1:8000";
+    //     let url = "http://127.0.0.1:8000/open-data/v1.0/mfsp/token";
 
-        let transform_context : Types.TransformContext = {
-            function = transform;
-            context = Blob.fromArray([]);
-        };
+    //     let idempotency_key : Text = generateUUID();
+    //     let request_headers = [
+    //         { name = "User-Agent"; value = "http_post_sample" },
+    //         { name = "Content-Type"; value = "application/json" },
+    //         { name = "Idempotency-Key"; value = idempotency_key },
+    //     ];
 
-        let http_request : Types.HttpRequestArgs = {
+    //     let request_body_json : Text = "{ \"username\" : \"johndoe\", \"password\" : \"secret\" }";
+    //     let request_body = Text.encodeUtf8(request_body_json); 
+
+    //     let http_request : IC.http_request_args = {
+    //         url = url;
+    //         max_response_bytes = null;
+    //         headers = request_headers;
+    //         body = ?request_body;
+    //         method = #post;
+    //         transform = ?{
+    //             function = transform;
+    //             context = Blob.fromArray([]);
+    //         };
+    //     };
+
+    //     Cycles.add<system>(20_949_972_000);
+
+    //     let http_response: IC.http_request_result = await IC.http_request(http_request);
+    //     let decoded_text: Text = switch (Text.decodeUtf8(http_response.body)) {
+    //         case (null) {"No value returned"};
+    //         case (?y) { y };
+    //     };
+
+    //     let tmp = Text.stripStart(decoded_text, #char '\"');
+    //     let result = Text.stripEnd(Option.get(tmp, ""), #char '\"');
+    //     return Option.get(result, "");
+    // };
+
+    private func validate_insurance_case(policy_number: Text, diagnosis_code: Text, date: Text, oauth_token: Text): async Bool {
+        let host : Text = "127.0.0.1:8000";
+        let url = "http://" # host # "/open-data/v1.0/mfsp/insurance-cases?policy_number=" # policy_number # "&diagnosis_code=" # diagnosis_code # "&date=" # date;
+
+        let request_headers = [
+            { name = "Authorization"; value = "Bearer " # oauth_token },
+        ];
+
+        let http_request : IC.http_request_args = {
             url = url;
             max_response_bytes = null;
             headers = request_headers;
             body = null;
             method = #get;
-            transform = ?transform_context;
+            transform = ?{
+                function = transform;
+                context = Blob.fromArray([]);
+            };
         };
 
-        Cycles.add<system>(20_949_972_000);
+        Cycles.add<system>(230_949_972_000);
 
-        let http_response : Types.HttpResponsePayload = await ic.http_request(http_request);
-        let response_status: Nat = http_response.status;
-        let response_body: Blob = Blob.fromArray(http_response.body);
-        let decoded_text: Text = switch (Text.decodeUtf8(response_body)) {
-            case (null) {"No value returned"};
-            case (?y) { y };
-        };
-
-        return response_status == 200;
+        let http_response : IC.http_request_result = await IC.http_request(http_request);
+        return http_response.status == 200;
     };
 
-    public func request_payout(diagnosis_code: Text, diagnosis_date: Text, insurer_crypto_wallet: Principal, policy_holder_crypto_wallet: Principal, amount: Nat64): async Result.Result<Text, Text> {
-        let validate_diagnosis_result = await validate_insurance_case(diagnosis_code, diagnosis_date);
+    public func request_payout(policy_number: Text, diagnosis_code: Text, diagnosis_date: Text, insurer_crypto_wallet: Principal, policy_holder_crypto_wallet: Principal, amount: Nat64, oauth_token: Text): async Result.Result<Text, Text> {
+        let validate_diagnosis_result = await validate_insurance_case(policy_number, diagnosis_code, diagnosis_date, oauth_token);
 
         if (validate_diagnosis_result) {
             let transfer_result = await send_icp_tokens(policy_holder_crypto_wallet, amount);
@@ -229,6 +256,62 @@ actor {
         } else {
             return #err("Insurance case is not approved")
         };
+    };
+
+    public func withdraw(wallet_address: Types.InsurerWalletAddress): async Result.Result<(), Text> {
+        try {
+            let insurer_balance = insurers_data.get_balance(wallet_address);
+            switch(insurer_balance) {
+                case(null) {
+                    return #err("Insurer does not exist");
+                };
+                case(_) {
+
+                }
+            };
+
+            insurers_data.set_balance(wallet_address, 0);
+
+            let transferResult = await ICPLedger.icrc1_transfer({
+                to={
+                    owner=wallet_address;
+                    subaccount=null;
+                };
+                amount=Nat64.toNat(Option.get(insurer_balance, 0: Types.InsurerTokensAmount));
+                fee=null;
+                memo=null;
+                from_subaccount=null;
+                created_at_time=null;
+            });
+
+            switch (transferResult) {
+                case(#Ok(results)) {
+                    return #ok();
+                };
+                case(#Err(error)) {
+                    return #err("Error in withdraw operation");
+                };
+            };
+        } catch (error) {
+            return #err(Error.message(error));
+        }
+    };
+
+    public func add_approved_client(insurer: Types.InsurerWalletAddress, client_id: Nat, checksum: Types.Checksum): async Result.Result<(), Text> {
+        try {
+            insurers_data.add_client(insurer, Nat.toText(client_id), checksum);
+            return #ok();
+        } catch (error) {
+            return #err(Error.message(error));
+        }
+    };
+
+    public func get_checksum(insurer: Types.InsurerWalletAddress, client_id: Nat): async Result.Result<?Types.Checksum, Text> {
+        try{
+            return #ok(insurers_data.get_checksum(insurer, Nat.toText(client_id)));
+        } catch (error) {
+            return #err(Error.message(error));
+        }
     };
 
     let timer = Timer.recurringTimer(#seconds 60, refresh_all);

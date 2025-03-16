@@ -3,31 +3,149 @@ import Nat "mo:base/Nat";
 import Nat64 "mo:base/Nat64";
 import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
+import Text "mo:base/Text";
+import Error "mo:base/Error";
 
 module Types {
     public class InsurersData() {
-        private let _balances = HashMap.HashMap<InsurerWalletAddress, InsurerTokensAmount>(16, Principal.equal, Principal.hash);
-        private let _last_transactions = HashMap.HashMap<InsurerWalletAddress, InsurerLastTransactionId>(16, Principal.equal, Principal.hash);
+        private let _insurers_info = HashMap.HashMap<InsurerWalletAddress, InsurerInfo>(16, Principal.equal, Principal.hash);
 
         public func set_balance(insurer: InsurerWalletAddress, amount: InsurerTokensAmount): () {
-            _balances.put(insurer, amount);
+            let insurer_info: ?InsurerInfo = _insurers_info.get(insurer);
+            switch(insurer_info) {
+                case(null) {
+                    let new_insurer_info: InsurerInfo = InsurerInfo();
+                    new_insurer_info.set_balance(amount);
+                    _insurers_info.put(insurer, new_insurer_info);
+                };
+                case(?insurer_info) {
+                    insurer_info.set_balance(amount);
+                    _insurers_info.put(insurer, insurer_info);
+                }
+            }
         };
 
         public func get_balance(insurer: InsurerWalletAddress): ?InsurerTokensAmount {
-            return _balances.get(insurer);
+            let insurer_info: ?InsurerInfo = _insurers_info.get(insurer);
+            switch(insurer_info) {
+                case(null) {
+                    return null;
+                };
+                case(?insurer_info) {
+                    return ?insurer_info.get_balance();
+                }
+            }
         };
 
         public func get_all_insurers(): Iter.Iter<InsurerWalletAddress> {
-            return _balances.keys();
+            return _insurers_info.keys();
         };
 
         public func set_last_transaction(insurer: InsurerWalletAddress, transaction_id: InsurerLastTransactionId): () {
-            _last_transactions.put(insurer, transaction_id);
+            let insurer_info: ?InsurerInfo = _insurers_info.get(insurer);
+            switch(insurer_info) {
+                case(null) {
+                    let new_insurer_info: InsurerInfo = InsurerInfo();
+                    new_insurer_info.set_last_transaction(transaction_id);
+                    _insurers_info.put(insurer, new_insurer_info);
+                };
+                case(?insurer_info) {
+                    insurer_info.set_last_transaction(transaction_id);
+                    _insurers_info.put(insurer, insurer_info);
+                }
+            }
         };
 
         public func get_last_transaction(insurer: InsurerWalletAddress): ?InsurerLastTransactionId {
-            return _last_transactions.get(insurer);
+            let insurer_info: ?InsurerInfo = _insurers_info.get(insurer);
+            switch(insurer_info) {
+                case(null) {
+                    return null;
+                };
+                case(?insurer_info) {
+                    return ?insurer_info.get_last_transaction();
+                }
+            }
         };
+
+        public func has_approved_clients(insurer: InsurerWalletAddress): Bool {
+            let insurer_info: ?InsurerInfo = _insurers_info.get(insurer);
+            switch(insurer_info) {
+                case(null) {
+                    return false;
+                };
+                case(?insurer_info) {
+                    return insurer_info.get_approved_clients_number() == 0;
+                }
+            }
+        };
+
+        public func add_client(insurer: InsurerWalletAddress, client_id: PolicyHolderId, checksum: Checksum): () {
+            let insurer_info: ?InsurerInfo = _insurers_info.get(insurer);
+            switch(insurer_info) {
+                case(null) {
+
+                };
+                case(?insurer_info) {
+                    insurer_info.put_client(client_id, checksum);
+                    _insurers_info.put(insurer, insurer_info);
+                }
+            }
+        };
+
+        public func get_checksum(insurer: InsurerWalletAddress, client_id: PolicyHolderId): ?Checksum {
+            let insurer_info: ?InsurerInfo = _insurers_info.get(insurer);
+            switch(insurer_info) {
+                case(null) {
+                    return ?"";
+                };
+                case(?insurer_info) {
+                    return insurer_info.get_checksum(client_id);
+                }
+            }
+        }
+    };
+
+    public class InsurerInfo() {
+        private var _balance: InsurerTokensAmount = 0;
+        private var _last_transaction: InsurerLastTransactionId = 0;
+        private let _policy_holders = HashMap.HashMap<PolicyHolderId, Checksum>(16, Text.equal, Text.hash);
+
+        public func get_balance(): InsurerTokensAmount {
+            return _balance;
+        };
+
+        public func set_balance(new_balance: InsurerTokensAmount): () {
+            _balance := new_balance;
+        };
+
+        public func get_last_transaction(): InsurerTokensAmount {
+            return _last_transaction;
+        };
+
+        public func set_last_transaction(new_last_transaction: InsurerLastTransactionId): () {
+            _last_transaction := new_last_transaction;
+        };
+
+        public func get_checksum(wallet_address: PolicyHolderId): ?Checksum {
+            return _policy_holders.get(wallet_address);
+        };
+
+        public func set_checksum(wallet_address: PolicyHolderId, checksum: Checksum): () {
+            _policy_holders.put(wallet_address, checksum);
+        };
+
+        public func get_approved_clients_number(): Nat {
+            return _policy_holders.size();
+        };
+
+        public func put_client(client_id: PolicyHolderId, checksum: Checksum): () {
+            _policy_holders.put(client_id, checksum);
+        };
+
+        public func get_client_checksum(client_id: PolicyHolderId): ?Checksum {
+            return _policy_holders.get(client_id);
+        }
     };
 
     public type InsurerWalletAddress = Principal;
@@ -36,9 +154,9 @@ module Types {
 
     public type InsurerLastTransactionId = Nat64;
 
-    public type DamageId = Principal;
+    public type PolicyHolderId = Text;
 
-    public type Timestamp = Nat64;
+    public type Checksum = Text;
 
     public type HttpRequestArgs = {
         url : Text;
