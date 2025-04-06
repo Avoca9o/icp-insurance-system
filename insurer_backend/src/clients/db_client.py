@@ -172,5 +172,5 @@ class DBClient:
         ).all()
 
         session.close()
-        print(f'>>>> {[{'user': payout.user_id, 'amount': payout.amount, 'date': str(payout.date), 'diagnoses': payout.diagnosis_code} for payout in payouts]}')
+        print(f'>>>> {[{"user": payout.user_id, "amount": payout.amount, "date": str(payout.date), "diagnoses": payout.diagnosis_code} for payout in payouts]}')
         return [{'user': payout.user_id, 'amount': payout.amount, 'date': str(payout.date), 'diagnoses': payout.diagnosis_code} for payout in payouts]

@@ -35,10 +35,10 @@ def handle_v1_add_scheme(req: AddSchemaRequest, token: str = Depends(oauth2_sche
 
 
 @router.post("/v1/add-scheme-csv")
-async def handle_v1_add_scheme_csv(file: UploadFile = File(...), token: str = Depends(oauth2_scheme)):
+def handle_v1_add_scheme_csv(file: UploadFile = File(...), token: str = Depends(oauth2_scheme)):
     try:
         if file.content_type != 'text/csv':
-            raise ValueError("Неверный формат файла. Требуется .csv")
+            raise ValueError("Invalid file format. CSV required")
 
         file.file.seek(0)
 

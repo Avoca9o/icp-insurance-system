@@ -5,3 +5,8 @@ ic-py
 python-dotenv
 python-multipart
 pandas
+pytest
+pytest-cov
+httpx
+sqlalchemy
+pydantic
