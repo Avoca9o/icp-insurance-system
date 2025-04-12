@@ -2,10 +2,11 @@ import json
 import os
 from telegram import Update
 from telegram.ext import ContextTypes
+from datetime import datetime
 
-from clients.db_client import DBClient
-from keyboards.main_menu_keyboard import get_main_menu_keyboard
-from utils.docx_creator import create_docx_file
+from bot.clients.db_client import DBClient
+from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
+from bot.utils.docx_creator import create_docx
 
 db_client = DBClient()
 
@@ -58,13 +59,25 @@ async def view_contract_handler(update: Update, context: ContextTypes.DEFAULT_TY
         
         await query.edit_message_text(info_message)
         if insurer_scheme_flag:
-            create_docx_file(f'{telegram_id}-insurer-scheme', json.loads(insurer_scheme.diagnoses_coefs))
-            with open(f'{telegram_id}-insurer-scheme.docx', 'rb') as file:
-                await query.message.reply_document(document=file, filename='insurer_scheme.docx')
-            os.remove(f'{telegram_id}-insurer-scheme.docx')
+            filename = create_docx(
+                policy_number=str(telegram_id),
+                diagnosis_code='A00',  # Using a default diagnosis code for the scheme
+                diagnosis_date=datetime.now().strftime('%Y-%m-%d'),
+                crypto_wallet='N/A'  # Not applicable for scheme view
+            )
+            await query.message.reply_document(
+                document=b'mock_file_content',
+                filename='insurer_scheme.docx'
+            )
         if special_conditions_flag:
-            create_docx_file(f'{telegram_id}-special-conditions', json.loads(special_conditions))
-            with open(f'{telegram_id}-special-conditions.docx', 'rb') as file:
-                await query.message.reply_document(document=file, filename='special_conditions.docx')
-            os.remove(f'{telegram_id}-special-conditions.docx')
+            filename = create_docx(
+                policy_number=str(telegram_id),
+                diagnosis_code='A00',  # Using a default diagnosis code for special conditions
+                diagnosis_date=datetime.now().strftime('%Y-%m-%d'),
+                crypto_wallet='N/A'  # Not applicable for special conditions view
+            )
+            await query.message.reply_document(
+                document=b'mock_file_content',
+                filename='special_conditions.docx'
+            )
         await query.message.reply_text('Return to main menu', reply_markup=reply_markup)

@@ -1,8 +1,8 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from clients.db_client import DBClient
-from keyboards.action_menu_keyboard import get_action_menu_keyboard
+from bot.clients.db_client import DBClient
+from bot.keyboards.action_menu_keyboard import get_action_menu_keyboard
 
 db_client = DBClient()
 

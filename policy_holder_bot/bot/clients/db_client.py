@@ -2,12 +2,12 @@ from datetime import datetime
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 
-from config.db_config import Base, DATABASE_URL
-from models.company_info import CompanyInfo
-from models.insurer_scheme import InsurerScheme
-from models.payout import Payout
-from models.user_info import UserInfo
-from utils.logger import logger
+from bot.config.db_config import Base, DATABASE_URL
+from bot.models.company_info import CompanyInfo
+from bot.models.insurer_scheme import InsurerScheme
+from bot.models.payout import Payout
+from bot.models.user_info import UserInfo
+from bot.utils.logger import logger
 
 class DBClient:
     def __init__(self):

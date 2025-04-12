@@ -4,8 +4,11 @@ from ic.client import Client
 from ic.identity import Identity
 from ic.agent import Agent
 
-from config.icp_config import ICP_CANISTER_ID, ICP_CANISTER_URL, candid
-from utils.logger import logger
+from bot.config.icp_config import ICP_CANISTER_ID, ICP_CANISTER_URL, candid
+from bot.utils.logger import logger
+
+import json
+import requests
 
 class ICPClient:
     def __init__(self):
