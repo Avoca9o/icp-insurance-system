@@ -1,7 +1,7 @@
 from docx import Document
 from typing import Dict
 
-from config.diagnosis_config import diagnosis_config
+from bot.config.diagnosis_config import diagnosis_config
 
 def create_docx_file(filename: str, data: Dict):
     doc = Document()

@@ -1,6 +1,6 @@
 import aiohttp
 
-from config.open_banking_config import OPEN_BANKING_URL
+from bot.config.open_banking_config import OPEN_BANKING_URL
 
 class OpenBankingClient:
     def __init__(self):
@@ -15,13 +15,13 @@ class OpenBankingClient:
         headers = {
             'Content-Type': 'application/json',
         }
-        async with aiohttp.ClientSession() as session:
-            try:
-                async with session.post(api_url, json=payload, headers=headers) as response:
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with await session.post(api_url, json=payload, headers=headers) as response:
                     if response.status == 200:
                         api_data = await response.json()
                         return api_data
                     else:
                         return ''
-            except Exception as e:
-                raise Exception('Error while connecting to Open Banking API')
+        except Exception as e:
+            raise Exception('Error while connecting to Open Banking API')

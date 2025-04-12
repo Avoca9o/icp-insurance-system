@@ -3,9 +3,9 @@ import re
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
-from clients.db_client import DBClient
-from clients.mailgun_client import MailgunClient
-from keyboards.main_menu_keyboard import get_main_menu_keyboard
+from bot.clients.db_client import DBClient
+from bot.clients.mailgun_client import MailgunClient
+from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
 
 db_client = DBClient()
 mailgun_client = MailgunClient()

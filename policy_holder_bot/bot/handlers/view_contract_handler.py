@@ -3,9 +3,9 @@ import os
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from clients.db_client import DBClient
-from keyboards.main_menu_keyboard import get_main_menu_keyboard
-from utils.docx_creator import create_docx_file
+from bot.clients.db_client import DBClient
+from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
+from bot.utils.docx_creator import create_docx_file
 
 db_client = DBClient()
 
@@ -31,9 +31,10 @@ async def view_contract_handler(update: Update, context: ContextTypes.DEFAULT_TY
         insurance_company = db_client.get_insurance_company_by_id(insurer_id)
         company_name = insurance_company.name if insurance_company else 'Unknown'
 
-        special_conditions = user.secondary_filters.replace('\'', '\"')
         special_conditions_flag = False
+        special_conditions = None
         if user.secondary_filters:
+            special_conditions = user.secondary_filters.replace('\'', '\"')
             special_conditions_flag = True
         
         insurer_scheme = db_client.get_insurer_scheme(insurer_id=insurer_id, global_version_num=global_version_num)
