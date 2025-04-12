@@ -133,6 +133,13 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
 
+    if user.sign_date.date() > diagnosis_date or user.expiration_date.date() < diagnosis_date:
+        await update.message.reply_text(
+            'The insured event is not relevant for the current contract by date.',
+            reply_markup=reply_markup,
+        )
+        return ConversationHandler.END
+
     transaction = db_client.get_payout(user_id=user.id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date)
     if transaction:
         await update.message.reply_text(
