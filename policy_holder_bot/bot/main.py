@@ -1,14 +1,18 @@
+import logging
 from telegram.ext import Application
-
-from config.bot_config import BOT_TOKEN
-from utils.logger import logger
-from utils.register_handlers import register_handlers
+from bot.config import get_bot_token
+from bot.utils.register_handlers import register_handlers
+from bot.utils.logger import logger
 
 def main():
-    application =  Application.builder().token(BOT_TOKEN).build()
+    """Initialize and start the bot."""
+    # Build application
+    application = Application.builder().token(get_bot_token()).build()
 
+    # Register handlers
     register_handlers(application=application)
 
+    # Start the bot
     logger.info("Bot is running!")
     application.run_polling()
 

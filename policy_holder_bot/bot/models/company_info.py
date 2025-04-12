@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from config.db_config import Base
+from bot.config.db_config import Base
 
 class CompanyInfo(Base):
     __tablename__ = 'companies'
