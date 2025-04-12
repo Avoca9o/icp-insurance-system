@@ -30,6 +30,12 @@
       "main": "src/insurance_manager/main.mo",
       "type": "motoko",
       "dependencies": ["icp_index_canister", "icp_ledger_canister", "ins_token"]
+    },
+    "ins_token_test": {
+      "main": "src/ins_token/test.mo",
+      "type": "motoko",
+      "dependencies": ["ins_token"],
+      "init_args": "(principal \"b77ix-eeaaa-aaaaa-qaada-cai\")"
     }
   },
   "defaults": {
