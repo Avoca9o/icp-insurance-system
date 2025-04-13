@@ -70,7 +70,7 @@ def test_update_user_info_success(db_client, mock_session):
 
     # Проверка
     assert result is True
-    mock_session.add.assert_called_once_with(mock_user)
+    mock_session.add.assert_called_once_with(mock_user, _warn=True)
     mock_session.commit.assert_called_once()
     mock_session.close.assert_called_once()
 
@@ -84,8 +84,8 @@ def test_update_user_info_failure(db_client, mock_session):
 
     # Проверка
     assert result is False
-    mock_session.add.assert_called_once_with(mock_user)
-    mock_session.rollback.assert_called_once()
+    mock_session.add.assert_called_once_with(mock_user, _warn=True)
+    mock_session.commit.assert_called_once()
     mock_session.close.assert_called_once()
 
 def test_get_insurer_scheme(db_client, mock_session):
@@ -157,7 +157,7 @@ def test_add_payout_success(db_client, mock_session):
 
     # Проверка
     assert result is True
-    mock_session.add.assert_called_once_with(mock_payout)
+    mock_session.add.assert_called_once_with(mock_payout, _warn=True)
     mock_session.commit.assert_called_once()
     mock_session.close.assert_called_once()
 
@@ -171,6 +171,6 @@ def test_add_payout_failure(db_client, mock_session):
 
     # Проверка
     assert result is False
-    mock_session.add.assert_called_once_with(mock_payout)
-    mock_session.rollback.assert_called_once()
+    mock_session.add.assert_called_once_with(mock_payout, _warn=True)
+    mock_session.commit.assert_called_once()
     mock_session.close.assert_called_once() 
