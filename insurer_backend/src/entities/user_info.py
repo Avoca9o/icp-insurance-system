@@ -1,5 +1,5 @@
 from config.db_config import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
+from sqlalchemy import Column, DateTime, Integer, String, ForeignKey, Boolean
 
 
 class UserInfo(Base):
@@ -14,3 +14,5 @@ class UserInfo(Base):
     schema_version = Column(Integer, ForeignKey('insurer_schemas.global_version_num'), nullable=False)
     secondary_filters = Column(String, nullable=True)
     is_approved = Column(Boolean, nullable=False, default=False)
+    sign_date = Column(DateTime, nullable=True)
+    expiration_date = Column(DateTime, nullable=True)

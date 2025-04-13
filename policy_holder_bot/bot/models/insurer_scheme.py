@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 
-from config.db_config import Base
+from bot.config.db_config import Base
 
 class InsurerScheme(Base):
     __tablename__ = 'insurer_schemas'

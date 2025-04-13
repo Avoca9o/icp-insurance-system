@@ -1,6 +1,7 @@
 import requests
-from config.mailgun_config import MAILGUN_API_KEY, MAILGUN_DOMAIN, SENDER_EMAIL
-from utils.logger import logger
+
+from bot.config.mailgun_config import MAILGUN_API_KEY, MAILGUN_DOMAIN, SENDER_EMAIL
+from bot.utils.logger import logger
 
 class MailgunClient:
     def __init__(self):
