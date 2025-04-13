@@ -129,14 +129,28 @@ async def test_approve_access_confirm(mock_update, mock_context):
 
 @pytest.mark.asyncio
 async def test_approve_access_cancel(mock_update, mock_context):
+    # Подготовка
+    mock_update.callback_query = AsyncMock()
     mock_update.callback_query.data = 'cancel'
-    
-    result = await approve_access(mock_update, mock_context)
-    
-    assert result == ConversationHandler.END
-    assert mock_update.callback_query.edit_message_text.call_args[0][0].startswith(
-        'Payout request canceled'
-    )
+    mock_update.callback_query.message = AsyncMock()
+    mock_update.callback_query.message.edit_message_text = AsyncMock()
+    mock_update.callback_query.answer = AsyncMock()
+
+    with patch('bot.handlers.request_payout_handler.open_banking_client') as mock_banking_client, \
+         patch('bot.handlers.request_payout_handler.get_main_menu_keyboard') as mock_keyboard:
+        mock_banking_client.get_oauth_token = AsyncMock(return_value='test_token')
+        mock_keyboard.return_value = None
+
+        # Выполнение
+        result = await approve_access(mock_update, mock_context)
+
+        # Проверка
+        mock_update.callback_query.answer.assert_called_once()
+        mock_update.callback_query.edit_message_text.assert_called_once_with(
+            'Payout request canceled. ❌',
+            reply_markup=None
+        )
+        assert result == ConversationHandler.END
 
 @pytest.mark.asyncio
 async def test_request_policy_number_valid(mock_update, mock_context):
@@ -157,13 +171,14 @@ async def test_request_policy_number_invalid(mock_update, mock_context):
     mock_message = MagicMock(spec=Message)
     mock_message.text = "invalid"
     mock_update.message = mock_message
-    
+    mock_update.message.reply_text = AsyncMock()
+
     result = await request_policy_number(mock_update, mock_context)
-    
-    assert result == REQUEST_POLICY_NUMBER
+
     mock_update.message.reply_text.assert_called_once_with(
         'Invalid policy number. Try again'
     )
+    assert result == REQUEST_POLICY_NUMBER
 
 @pytest.mark.asyncio
 async def test_request_diagnosis_code_valid(mock_update, mock_context):
@@ -181,16 +196,20 @@ async def test_request_diagnosis_code_valid(mock_update, mock_context):
 
 @pytest.mark.asyncio
 async def test_request_diagnosis_code_invalid(mock_update, mock_context):
+    # Подготовка
     mock_message = MagicMock(spec=Message)
     mock_message.text = "invalid"
     mock_update.message = mock_message
-    
+    mock_update.message.reply_text = AsyncMock()
+
+    # Выполнение
     result = await request_diagnosis_code(mock_update, mock_context)
-    
-    assert result == REQUEST_DIAGNOSIS_CODE
-    assert mock_update.message.reply_text.call_args[0][0].startswith(
-        'Invalid diagnosis code'
+
+    # Проверка
+    mock_update.message.reply_text.assert_called_once_with(
+        'Invalid diagnosis code. Try again using this source: https://www.cito-priorov.ru/cito/files/telemed/Perechen_kodov_MKB.pdf'
     )
+    assert result == REQUEST_DIAGNOSIS_CODE
 
 @pytest.mark.asyncio
 async def test_request_diagnosis_date_valid(mock_update, mock_context):
@@ -211,6 +230,7 @@ async def test_request_diagnosis_date_invalid(mock_update, mock_context):
     mock_message = MagicMock(spec=Message)
     mock_message.text = "invalid"
     mock_update.message = mock_message
+    mock_update.message.reply_text = AsyncMock()
     
     result = await request_diagnosis_date(mock_update, mock_context)
     
@@ -229,31 +249,35 @@ async def test_process_payout_success(
 ):
     mock_message = MagicMock(spec=Message)
     mock_update.message = mock_message
+    mock_update.message.reply_text = AsyncMock()
     
     mock_context.user_data.update({
-        'policy_number': 'POL-123456',
+        'policy_number': '123456789',
         'diagnosis_code': 'A00',
-        'diagnosis_date': '2024-03-15',
+        'diagnosis_date': date(2024, 3, 15),
         'crypto_wallet': 'test_wallet',
         'telegram_id': 12345,
         'oauth_token': 'test_token'
     })
     
     with patch('bot.handlers.request_payout_handler.db_client') as mock_db, \
-         patch('bot.handlers.request_payout_handler.icp_client') as mock_icp:
+         patch('bot.handlers.request_payout_handler.icp_client') as mock_icp, \
+         patch('bot.handlers.request_payout_handler.get_main_menu_keyboard') as mock_keyboard:
         
         mock_db.get_user_by_telegram_id.return_value = mock_db_user
         mock_db.get_payout.return_value = None
         mock_db.get_insurance_company_by_id.return_value = mock_insurance_company
         mock_db.get_insurer_scheme.return_value = mock_insurance_scheme
         mock_icp.payout_request.return_value = True
+        mock_keyboard.return_value = None
         
         result = await process_payout(mock_update, mock_context)
         
         assert result == ConversationHandler.END
         mock_db.add_payout.assert_called_once()
-        assert mock_update.message.reply_text.call_args[0][0].startswith(
-            'Your claim is approved!'
+        mock_update.message.reply_text.assert_called_once_with(
+            'Your claim is approved! 🎉\n\n',
+            reply_markup=None
         )
 
 @pytest.mark.asyncio
@@ -264,25 +288,29 @@ async def test_process_payout_invalid_date(
 ):
     mock_message = MagicMock(spec=Message)
     mock_update.message = mock_message
+    mock_update.message.reply_text = AsyncMock()
     
     mock_db_user.sign_date = datetime(2024, 3, 20)
     mock_context.user_data.update({
-        'policy_number': 'POL-123456',
+        'policy_number': '123456789',
         'diagnosis_code': 'A00',
-        'diagnosis_date': '2024-03-15',
+        'diagnosis_date': date(2024, 3, 15),
         'crypto_wallet': 'test_wallet',
         'telegram_id': 12345,
         'oauth_token': 'test_token'
     })
     
-    with patch('bot.handlers.request_payout_handler.db_client') as mock_db:
+    with patch('bot.handlers.request_payout_handler.db_client') as mock_db, \
+         patch('bot.handlers.request_payout_handler.get_main_menu_keyboard') as mock_keyboard:
         mock_db.get_user_by_telegram_id.return_value = mock_db_user
+        mock_keyboard.return_value = None
         
         result = await process_payout(mock_update, mock_context)
         
         assert result == ConversationHandler.END
-        assert mock_update.message.reply_text.call_args[0][0].startswith(
-            'The insured event is not relevant'
+        mock_update.message.reply_text.assert_called_once_with(
+            'The insured event is not relevant for the current contract by date.',
+            reply_markup=None
         )
 
 @pytest.mark.asyncio
@@ -293,23 +321,27 @@ async def test_process_payout_duplicate(
 ):
     mock_message = MagicMock(spec=Message)
     mock_update.message = mock_message
+    mock_update.message.reply_text = AsyncMock()
     
     mock_context.user_data.update({
-        'policy_number': 'POL-123456',
+        'policy_number': '123456789',
         'diagnosis_code': 'A00',
-        'diagnosis_date': '2024-03-15',
+        'diagnosis_date': date(2024, 3, 15),
         'crypto_wallet': 'test_wallet',
         'telegram_id': 12345,
         'oauth_token': 'test_token'
     })
     
-    with patch('bot.handlers.request_payout_handler.db_client') as mock_db:
+    with patch('bot.handlers.request_payout_handler.db_client') as mock_db, \
+         patch('bot.handlers.request_payout_handler.get_main_menu_keyboard') as mock_keyboard:
         mock_db.get_user_by_telegram_id.return_value = mock_db_user
         mock_db.get_payout.return_value = True
+        mock_keyboard.return_value = None
         
         result = await process_payout(mock_update, mock_context)
         
         assert result == ConversationHandler.END
-        assert mock_update.message.reply_text.call_args[0][0].startswith(
-            'Transfer was already made'
+        mock_update.message.reply_text.assert_called_once_with(
+            'Transfer was already made.',
+            reply_markup=None
         ) 
