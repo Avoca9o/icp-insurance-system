@@ -1,19 +1,20 @@
-import React, { useState}  from "react";
+import React, { useState } from "react";
 import { fetchApi } from "../../services/Api";
 import AddUserButton from "./AddUserButton";
 import UpdateUserModal from "./UpdateUserModal";
+import buttonStyle from "../../styles/ButtonStyle";
 
 const UserController = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false); // Управление модальным окном
+    const [isModalOpen, setIsModalOpen] = useState(false); // Control modal window
 
     const getUser = async (userId) => {
       try {
         const data = await fetchApi(`/v1/user?email=${userId}`, "GET");
         setSelectedUser(data.user);
       } catch (error) {
-        alert("Ошибка получения пользователя: " + error.message);
+        alert("Error retrieving user: " + error.message);
       }
     };
 
@@ -21,25 +22,25 @@ const UserController = () => {
       try {
         userData["email"] = userEmail;
         await fetchApi(`/v1/update-user`, "POST", userData);
-        alert("Пользователь обновлен успешно!");
+        alert("User updated successfully!");
       } catch (error) {
-        alert("Ошибка обновления пользователя: " + error.message);
+        alert("Error updating user: " + error.message);
       }
       fetchUsers();
     };
 
     const deleteUser = async (userId) => {
-      if (!window.confirm("Вы уверены, что хотите удалить этого пользователя?")) {
+      if (!window.confirm("Are you sure you want to delete this user?")) {
         return;
       }
   
       try {
         await fetchApi(`/v1/user?email=${userId}`, "DELETE");
   
-        alert("Пользователь успешно удалён!");
+        alert("User deleted successfully!");
         fetchUsers();
       } catch (error) {
-        alert("Ошибка при удалении пользователя: " + error.message);
+        alert("Error deleting user: " + error.message);
       }
     };
 
@@ -48,12 +49,12 @@ const UserController = () => {
         const response = await fetchApi(`/v1/check-sum?email=${userEmail}`, "GET");
   
         if (response['is_valid']) {
-          alert("Чек сумма совпадает!");
+          alert("Checksum matches!");
         } else {
-          alert("Чек сумма НЕ совпадает!");
+          alert("Checksum does NOT match!");
         }
       } catch (error) {
-        alert("Ошибка при проверке: " + error.message);
+        alert("Error checking checksum: " + error.message);
       }
     };
 
@@ -62,30 +63,30 @@ const UserController = () => {
         const data = await fetchApi("/v1/users", "GET");
         setUsers(data.users);
       } catch (error) {
-        alert("Ошибка получения списка пользователей: " + error.message);
+        alert("Error retrieving user list: " + error.message);
       }
     };
 
     return (
         <div>
         <section>
-        <h2>Пользователи</h2>
-        <button onClick={fetchUsers}>Список пользователей</button>
+        <h2>Users</h2>
+        <button style={buttonStyle} onClick={fetchUsers}>User List</button>
         <AddUserButton></AddUserButton>
         {users.length > 0 && (
           <ul>
             {users.map((user) => (
-              <li>
+              <li key={user.email}>
                 {user.email}{" "}
-                <button onClick={() => getUser(user.email)}>Открыть</button>
-                <button onClick={() => { setSelectedUser(user.email); setIsModalOpen(true)}}>Обновить</button>
+                <button style={buttonStyle} onClick={() => getUser(user.email)}>Open</button>
+                <button style={buttonStyle} onClick={() => { setSelectedUser(user.email); setIsModalOpen(true)}}>Update</button>
 
-                {/* Модальное окно */}
+                {/* Modal window */}
                 {isModalOpen && (
                   <UpdateUserModal
-                    onClose={() => setIsModalOpen(false)} // Закрываем окно
+                    onClose={() => setIsModalOpen(false)} // Close the modal
                     onSubmit={(userData) => {
-                      updateUser(selectedUser, userData); // Вызываем функцию для отправки данных на сервер
+                      updateUser(selectedUser, userData); // Call function to send data to the server
                       setIsModalOpen(false);
                     }}
                   />
@@ -96,13 +97,13 @@ const UserController = () => {
         )}
         {selectedUser && (
           <div>
-            <h3>Детали пользователя</h3>
+            <h3>User Details</h3>
             <p>Email: {selectedUser.email}</p>
-            <p>Версия схемы: {selectedUser.scheme_version}</p>
-            <p>Сумма страхования: {selectedUser.insurance_amount}</p>
+            <p>Scheme Version: {selectedUser.scheme_version}</p>
+            <p>Insurance Amount: {selectedUser.insurance_amount}</p>
 
-            <button onClick={() => deleteUser(selectedUser.email)}>Удалить пользователя</button>
-            <button onClick={() => isCheckSumValid(selectedUser.email)}>Сверить чек сумму</button>
+            <button style={buttonStyle} onClick={() => deleteUser(selectedUser.email)}>Delete User</button>
+            <button style={buttonStyle} onClick={() => isCheckSumValid(selectedUser.email)}>Check Checksum</button>
           </div>
         )}
       </section>

@@ -1,20 +1,23 @@
-import React, { useState}  from "react";
+import React, { useState } from "react";
 import { fetchApi } from "../../services/Api";
+import buttonStyle from "../../styles/ButtonStyle";
 
 const OperationsController = () => {
-    const [selectedDate, setSelectedDate] = useState(""); // Состояние для хранения выбранной даты    
-    const [operations, setOperations] = useState([]); // Состояние для хранения списка операций
+    const [selectedDate, setSelectedDate] = useState("");    
+    const [operations, setOperations] = useState([]);
 
     const token = localStorage.getItem("authToken");
 
     const fetchOperations = () => {
       if (!selectedDate) {
-        return alert("Пожалуйста, выберите дату");
+        return alert("Please select a date");
       }
 
-      fetch(`http://localhost:8001/v1/operations?date=${selectedDate}`, {headers: {
-        "Authorization": `Bearer ${token}`
-      }})
+      fetch(`http://localhost:8001/v1/operations?date=${selectedDate}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
         .then(response => response.blob())
         .then(blob => {
           const url = window.URL.createObjectURL(new Blob([blob]));
@@ -31,39 +34,38 @@ const OperationsController = () => {
     return (
         <div>
             <section>
-        <h2>Операции компании</h2>
-        <div style={{ marginBottom: "10px" }}>
+        <h2>Company Operations</h2>
+        <div>
           <label>
-            Введите дату (YYYY-MM-DD):{" "}
+            Enter date (YYYY-MM-DD):{" "}
             <input
               type="date"
-              value={selectedDate} // состояние для хранения введенной даты
-              onChange={(e) => setSelectedDate(e.target.value)} // обновление состояния при изменении
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
             />
           </label>
         </div>
-        <button onClick={fetchOperations}>Получить операции</button>
+        <button style={buttonStyle} onClick={fetchOperations}>Get Operations</button>
           
         {(
-          <div style={{ marginTop: "20px" }}>
+          <div>
             <ul>
               {operations.map((operation, index) => (
-                <li key={index} style={{ marginBottom: "10px" }}>
+                <li key={index}>
                   <p>
-                    <strong>Пользователь:</strong> {operation.user}
+                    <strong>User:</strong> {operation.user}
                   </p>
                   <p>
-                    <strong>Сумма:</strong> {operation.amount}
+                    <strong>Amount:</strong> {operation.amount}
                   </p>
                   <p>
-                    <strong>Дата:</strong> {operation.date}
+                    <strong>Date:</strong> {operation.date}
                   </p>
                 </li>
               ))}
             </ul>
           </div>
-        )
-        }
+        )}
       </section>
         </div>
     )

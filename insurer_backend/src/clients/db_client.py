@@ -97,6 +97,15 @@ class DBClient:
         session.add(scheme)
         session.commit()
         session.close()
+    
+    @staticmethod
+    def get_company_name(company_id: int):
+        session = SessionLocal()
+
+        res = session.query(CompanyInfo).filter(CompanyInfo.id == company_id).first()
+        session.close()
+
+        return res.name
 
     @staticmethod
     def get_schemas(company_id: int):

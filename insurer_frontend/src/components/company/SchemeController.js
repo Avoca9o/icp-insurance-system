@@ -1,6 +1,7 @@
-import React, { useState}  from "react";
+import React, { useState } from "react";
 import { fetchApi } from "../../services/Api";
 import { CsvUploader } from "../../services/CsvUploader";
+import buttonStyle from "../../styles/ButtonStyle";
 
 const SchemeController = () => {
     const [schemes, setSchemes] = useState([]);
@@ -9,99 +10,90 @@ const SchemeController = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [schemeData, setSchemeData] = useState("");
 
-
     const fetchSchemes = async () => {
       try {
         const data = await fetchApi("/v1/schemas", "GET");
         setSchemes(data.schemas);
       } catch (error) {
-        alert("Ошибка получения схем: " + error.message);
+        alert("Error retrieving schemes: " + error.message);
       }
     };
 
     const addScheme = async () => {
       try {
-        // Отправляем данные схемы на сервер
+        // Send scheme data to the server
         await fetchApi("/v1/add-scheme", "POST", { diagnoses_coefs: schemeData });
-        alert("Схема добавлена успешно!");
-    
-        // Закрываем модальное окно и обновляем список схем
+        alert("Scheme added successfully!");
+
+        // Close the modal and refresh the list of schemes
         setIsModalOpen(false);
         fetchSchemes();
-    
-        // Очищаем состояние
+
+        // Clear the state
         setSchemeData("");
       } catch (error) {
-        alert("Ошибка добавления схемы: " + error.message);
+        alert("Error adding scheme: " + error.message);
       }
     };
     
-    // Получение информации по конкретной схеме
+    // Retrieve information on a specific scheme
     const getScheme = async (schemeId) => {
         try {
           const data = await fetchApi(`/v1/schema?global_version_id=${schemeId}`, "GET");
           setSelectedScheme(data.scheme);
         } catch (error) {
-          alert("Ошибка получения данных схемы: " + error.message);
+          alert("Error retrieving scheme data: " + error.message);
         }
     };
-
 
     return (
         <div>
         <section>
-          <h2>Схемы</h2>
-          <button onClick={fetchSchemes}>Список схем</button>
+          <h2>Schemes</h2>
+          <button style={buttonStyle} onClick={fetchSchemes}>List of Schemes</button>
           {schemes.length > 0 && (
             <ul>
               {schemes.map((scheme) => (
                 <li key={scheme.id}>
-                  Схема ID: {scheme.id}{" "}
-                  <button onClick={() => getScheme(scheme.id)}>Открыть</button>
+                  Scheme ID: {scheme.id}{" "}
+                  <button style={buttonStyle} onClick={() => getScheme(scheme.id)}>Open</button>
                 </li>
               ))}
             </ul>
           )}
-          <h3>Добавить новую схему (CSV)</h3>
+          <h3>Add New Scheme (CSV)</h3>
           <CsvUploader></CsvUploader>
-          <h3>Добавить новую схему (JSON)</h3>
-          <button onClick={() => setIsModalOpen(true)}>Добавить схему</button>
+          <h3>Add New Scheme (JSON)</h3>
+          <button style={buttonStyle} onClick={() => setIsModalOpen(true)}>Add Scheme</button>
             {isModalOpen && (
-              <div style={modalStyles}>
-                <h3>Добавить новую схему (JSON)</h3>
+              <div>
+                <h3>Add New Scheme (JSON)</h3>
                 <br />
                 <label>
-                  Данные схемы (JSON):
+                  Scheme Data (JSON):
                   <textarea
                     value={schemeData}
                     onChange={(e) => setSchemeData(e.target.value)}
-                    placeholder='Введите JSON, например: {"CN52": 0.44, "GZ45": 0.5}'
+                    placeholder='Enter JSON, e.g., {"CN52": 0.44, "GZ45": 0.5}'
                     rows="5"
                     cols="40"
                   />
                 </label>
                 <br />
-                <button onClick={addScheme}>Отправить</button>
-                <button onClick={() => setIsModalOpen(false)}>Отмена</button>
+                <button style={buttonStyle} onClick={addScheme}>Submit</button>
+                <button style={buttonStyle} onClick={() => setIsModalOpen(false)}>Cancel</button>
               </div>
             )}
           {selectedScheme.length > 0 && (
             <div>
-            <h3>Детали схемы</h3>
+            <h3>Scheme Details</h3>
             {Object.entries(JSON.parse(selectedScheme)).map(([diagnosis, coefficient], index) => (
-              <div
-                key={index}
-                style={{
-                  marginBottom: "10px",
-                  borderBottom: "1px solid #ccc",
-                  paddingBottom: "10px",
-                }}
-              >
+              <div key={index}>
                 <p>
-                  <strong>Диагноз:</strong> {diagnosis}
+                  <strong>Diagnosis:</strong> {diagnosis}
                 </p>
                 <p>
-                  <strong>Коэффициент:</strong> {coefficient}
+                  <strong>Coefficient:</strong> {coefficient}
                 </p>
               </div>
             ))}

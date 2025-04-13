@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { register } from "../services/Api"; 
+import { register } from "../services/Api";
+import buttonStyle from "../styles/ButtonStyle";
 
 const RegisterForm = ({ onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
 
     try {
       const data = await register(formData);
-      console.log("Регистрация успешна:", data);
+      console.log("Registration successful:", data);
 
       setSuccess(true);
       setFormData({
@@ -39,76 +40,76 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         pay_address: "",
       });
     } catch (err) {
-      console.error("Ошибка регистрации:", err);
-      setError("Не удалось зарегистрировать компанию. Попробуйте снова.");
+      console.error("Registration error:", err);
+      setError("Failed to register the company. Please try again.");
     }
   };
 
   return (
     <form onSubmit={handleRegister}>
-      <h2>Регистрация компании</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>Компания успешно зарегистрирована!</p>}
+      <h2>Company Registration</h2>
+      {error && <p>{error}</p>}
+      {success && <p>Company registered successfully!</p>}
       <div>
-        <label>Логин:</label>
+        <label>Username:</label>
         <input
           type="text"
           name="login"
           value={formData.login}
           onChange={handleChange}
-          placeholder="Введите логин"
+          placeholder="Enter username"
           required
         />
       </div>
       <div>
-        <label>Электронная почта:</label>
+        <label>Email:</label>
         <input
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder="Введите email"
+          placeholder="Enter email"
           required
         />
       </div>
       <div>
-        <label>Пароль:</label>
+        <label>Password:</label>
         <input
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
-          placeholder="Введите пароль"
+          placeholder="Enter password"
           required
         />
       </div>
       <div>
-        <label>Название компании:</label>
+        <label>Company Name:</label>
         <input
           type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
-          placeholder="Введите название компании"
+          placeholder="Enter company name"
           required
         />
       </div>
       <div>
-        <label>Адрес выплат (Payout Address):</label>
+        <label>Payout Address:</label>
         <input
           type="text"
           name="pay_address"
           value={formData.pay_address}
           onChange={handleChange}
-          placeholder="Введите адрес выплат"
+          placeholder="Enter payout address"
           required
         />
       </div>
-      <button type="submit">Зарегистрировать компанию</button>
+      <button style={buttonStyle} type="submit">Register Company</button>
       <p>
-        Уже есть аккаунт?{" "}
-        <button type="button" onClick={onSwitchToLogin}>
-          Войти
+        Already have an account?{" "}
+        <button style={buttonStyle} type="button" onClick={onSwitchToLogin}>
+          Log In
         </button>
       </p>
     </form>

@@ -1,31 +1,31 @@
 import React, { useState } from "react";
 import { fetchApi } from "../../services/Api";
 import AddUserModal from "./AddUserModal";
+import buttonStyle from "../../styles/ButtonStyle";
 
 const AddUserButton = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false); // Управление модальным окном
+  const [isModalOpen, setIsModalOpen] = useState(false); // Control modal window
 
-  // Добавление пользователя
+  // Adding a user
   const addUser = async (userData) => {
     try {
       await fetchApi("/v1/add-user", "POST", userData);
-      alert("Пользователь добавлен успешно!");
-      
+      alert("User added successfully!");
     } catch (error) {
-      alert("Ошибка добавления пользователя: " + error.message);
+      alert("Error adding user: " + error.message);
     }
   };
 
   return (
     <div>
-      <button onClick={() => setIsModalOpen(true)}>Добавить пользователя</button>
+      <button style={buttonStyle} onClick={() => setIsModalOpen(true)}>Add User</button>
       
-      {/* Модальное окно */}
+      {/* Modal window */}
       {isModalOpen && (
         <AddUserModal
-          onClose={() => setIsModalOpen(false)} // Закрываем окно
+          onClose={() => setIsModalOpen(false)} // Close the modal
           onSubmit={(userData) => {
-            addUser(userData); // Вызываем функцию для отправки данных на сервер
+            addUser(userData); // Call function to send data to the server
           }}
         />
       )}
@@ -35,7 +35,7 @@ const AddUserButton = () => {
 
 export default AddUserButton;
 
-// Стили для модального окна
+// Styles for the modal window
 const modalStyles = {
   position: "fixed",
   top: "50%",

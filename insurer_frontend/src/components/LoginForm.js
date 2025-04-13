@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { logIn } from "../services/Api"; 
+import buttonStyle from "../styles/ButtonStyle";
+
 
 const LoginForm = ({ onSwitchToRegister }) => {
   const [login, setLogin] = useState("");
@@ -12,7 +14,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
 
     try {
       const data = await logIn(login, password);
-      console.log("Успешный вход:", data);
+      console.log("Login successful:", data);
       if (data.access_token) {
         localStorage.setItem("authToken", data.access_token);
       }
@@ -26,33 +28,33 @@ const LoginForm = ({ onSwitchToRegister }) => {
 
   return (
     <form onSubmit={handleLogin}>
-      <h2>Авторизация</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <h2>Login</h2>
+      {error && <p>{error}</p>}
       <div>
-        <label>Login: </label>
+        <label>Username: </label>
         <input
           type="text"
-          placeholder="Введите login"
+          placeholder="Enter username"
           value={login}
           onChange={(e) => setLogin(e.target.value)}
           required
         />
       </div>
       <div>
-        <label>Пароль: </label>
+        <label>Password: </label>
         <input
           type="password"
-          placeholder="Введите пароль"
+          placeholder="Enter password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
-      <button type="submit">Войти</button>
+      <button style={buttonStyle} type="submit">Log In</button>
       <p>
-        Нет аккаунта?{" "}
-        <button onClick={onSwitchToRegister} type="button">
-          Зарегистрироваться
+        Don't have an account?{" "}
+        <button onClick={onSwitchToRegister} style={buttonStyle} type="button">
+          Register
         </button>
       </p>
     </form>

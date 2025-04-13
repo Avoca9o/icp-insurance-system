@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import buttonStyle from "../../styles/ButtonStyle";
 
 const UpdateUserModal = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -24,56 +25,56 @@ const UpdateUserModal = ({ onClose, onSubmit }) => {
         secondary_filters: secondaryFiltersObject,
       });
     } catch (error) {
-      alert("Ошибка в формате JSON для вторичных фильтров");
+      alert("JSON format error for secondary filters");
     }
   };
 
   return (
     <div style={modalStyles}>
-      <h3>Обновить информацию о пользователе</h3>
+      <h3>Update User Information</h3>
       <label>
-        Страховая сумма:
+        Insurance Amount:
         <input
           type="number"
           name="insurance_amount"
           value={formData.insurance_amount}
           onChange={handleInputChange}
-          placeholder="Введите сумму"
+          placeholder="Enter amount"
           required
         />
       </label>
       <br />
       <label>
-        Версия схемы:
+        Schema Version:
         <input
           type="number"
           name="schema_version"
           value={formData.schema_version}
           onChange={handleInputChange}
-          placeholder="Введите версию схемы"
+          placeholder="Enter schema version"
           required
         />
       </label>
       <br />
       <label>
-        Вторичные фильтры (JSON):
+        Secondary Filters (JSON):
         <textarea
           name="secondary_filters"
           value={formData.secondary_filters}
           onChange={handleInputChange}
-          placeholder='Введите JSON, например: {"filter1": "value1", "filter2": "value2"}'
+          placeholder='Enter JSON, e.g., {"filter1": "value1", "filter2": "value2"}'
           rows="5"
           cols="40"
         />
       </label>
       <br />
-      <button onClick={handleSubmit}>Отправить</button>
-      <button onClick={onClose}>Отмена</button>
+      <button style={buttonStyle} onClick={handleSubmit}>Submit</button>
+      <button style={buttonStyle} onClick={onClose}>Cancel</button>
     </div>
   );
 };
 
-// Стили для модального окна
+// Styles for the modal window
 const modalStyles = {
   position: "fixed",
   top: "50%",
