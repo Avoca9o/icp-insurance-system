@@ -3,10 +3,10 @@ from dateutil.relativedelta import relativedelta
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from clients.db_client import DBClient
-from clients.icp_client import ICPClient
-from keyboards.main_menu_keyboard import get_main_menu_keyboard
-from utils.checksum import find_checksum
+from bot.clients.db_client import DBClient
+from bot.clients.icp_client import ICPClient
+from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
+from bot.utils.checksum import find_checksum
 
 db_client = DBClient()
 icp_client = ICPClient()

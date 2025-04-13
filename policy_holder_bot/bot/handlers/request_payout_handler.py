@@ -1,16 +1,16 @@
 import json
-from datetime import datetime
+from datetime import datetime, date
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
-from clients.db_client import DBClient
-from clients.icp_client import ICPClient
-from clients.open_banking_client import OpenBankingClient
-from keyboards.approve_access_keyboard import approve_access_keyboard
-from keyboards.main_menu_keyboard import get_main_menu_keyboard
-from models.payout import Payout
-from utils.logger import logger
-from utils.validation import validate_diagnosis_code, validate_policy_number
+from bot.clients.db_client import DBClient
+from bot.clients.icp_client import ICPClient
+from bot.clients.open_banking_client import OpenBankingClient
+from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
+from bot.keyboards.approve_access_keyboard import get_approve_access_keyboard
+from bot.models.payout import Payout
+from bot.utils.logger import logger
+from bot.utils.validation import validate_diagnosis_code, validate_policy_number
 
 db_client = DBClient()
 icp_client = ICPClient()
@@ -42,7 +42,7 @@ async def request_payout_handler(update: Update, context: ContextTypes.DEFAULT_T
         )
         return ConversationHandler.END
     
-    reply_markup = approve_access_keyboard()
+    reply_markup = get_approve_access_keyboard()
 
     await query.edit_message_text(
         'To process payout request, please confirm that you provide access to your personal information:',
@@ -118,7 +118,6 @@ async def request_crypto_wallet(update: Update, context: ContextTypes.DEFAULT_TY
 
     context.user_data['crypto_wallet'] = crypto_wallet
 
-    await update.message.reply_text('Processing payout request. Please wait...')
     return await process_payout(update=update, context=context)
 
 
@@ -126,6 +125,13 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
     policy_number = context.user_data['policy_number']
     diagnosis_code = context.user_data['diagnosis_code']
     diagnosis_date = context.user_data['diagnosis_date']
+    if isinstance(diagnosis_date, str):
+        diagnosis_date = datetime.strptime(diagnosis_date, '%Y-%m-%d').date()
+    elif isinstance(diagnosis_date, datetime):
+        diagnosis_date = diagnosis_date.date()
+    elif not isinstance(diagnosis_date, date):
+        raise ValueError("Invalid date format")
+    
     crypto_wallet = context.user_data['crypto_wallet']
     telegram_id = context.user_data['telegram_id']
     oauth_token = context.user_data['oauth_token']

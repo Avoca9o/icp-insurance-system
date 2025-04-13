@@ -1,6 +1,6 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-def approve_access_keyboard() -> InlineKeyboardMarkup:
+def get_approve_access_keyboard() -> InlineKeyboardMarkup:
     keyboard = [
         [
             InlineKeyboardButton("✅ Confirm personal data access", callback_data='confirm_personal_data'),

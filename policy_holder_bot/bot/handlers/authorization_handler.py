@@ -3,9 +3,12 @@ import re
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
-from clients.db_client import DBClient
-from clients.mailgun_client import MailgunClient
-from keyboards.main_menu_keyboard import get_main_menu_keyboard
+from bot.clients.db_client import DBClient
+from bot.clients.mailgun_client import MailgunClient
+from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
+from bot.keyboards.back_keyboard import get_back_keyboard
+from bot.models.user_info import UserInfo
+from bot.utils.validation import validate_email
 
 db_client = DBClient()
 mailgun_client = MailgunClient()
@@ -19,10 +22,10 @@ async def authorization_handler(update: Update, context: ContextTypes.DEFAULT_TY
     await query.edit_message_text('Please, enter your email address for authorization:')
     return REQUEST_EMAIL
 
-async def request_email(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def email_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     email = update.message.text
 
-    if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+    if not validate_email(email):
         await update.message.reply_text('The email you entered is not valid. Please try again.')
         return REQUEST_EMAIL
 

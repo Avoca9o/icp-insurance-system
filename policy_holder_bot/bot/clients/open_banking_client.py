@@ -1,6 +1,8 @@
+import requests
 import aiohttp
 
-from config.open_banking_config import OPEN_BANKING_URL
+from bot.config.open_banking_config import OPEN_BANKING_URL
+from bot.utils.logger import logger
 
 class OpenBankingClient:
     def __init__(self):
