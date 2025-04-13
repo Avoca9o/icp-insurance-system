@@ -38,7 +38,7 @@ class ICPClient:
     ) -> bool:
         response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
         logger.info(response)
-        if 'Transfer was approved' in str(response):
+        if 'Payout successful' in str(response):
             return True
         else:
             return False

@@ -1,0 +1,39 @@
+type HttpHeader = record {
+    name: text;
+    value: text;
+};
+
+type HttpMethod = variant {
+    get;
+    post;
+    head;
+};
+
+type HttpRequestArgs = record {
+    url: text;
+    max_response_bytes: opt nat64;
+    headers: vec HttpHeader;
+    body: opt blob;
+    method: HttpMethod;
+    transform: opt TransformContext;
+};
+
+type HttpResponsePayload = record {
+    status: nat;
+    headers: vec HttpHeader;
+    body: blob;
+};
+
+type TransformContext = record {
+    function: func (TransformArgs) -> (HttpResponsePayload) query;
+    context: blob;
+};
+
+type TransformArgs = record {
+    response: HttpResponsePayload;
+    context: blob;
+};
+
+service : {
+    http_request: (HttpRequestArgs) -> (HttpResponsePayload);
+}
