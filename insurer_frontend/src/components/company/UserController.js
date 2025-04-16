@@ -92,24 +92,27 @@ const UserController = () => {
         <div>
         <section style={sectionStyle}>
           <h2>Users</h2>
-          <div style={{ marginBottom: '15px' }}>
-            <button style={buttonStyle} onClick={fetchUsers}>User List</button>
+          <div style={{ marginBottom: '15px', display: 'flex', flexDirection: 'column', gap: '10px', width: '200px' }}>
             <AddUserButton></AddUserButton>
+            <button style={{...buttonStyle, width: '100%'}} onClick={fetchUsers}>User List</button>
           </div>
           
           {users.length > 0 && (
-            <ul style={{ listStyleType: 'none', padding: 0 }}>
-              {users.map((user) => (
-                <li key={user.email} style={listItemStyle}>
-                  <span>{user.email}</span>
-                  <div>
-                    <button style={buttonStyle} onClick={() => getUser(user.email)}>Open</button>
-                    <button style={{...buttonStyle, marginLeft: '5px'}} onClick={() => { setSelectedUser(user.email); setIsModalOpen(true)}}>Update</button>
-                    <button style={{...buttonStyle, marginLeft: '5px', backgroundColor: '#f44336'}} onClick={() => deleteUser(user.email)}>Delete</button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                {users.map((user) => (
+                  <li key={user.email} style={listItemStyle}>
+                    <span>{user.email}</span>
+                    <div>
+                      <button style={buttonStyle} onClick={() => getUser(user.email)}>Open</button>
+                      <button style={{...buttonStyle, marginLeft: '5px'}} onClick={() => { setSelectedUser(user.email); setIsModalOpen(true)}}>Update</button>
+                      <button style={{...buttonStyle, marginLeft: '5px', backgroundColor: '#f44336'}} onClick={() => deleteUser(user.email)}>Delete</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <button style={{...buttonStyle, marginTop: '10px'}} onClick={() => setUsers([])}>Close List</button>
+            </>
           )}
         </section>
         
@@ -118,7 +121,10 @@ const UserController = () => {
             <h2>User Details</h2>
             <div style={{ marginTop: '15px' }}>
               <p><strong>Email:</strong> {selectedUser.email}</p>
-              <button style={buttonStyle} onClick={() => isCheckSumValid(selectedUser.email)}>Check Sum</button>
+              <div style={{ marginTop: '10px' }}>
+                <button style={buttonStyle} onClick={() => isCheckSumValid(selectedUser.email)}>Check Sum</button>
+                <button style={{...buttonStyle, marginLeft: '10px', backgroundColor: '#f44336'}} onClick={() => setSelectedUser(null)}>Close</button>
+              </div>
             </div>
           </section>
         )}

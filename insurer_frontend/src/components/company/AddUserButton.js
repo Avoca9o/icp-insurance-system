@@ -17,8 +17,8 @@ const AddUserButton = () => {
   };
 
   return (
-    <div>
-      <button style={buttonStyle} onClick={() => setIsModalOpen(true)}>Add User</button>
+    <div style={{ width: '100%' }}>
+      <button style={{...buttonStyle, width: '100%'}} onClick={() => setIsModalOpen(true)}>Add User</button>
       
       {/* Modal window */}
       {isModalOpen && (
