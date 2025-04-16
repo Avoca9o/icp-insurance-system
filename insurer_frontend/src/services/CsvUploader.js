@@ -51,7 +51,7 @@ export const CsvUploader = () => {
       <button style={buttonStyle} onClick={() => fileInputRef.current.click()}>
         Choose File
       </button>
-      <button style={buttonStyle} onClick={handleFileUpload}>Upload Scheme</button>
+      <button style={{...buttonStyle, marginLeft: '15px'}} onClick={handleFileUpload}>Upload Scheme</button>
     </div>
   );
 }

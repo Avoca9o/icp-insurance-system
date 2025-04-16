@@ -61,16 +61,36 @@ const SchemeController = () => {
           <h2>Schemes</h2>
           <button style={buttonStyle} onClick={fetchSchemes}>List of Schemes</button>
           {schemes.length > 0 && (
-            <ul>
-              {schemes.map((scheme) => (
-                <li key={scheme.id}>
-                  Scheme ID: {scheme.id}{" "}
-                  <button style={buttonStyle} onClick={() => getScheme(scheme.id)}>Open</button>
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul>
+                {schemes.map((scheme) => (
+                  <li key={scheme.id}>
+                    Scheme ID: {scheme.id}{" "}
+                    <button style={buttonStyle} onClick={() => getScheme(scheme.id)}>Open</button>
+                  </li>
+                ))}
+              </ul>
+              <button style={{...buttonStyle, marginTop: '10px'}} onClick={() => setSchemes([])}>Close List</button>
+            </>
           )}
         </section>
+        
+        {selectedScheme.length > 0 && (
+          <section style={sectionStyle}>
+            <h2>Scheme Details</h2>
+            {Object.entries(JSON.parse(selectedScheme)).map(([diagnosis, coefficient], index) => (
+              <div key={index} style={{ marginBottom: '10px' }}>
+                <p>
+                  <strong>Diagnosis:</strong> {diagnosis}
+                </p>
+                <p>
+                  <strong>Coefficient:</strong> {coefficient}
+                </p>
+              </div>
+            ))}
+            <button style={buttonStyle} onClick={() => setSelectedScheme([])}>Close Scheme</button>
+          </section>
+        )}
         
         <section style={sectionStyle}>
           <h2>Add New Scheme (CSV)</h2>
@@ -100,22 +120,6 @@ const SchemeController = () => {
             </div>
           )}
         </section>
-        
-        {selectedScheme.length > 0 && (
-          <section style={sectionStyle}>
-            <h2>Scheme Details</h2>
-            {Object.entries(JSON.parse(selectedScheme)).map(([diagnosis, coefficient], index) => (
-              <div key={index} style={{ marginBottom: '10px' }}>
-                <p>
-                  <strong>Diagnosis:</strong> {diagnosis}
-                </p>
-                <p>
-                  <strong>Coefficient:</strong> {coefficient}
-                </p>
-              </div>
-            ))}
-          </section>
-        )}
         </div>
     )
 };
