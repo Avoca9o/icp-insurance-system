@@ -33,6 +33,13 @@ const Company = () => {
       setIsMenuOpen(false);
     };
 
+    const handleLogout = () => {
+      // Clear authentication token from localStorage
+      localStorage.removeItem("authToken");
+      // Redirect to the root page
+      window.location.href = "/";
+    };
+
     const renderController = () => {
       switch (activeController) {
         case "balance":
@@ -123,10 +130,24 @@ const Company = () => {
                 style={{
                   padding: '12px 16px',
                   cursor: 'pointer',
+                  borderBottom: '1px solid #ddd',
                   backgroundColor: activeController === "operations" ? '#e0e0e0' : 'transparent'
                 }}
               >
                 Operations Management
+              </div>
+              <div 
+                className="menu-item" 
+                onClick={handleLogout}
+                style={{
+                  padding: '12px 16px',
+                  cursor: 'pointer',
+                  backgroundColor: '#f44336',
+                  color: 'white',
+                  borderTop: '1px solid #ddd'
+                }}
+              >
+                Log Out
               </div>
             </div>
           )}
