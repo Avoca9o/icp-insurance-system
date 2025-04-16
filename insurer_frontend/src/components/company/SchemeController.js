@@ -3,6 +3,15 @@ import { fetchApi } from "../../services/Api";
 import { CsvUploader } from "../../services/CsvUploader";
 import buttonStyle from "../../styles/ButtonStyle";
 
+// Section container style
+const sectionStyle = {
+  marginBottom: '30px',
+  padding: '15px',
+  borderRadius: '8px',
+  backgroundColor: '#f9f9f9',
+  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+};
+
 const SchemeController = () => {
     const [schemes, setSchemes] = useState([]);
     const [selectedScheme, setSelectedScheme] = useState([]);
@@ -48,7 +57,7 @@ const SchemeController = () => {
 
     return (
         <div>
-        <section>
+        <section style={sectionStyle}>
           <h2>Schemes</h2>
           <button style={buttonStyle} onClick={fetchSchemes}>List of Schemes</button>
           {schemes.length > 0 && (
@@ -61,34 +70,42 @@ const SchemeController = () => {
               ))}
             </ul>
           )}
-          <h3>Add New Scheme (CSV)</h3>
+        </section>
+        
+        <section style={sectionStyle}>
+          <h2>Add New Scheme (CSV)</h2>
           <CsvUploader></CsvUploader>
-          <h3>Add New Scheme (JSON)</h3>
+        </section>
+        
+        <section style={sectionStyle}>
+          <h2>Add New Scheme (JSON)</h2>
           <button style={buttonStyle} onClick={() => setIsModalOpen(true)}>Add Scheme</button>
-            {isModalOpen && (
-              <div>
-                <h3>Add New Scheme (JSON)</h3>
-                <br />
-                <label>
-                  Scheme Data (JSON):
-                  <textarea
-                    value={schemeData}
-                    onChange={(e) => setSchemeData(e.target.value)}
-                    placeholder='Enter JSON, e.g., {"CN52": 0.44, "GZ45": 0.5}'
-                    rows="5"
-                    cols="40"
-                  />
-                </label>
-                <br />
+          {isModalOpen && (
+            <div style={{ marginTop: '15px' }}>
+              <label>
+                Scheme Data (JSON):
+                <textarea
+                  value={schemeData}
+                  onChange={(e) => setSchemeData(e.target.value)}
+                  placeholder='Enter JSON, e.g., {"CN52": 0.44, "GZ45": 0.5}'
+                  rows="5"
+                  cols="40"
+                  style={{ display: 'block', marginTop: '10px', width: '100%' }}
+                />
+              </label>
+              <div style={{ marginTop: '15px' }}>
                 <button style={buttonStyle} onClick={addScheme}>Submit</button>
-                <button style={buttonStyle} onClick={() => setIsModalOpen(false)}>Cancel</button>
+                <button style={{...buttonStyle, marginLeft: '10px', backgroundColor: '#f44336'}} onClick={() => setIsModalOpen(false)}>Cancel</button>
               </div>
-            )}
-          {selectedScheme.length > 0 && (
-            <div>
-            <h3>Scheme Details</h3>
+            </div>
+          )}
+        </section>
+        
+        {selectedScheme.length > 0 && (
+          <section style={sectionStyle}>
+            <h2>Scheme Details</h2>
             {Object.entries(JSON.parse(selectedScheme)).map(([diagnosis, coefficient], index) => (
-              <div key={index}>
+              <div key={index} style={{ marginBottom: '10px' }}>
                 <p>
                   <strong>Diagnosis:</strong> {diagnosis}
                 </p>
@@ -97,10 +114,8 @@ const SchemeController = () => {
                 </p>
               </div>
             ))}
-          </div>
-          
-          )}
-        </section>
+          </section>
+        )}
         </div>
     )
 };

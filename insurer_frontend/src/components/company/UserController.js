@@ -4,6 +4,27 @@ import AddUserButton from "./AddUserButton";
 import UpdateUserModal from "./UpdateUserModal";
 import buttonStyle from "../../styles/ButtonStyle";
 
+// Section container style
+const sectionStyle = {
+  marginBottom: '30px',
+  padding: '15px',
+  borderRadius: '8px',
+  backgroundColor: '#f9f9f9',
+  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+};
+
+// List item style
+const listItemStyle = {
+  padding: '10px',
+  marginBottom: '10px',
+  backgroundColor: 'white',
+  borderRadius: '4px',
+  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between'
+};
+
 const UserController = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -69,44 +90,49 @@ const UserController = () => {
 
     return (
         <div>
-        <section>
-        <h2>Users</h2>
-        <button style={buttonStyle} onClick={fetchUsers}>User List</button>
-        <AddUserButton></AddUserButton>
-        {users.length > 0 && (
-          <ul>
-            {users.map((user) => (
-              <li key={user.email}>
-                {user.email}{" "}
-                <button style={buttonStyle} onClick={() => getUser(user.email)}>Open</button>
-                <button style={buttonStyle} onClick={() => { setSelectedUser(user.email); setIsModalOpen(true)}}>Update</button>
-
-                {/* Modal window */}
-                {isModalOpen && (
-                  <UpdateUserModal
-                    onClose={() => setIsModalOpen(false)} // Close the modal
-                    onSubmit={(userData) => {
-                      updateUser(selectedUser, userData); // Call function to send data to the server
-                      setIsModalOpen(false);
-                    }}
-                  />
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-        {selectedUser && (
-          <div>
-            <h3>User Details</h3>
-            <p>Email: {selectedUser.email}</p>
-            <p>Scheme Version: {selectedUser.scheme_version}</p>
-            <p>Insurance Amount: {selectedUser.insurance_amount}</p>
-
-            <button style={buttonStyle} onClick={() => deleteUser(selectedUser.email)}>Delete User</button>
-            <button style={buttonStyle} onClick={() => isCheckSumValid(selectedUser.email)}>Check Checksum</button>
+        <section style={sectionStyle}>
+          <h2>Users</h2>
+          <div style={{ marginBottom: '15px' }}>
+            <button style={buttonStyle} onClick={fetchUsers}>User List</button>
+            <AddUserButton></AddUserButton>
           </div>
+          
+          {users.length > 0 && (
+            <ul style={{ listStyleType: 'none', padding: 0 }}>
+              {users.map((user) => (
+                <li key={user.email} style={listItemStyle}>
+                  <span>{user.email}</span>
+                  <div>
+                    <button style={buttonStyle} onClick={() => getUser(user.email)}>Open</button>
+                    <button style={{...buttonStyle, marginLeft: '5px'}} onClick={() => { setSelectedUser(user.email); setIsModalOpen(true)}}>Update</button>
+                    <button style={{...buttonStyle, marginLeft: '5px', backgroundColor: '#f44336'}} onClick={() => deleteUser(user.email)}>Delete</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+        
+        {selectedUser && (
+          <section style={sectionStyle}>
+            <h2>User Details</h2>
+            <div style={{ marginTop: '15px' }}>
+              <p><strong>Email:</strong> {selectedUser.email}</p>
+              <button style={buttonStyle} onClick={() => isCheckSumValid(selectedUser.email)}>Check Sum</button>
+            </div>
+          </section>
         )}
-      </section>
+        
+        {/* Modal window */}
+        {isModalOpen && (
+          <UpdateUserModal
+            onClose={() => setIsModalOpen(false)} // Close the modal
+            onSubmit={(userData) => {
+              updateUser(selectedUser, userData); // Call function to send data to the server
+              setIsModalOpen(false);
+            }}
+          />
+        )}
         </div>
     )
 };

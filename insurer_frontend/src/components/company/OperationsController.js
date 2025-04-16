@@ -2,6 +2,15 @@ import React, { useState } from "react";
 import { fetchApi } from "../../services/Api";
 import buttonStyle from "../../styles/ButtonStyle";
 
+// Section container style
+const sectionStyle = {
+  marginBottom: '30px',
+  padding: '15px',
+  borderRadius: '8px',
+  backgroundColor: '#f9f9f9',
+  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+};
+
 const OperationsController = () => {
     const [selectedDate, setSelectedDate] = useState("");    
     const [operations, setOperations] = useState([]);
@@ -33,40 +42,48 @@ const OperationsController = () => {
 
     return (
         <div>
-            <section>
-        <h2>Company Operations</h2>
-        <div>
-          <label>
-            Enter date (YYYY-MM-DD):{" "}
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-            />
-          </label>
-        </div>
-        <button style={buttonStyle} onClick={fetchOperations}>Get Operations</button>
-          
-        {(
-          <div>
-            <ul>
-              {operations.map((operation, index) => (
-                <li key={index}>
-                  <p>
-                    <strong>User:</strong> {operation.user}
-                  </p>
-                  <p>
-                    <strong>Amount:</strong> {operation.amount}
-                  </p>
-                  <p>
-                    <strong>Date:</strong> {operation.date}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </section>
+            <section style={sectionStyle}>
+              <h2>Company Operations</h2>
+              <div style={{ marginBottom: '15px' }}>
+                <label>
+                  Enter date (YYYY-MM-DD):{" "}
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                  />
+                </label>
+              </div>
+              <button style={buttonStyle} onClick={fetchOperations}>Get Operations</button>
+              
+              {operations.length > 0 && (
+                <div style={{ marginTop: '20px' }}>
+                  <h3>Operations List</h3>
+                  <ul style={{ listStyleType: 'none', padding: 0 }}>
+                    {operations.map((operation, index) => (
+                      <li key={index} style={{ 
+                        padding: '10px', 
+                        marginBottom: '10px', 
+                        backgroundColor: 'white', 
+                        borderRadius: '4px',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                      }}>
+                        <p>
+                          <strong>User:</strong> {operation.user}
+                        </p>
+                        <p>
+                          <strong>Amount:</strong> {operation.amount}
+                        </p>
+                        <p>
+                          <strong>Date:</strong> {operation.date}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
         </div>
     )
 };
