@@ -36,6 +36,7 @@ const UserController = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false); // Control modal window
+    const [userToUpdate, setUserToUpdate] = useState(null);
 
     const getUser = async (userId) => {
       try {
@@ -113,12 +114,11 @@ const UserController = () => {
                     <div>
                       <button style={buttonStyle} onClick={() => getUser(user.email)}>Open</button>
                       <button style={{...buttonStyle, marginLeft: '5px'}} onClick={() => { 
-                        setSelectedUser(user.email); 
-                        setIsModalOpen(true);
-                        // Close the user details section if it's open
                         if (selectedUser && selectedUser.email === user.email) {
                           setSelectedUser(null);
                         }
+                        setUserToUpdate(user.email);
+                        setIsModalOpen(true);
                       }}>Update</button>
                       <button style={{...buttonStyle, marginLeft: '5px', backgroundColor: '#f44336'}} onClick={() => deleteUser(user.email)}>Delete</button>
                     </div>
@@ -153,10 +153,14 @@ const UserController = () => {
         {/* Modal window */}
         {isModalOpen && (
           <UpdateUserModal
-            onClose={() => setIsModalOpen(false)} // Close the modal
-            onSubmit={(userData) => {
-              updateUser(selectedUser, userData); // Call function to send data to the server
+            onClose={() => {
               setIsModalOpen(false);
+              setUserToUpdate(null);
+            }}
+            onSubmit={(userData) => {
+              updateUser(userToUpdate, userData);
+              setIsModalOpen(false);
+              setUserToUpdate(null);
             }}
           />
         )}

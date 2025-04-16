@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { fetchApi } from "../../services/Api";
 import buttonStyle from "../../styles/ButtonStyle";
 
-// Section container style
 const sectionStyle = {
   marginBottom: '30px',
   padding: '15px',

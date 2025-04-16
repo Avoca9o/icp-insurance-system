@@ -3,7 +3,6 @@ import { fetchApi } from "../../services/Api";
 import { CsvUploader } from "../../services/CsvUploader";
 import buttonStyle from "../../styles/ButtonStyle";
 
-// Section container style
 const sectionStyle = {
   marginBottom: '30px',
   padding: '15px',
@@ -122,18 +121,6 @@ const SchemeController = () => {
         </section>
         </div>
     )
-};
-
-const modalStyles = {
-  position: "fixed",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  backgroundColor: "#fff",
-  padding: "20px",
-  borderRadius: "8px",
-  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-  zIndex: 1000,
 };
 
 export default SchemeController;
