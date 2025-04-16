@@ -112,7 +112,14 @@ const UserController = () => {
                     <span>{user.email}</span>
                     <div>
                       <button style={buttonStyle} onClick={() => getUser(user.email)}>Open</button>
-                      <button style={{...buttonStyle, marginLeft: '5px'}} onClick={() => { setSelectedUser(user.email); setIsModalOpen(true)}}>Update</button>
+                      <button style={{...buttonStyle, marginLeft: '5px'}} onClick={() => { 
+                        setSelectedUser(user.email); 
+                        setIsModalOpen(true);
+                        // Close the user details section if it's open
+                        if (selectedUser && selectedUser.email === user.email) {
+                          setSelectedUser(null);
+                        }
+                      }}>Update</button>
                       <button style={{...buttonStyle, marginLeft: '5px', backgroundColor: '#f44336'}} onClick={() => deleteUser(user.email)}>Delete</button>
                     </div>
                   </li>
