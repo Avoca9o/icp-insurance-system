@@ -20,7 +20,7 @@ def handle_v1_balance_request(token: str = Depends(oauth2_scheme)):
         if not company:
             raise ValueError(f"Company does not exist")
 
-        content = {"message": f"Your balance is {icp.get_balance(company.pay_address)} dirhum"}
+        content = {"message": f"Your balance is {icp.get_balance(company.pay_address)} rubles"}
         return JSONResponse(content=content, status_code=200)
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)
