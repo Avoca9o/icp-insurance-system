@@ -25,6 +25,13 @@ const listItemStyle = {
   justifyContent: 'space-between'
 };
 
+const userDetailStyle = {
+  backgroundColor: '#f5f5f5',
+  padding: '15px',
+  borderRadius: '5px',
+  marginBottom: '15px',
+};
+
 const UserController = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -120,8 +127,15 @@ const UserController = () => {
           <section style={sectionStyle}>
             <h2>User Details</h2>
             <div style={{ marginTop: '15px' }}>
-              <p><strong>Email:</strong> {selectedUser.email}</p>
-              <div style={{ marginTop: '10px' }}>
+              <div style={userDetailStyle}>
+                <p><strong>Email:</strong> {selectedUser.email}</p>
+                <p><strong>Scheme Version:</strong> {selectedUser.scheme_version}</p>
+                <p><strong>Insurance Amount:</strong> {selectedUser.insurance_amount}</p>
+                <p><strong>Secondary Filters:</strong> {selectedUser.secondary_filters ? JSON.stringify(selectedUser.secondary_filters) : 'None'}</p>
+                <p><strong>Telegram ID:</strong> {selectedUser.telegram_id || 'Not set'}</p>
+                <p><strong>Is Approved:</strong> {selectedUser.is_approved ? 'Yes' : 'No'}</p>
+              </div>
+              <div style={{ marginTop: '15px' }}>
                 <button style={buttonStyle} onClick={() => isCheckSumValid(selectedUser.email)}>Check Sum</button>
                 <button style={{...buttonStyle, marginLeft: '10px', backgroundColor: '#f44336'}} onClick={() => setSelectedUser(null)}>Close</button>
               </div>
