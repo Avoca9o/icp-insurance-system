@@ -3,6 +3,7 @@ import BalanceController from "../components/company/BalanceController";
 import SchemeController from "../components/company/SchemeController";
 import UserController from "../components/company/UserController";
 import OperationsController from "../components/company/OperationsController";
+import LogoutConfirm from "../components/LogoutConfirm";
 import Header from "../styles/Header";
 import { fetchApi } from "../services/Api";
 
@@ -10,6 +11,7 @@ const Company = () => {
     const [companyName, setCompanyName] = useState("");
     const [activeController, setActiveController] = useState("balance");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
     useEffect(() => {
       const getCompanyName = async () => {
@@ -33,11 +35,19 @@ const Company = () => {
       setIsMenuOpen(false);
     };
 
-    const handleLogout = () => {
-      // Clear authentication token from localStorage
-      localStorage.removeItem("authToken");
-      // Redirect to the root page
-      window.location.href = "/";
+    const handleLogoutClick = () => {
+      setShowLogoutConfirm(true);
+      setIsMenuOpen(false);
+    };
+
+    const handleLogoutConfirm = (confirmed) => {
+      setShowLogoutConfirm(false);
+      if (confirmed) {
+        // Clear authentication token from localStorage
+        localStorage.removeItem("authToken");
+        // Redirect to the root page
+        window.location.href = "/";
+      }
     };
 
     const renderController = () => {
@@ -138,7 +148,7 @@ const Company = () => {
               </div>
               <div 
                 className="menu-item" 
-                onClick={handleLogout}
+                onClick={handleLogoutClick}
                 style={{
                   padding: '12px 16px',
                   cursor: 'pointer',
@@ -152,6 +162,13 @@ const Company = () => {
             </div>
           )}
         </div>
+        
+        {showLogoutConfirm && (
+          <LogoutConfirm 
+            onConfirm={() => handleLogoutConfirm(true)}
+            onCancel={() => handleLogoutConfirm(false)}
+          />
+        )}
         
         <div className="controller-container">
           {renderController()}
