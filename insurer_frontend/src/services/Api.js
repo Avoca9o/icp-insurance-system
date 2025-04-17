@@ -6,7 +6,7 @@ export const fetchApi = async (url, method = "GET", body = null) => {
   const token = getToken();
 
   if (!token) {
-    throw new Error("Необходимо авторизоваться");
+    throw new Error("Authorization is required");
   }
 
   const headers = {
@@ -27,7 +27,7 @@ export const fetchApi = async (url, method = "GET", body = null) => {
   const responseData = await response.json();
 
   if (!response.ok) {
-    throw new Error(`Ошибка: ${response.statusText}: ${responseData.message}`);
+    throw new Error(`Error: ${response.statusText}: ${responseData.message}`);
   }
 
   return responseData;
@@ -43,7 +43,7 @@ export const logIn = async (login, password) => {
   });
 
   if (!response.ok) {
-    throw new Error((await response.json()).message || "Ошибка при авторизации");
+    throw new Error((await response.json()).message || "Authorization error");
   }
 
   return response.json();
@@ -59,7 +59,7 @@ export const register = async (formData) => {
   });
 
   if (!response.ok) {
-    throw new Error("Ошибка регистрации: " + response.statusText);
+    throw new Error("Registration error: " + response.statusText);
   }
 
   return response.json();

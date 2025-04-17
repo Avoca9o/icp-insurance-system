@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import buttonStyle from "../styles/ButtonStyle";
 
 export const CsvUploader = () => {
   const [file, setFile] = useState(null);
+  const fileInputRef = React.createRef();
 
   const token = localStorage.getItem("authToken");
 
@@ -11,7 +13,7 @@ export const CsvUploader = () => {
 
   const handleFileUpload = async () => {
     if (!file) {
-      alert("Выберите файл!");
+      alert("Please select a file!");
       return;
     }
 
@@ -29,18 +31,27 @@ export const CsvUploader = () => {
         
         const responseData = await response.json();
         if (!response.ok) {
-          throw new Error(`Ошибка: ${response.statusText}: ${responseData.message}`);
+          throw new Error(`Error: ${response.statusText}: ${responseData.message}`);
         }
-        alert("Файл успешно добавлен!")
+        alert("File uploaded successfully!");
     } catch (error) {
-      alert("Ошибка сети или сервера: " + error.message);
+      alert("Network or server error: " + error.message);
     }
   };
 
   return (
     <div>
-      <input type="file" accept=".csv" onChange={handleFileChange} />
-      <button onClick={handleFileUpload}>Добавить схему</button>
+      <input
+        type="file"
+        accept=".csv"
+        onChange={handleFileChange}
+        ref={fileInputRef}
+        style={{ display: 'none' }} // скрыть стандартный input
+      />
+      <button style={buttonStyle} onClick={() => fileInputRef.current.click()}>
+        Choose File
+      </button>
+      <button style={{...buttonStyle, marginLeft: '15px'}} onClick={handleFileUpload}>Upload Scheme</button>
     </div>
   );
 }
