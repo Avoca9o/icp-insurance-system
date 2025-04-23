@@ -45,12 +45,15 @@ actor class InsuranceManager() {
 
     public func get_insurer_balance(wallet_address: Principal): async Result.Result<Types.InsurerTokensAmount, Text> {
         try {
-            let account = {
-                owner = wallet_address;
-                subaccount = null;
-            };
-            let balance = await InsToken.icrc1_balance_of(account);
-            return #ok(Nat64.fromNat(balance));
+            let insurer_balance = insurers_data.get_balance(wallet_address);
+            switch(insurer_balance) {
+                case(null) {
+                    return #err("Insurer does not exists");
+                };
+                case(?insurer_balance) {
+                    return #ok(insurer_balance);
+                }
+            }
         } catch (error) {
             return #err(Error.message(error));
         }
@@ -63,58 +66,39 @@ actor class InsuranceManager() {
                 owner = wallet_address;
                 subaccount = null;
             };
+            
             let transactions = await InsToken.get_transactions({
                 account = wallet_address;
                 start = last_tx;
                 length = 100;
             });
-            
+
             var new_balance : Nat64 = switch (insurers_data.get_balance(wallet_address)) {
-                case (?balance) { balance };
-                case (null) { 0 };
+                case (?balance) { 
+                    balance 
+                };
+                case (null) { 
+                    0 
+                };
             };
 
             for (tx in transactions.transactions.vals()) {
                 if (tx.block_index > last_tx) {
                     if (Principal.equal(tx.transfer.to, wallet_address)) {
                         new_balance := new_balance + tx.transfer.amount;
-                    } else if (Principal.equal(tx.transfer.from, wallet_address)) {
-                        new_balance := new_balance - tx.transfer.amount;
                     };
                     insurers_data.set_last_tx(wallet_address, tx.block_index);
+                } else {
+
                 };
             };
             
             insurers_data.set_balance(wallet_address, new_balance);
+            
+            let verify_balance = insurers_data.get_balance(wallet_address);
+            
             return #ok("Balance refreshed successfully");
         } catch(error) {
-            return #err(Error.message(error));
-        }
-    };
-
-    public shared(msg) func send_tokens(recipient: Principal, amount: Types.InsurerTokensAmount): async Result.Result<(), Text> {
-        try {
-            let transferResult = await InsToken.icrc1_transfer({
-                to = {
-                    owner = recipient;
-                    subaccount = null;
-                };
-                amount = Nat64.toNat(amount);
-                fee = null;
-                memo = null;
-                from_subaccount = null;
-                created_at_time = null;
-                from = {
-                    owner = msg.caller;
-                    subaccount = null;
-                };
-            });
-
-            switch (transferResult) {
-                case (#ok(_)) { return #ok(); };
-                case (#err(e)) { return #err("Error in transferring tokens: " # e); };
-            }
-        } catch (error) {
             return #err(Error.message(error));
         }
     };
@@ -194,20 +178,42 @@ actor class InsuranceManager() {
         };
     };
 
-    public shared(msg) func withdraw_amount(amount : Nat64) : async Result.Result<(), Text> {
-        let caller = msg.caller;
-        switch (insurers_data.get_balance(caller)) {
-            case (null) { #err("No balance found for this address") };
-            case (?balance) {
-                if (balance < amount) {
-                    #err("Insufficient balance")
-                } else {
-                    let new_balance = balance - amount;
-                    insurers_data.set_balance(caller, new_balance);
-                    #ok()
+    public func withdraw(wallet_address: Types.InsurerWalletAddress) : async Result.Result<Text, Text> {
+        try {
+            let insurer_balance = insurers_data.get_balance(wallet_address);
+            switch(insurer_balance) {
+                case(null) {
+                    return #err("Insurer does not exist");
+                };
+                case(_) {
+ 
                 }
             };
-        };
+
+            insurers_data.set_balance(wallet_address, 0);
+            let transferResult = await InsToken.icrc1_transfer({
+                to = {
+                    owner = wallet_address;
+                    subaccount = null;
+                };
+                amount = Nat64.toNat(1_000);
+                fee = null;
+                memo = null;
+                from_subaccount = null;
+                created_at_time = null;
+                from = {
+                    owner = Principal.fromText("be2us-64aaa-aaaaa-qaabq-cai");
+                    subaccount = null;
+                };
+            });
+
+            switch (transferResult) {
+                case (#ok(_)) { return #ok("Withdraw successful"); };
+                case (#err(e)) { return #err("Error in withdraw operation: " # e); };
+            };
+        } catch (error) {
+            return #err(Error.message(error));
+        }
     };
 
     private func refresh_all_wrapper() : async () {
@@ -216,19 +222,28 @@ actor class InsuranceManager() {
 
     let timer = Timer.recurringTimer<system>(#seconds 60, refresh_all_wrapper);
 
-    public shared(msg) func add_approved_user(user: Principal) : async Result.Result<(), Text> {
-        if (msg.caller == owner) {
-            approved_users.put(user, true);
-            return #ok();
-        } else {
-            return #err("Unauthorized");
-        };
+    public func add_approved_client(insurer: Types.InsurerWalletAddress, client_id: Nat, checksum: Types.Checksum) : async Result.Result<(), Text> {
+        try {
+            insurers_data.add_client(insurer, Nat.toText(client_id), checksum);
+            return #ok;
+        } catch (error) {
+            return #err(Error.message(error));
+        }
     };
 
-    public query func is_user_approved(user: Principal) : async Bool {
-        switch (approved_users.get(user)) {
-            case (?approved) { approved };
-            case (null) { false };
-        };
+    public query func get_checksum(insurer: Types.InsurerWalletAddress, client_id: Nat) : async Result.Result<Types.Checksum, Text> {
+        try {
+             let checksum = insurers_data.get_checksum(insurer, Nat.toText(client_id));
+             switch (checksum) {
+                case (null) {
+                    return #err("Client does not exist");
+                };
+                case (?checksum) {
+                    return #ok(checksum);
+                };
+             };
+        } catch (error) {
+             return #err(Error.message(error));
+        }
     };
 }
