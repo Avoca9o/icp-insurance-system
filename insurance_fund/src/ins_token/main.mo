@@ -66,7 +66,7 @@ actor InsToken {
     private var transactions = HashMap.HashMap<Nat64, Transaction>(0, Nat64.equal, func (n: Nat64) : Hash.Hash { 
         Hash.hash(Nat64.toNat(n))
     });
-    private var next_block_index: Nat64 = 0;
+    private var next_block_index: Nat64 = 1;
 
     public query func icrc1_name() : async Text { name };
     public query func icrc1_symbol() : async Text { symbol };
@@ -164,6 +164,17 @@ actor InsToken {
                 balances.put(account, mint_amount);
             };
         };
+
+        let tx: Transaction = {
+            block_index = next_block_index;
+            transfer = {
+                amount = Nat64.fromNat(amount);
+                from = caller;
+                to = account.owner;
+            };
+        };
+        transactions.put(next_block_index, tx);
+        next_block_index += 1;
 
         #ok()
     };
