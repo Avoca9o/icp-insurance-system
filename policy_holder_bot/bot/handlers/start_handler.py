@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from keyboards.authorization_keyboard import get_authorization_keyboard
+from bot.keyboards.authorization_keyboard import get_authorization_keyboard
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user

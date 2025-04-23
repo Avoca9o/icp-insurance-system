@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Date, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, Date, DateTime, ForeignKey, Integer, String, Float
 
-from config.db_config import Base
+from bot.config.db_config import Base
 
 class Payout(Base):
     __tablename__ = 'payouts'

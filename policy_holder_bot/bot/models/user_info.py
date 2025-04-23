@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
 
-from config.db_config import Base
+from bot.config.db_config import Base
 
 class UserInfo(Base):
     __tablename__ = 'users'
@@ -14,6 +14,8 @@ class UserInfo(Base):
     schema_version = Column(Integer, ForeignKey('insurer_schemas.global_version_num'), nullable=False)
     secondary_filters = Column(String, nullable=True)
     is_approved = Column(Boolean, nullable=False, default=False)
+    sign_date = Column(DateTime, nullable=True)
+    expiration_date = Column(DateTime, nullable=True)
 
     def __init__(self, phone, email, insurance_amount, payout_address, insurer_id, schema_version, secondary_filters):
         self.phone = phone
