@@ -37,7 +37,7 @@ fake_cases = {
                             'insuranceCaseId': 1,
                             'documentName': 'Полис ОМС',
                             'documentNumber': 1111,
-                            'date': '2024-06-25',
+                            'date': '2025-04-23',
                             'diagnosisCode': 'B23.0',
                             'registrationClinicId': 256,
                             'registrationClinic': 'Медицинский центр имени Бурназяна',
