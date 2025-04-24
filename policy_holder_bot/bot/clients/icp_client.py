@@ -40,7 +40,7 @@ class ICPClient:
         oauth_token: str,
     ) -> bool:
         response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
-        logger.info(response)
+        logger.info(f'>>> {response}')
         if 'Payout successful' in str(response):
             return True
         else:

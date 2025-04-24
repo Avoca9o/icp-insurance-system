@@ -103,11 +103,21 @@ actor class InsuranceManager() {
         }
     };
 
-    public func request_payout(policy_number: Text, diagnosis_code: Text, diagnosis_date: Text, insurer_crypto_wallet: Principal, policy_holder_crypto_wallet: Principal, amount: Types.InsurerTokensAmount, oauth_token: Text): async Result.Result<Text, Text> {
+    public func request_payout(policy_number: Text, diagnosis_code: Text, diagnosis_date: Text, insurer_crypto_wallet: Principal, policy_holder_crypto_wallet: Principal, amount: Nat, oauth_token: Text): async Result.Result<Text, Text> {
         let validate_diagnosis_result = await validate_insurance_case(policy_number, diagnosis_code, diagnosis_date, oauth_token);
 
         if (not validate_diagnosis_result) {
             return #err("Invalid insurance case");
+        };
+
+        let insurer = insurers_data.get_balance(insurer_crypto_wallet);
+        switch(insurer) {
+            case(null) {
+                return #err("Insurer does not exist");
+            };
+            case(?insurer_balance) {
+                insurers_data.set_balance(insurer_crypto_wallet, Nat64.fromNat(Nat64.toNat(insurer_balance) - amount));
+            };
         };
 
         let transferResult = await InsToken.icrc1_transfer({
@@ -115,7 +125,7 @@ actor class InsuranceManager() {
                 owner = policy_holder_crypto_wallet;
                 subaccount = null;
             };
-            amount = Nat64.toNat(amount);
+            amount = amount;
             fee = null;
             memo = null;
             from_subaccount = null;
