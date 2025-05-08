@@ -42,7 +42,7 @@ type InsurerWalletAddress = principal;
 type InsurerTokensAmount = nat64;
 type InsuranceManager = 
  service {
-   add_approved_client: (InsurerWalletAddress, nat, Checksum) -> (Result_1);
+   add_approved_client: (principal, nat, text) -> (Result_1);
    get_checksum: (InsurerWalletAddress, nat) -> (Result_3) query;
    get_insurer_balance: (principal) -> (Result_2);
    refresh_all: () -> ();

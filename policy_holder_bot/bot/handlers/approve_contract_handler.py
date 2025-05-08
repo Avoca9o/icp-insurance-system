@@ -7,6 +7,7 @@ from bot.clients.db_client import DBClient
 from bot.clients.icp_client import ICPClient
 from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
 from bot.utils.checksum import find_checksum
+from bot.utils.logger import logger
 
 db_client = DBClient()
 icp_client = ICPClient()
@@ -34,8 +35,9 @@ async def approve_contract_handler(update: Update, context: ContextTypes.DEFAULT
         insurer_scheme = db_client.get_insurer_scheme(user.insurer_id, user.schema_version)
         insurer = db_client.get_insurance_company_by_id(user.insurer_id)
         special_conditions = user.secondary_filters if user.secondary_filters else '{}'
-#        checksum = find_checksum(insurer_scheme.diagnoses_coefs, special_conditions)
-#        icp_client.add_approved_user(insurer.pay_address, user.id, checksum)
+        checksum = find_checksum(insurer_scheme.diagnoses_coefs, special_conditions)
+        logger.error(f'{insurer.pay_address} {user.id} {checksum}')
+        icp_client.add_approved_client(insurer.pay_address, user.id, checksum)
 
         user.is_approved = True
         user.sign_date = datetime.now()
