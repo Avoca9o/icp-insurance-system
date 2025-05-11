@@ -37,6 +37,32 @@ services:
       - postgres
     networks:
       - public_network
+  
+  open_banking_api_mock:
+    build:
+      context: ./open_banking_api_mock
+      dockerfile: Dockerfile
+    container_name: open_banking_api_mock
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./open_banking_api_mock/mock.log:/app/mock.log
+    networks:
+      - public_network
+
+  insurer_backend:
+    build:
+      context: ./insurer_backend
+      dockerfile: Dockerfile
+    container_name: insurer_backend
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./insurer_backend/insurer.log:/src/insurer.log
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - public_network
 
   loki:
     image: grafana/loki:2.9.4
@@ -52,8 +78,10 @@ services:
     image: grafana/promtail:2.9.4
     container_name: promtail
     volumes:
-      - ./promtail-config.yaml:/etc/promtail/config.yaml
+      - ./insurer_backend/insurer.log:/var/log/insurer.log:ro
+      - ./open_banking_api_mock/mock.log:/var/log/mock.log:ro
       - ./policy_holder_bot/bot.log:/var/log/bot.log:ro
+      - ./promtail-config.yaml:/etc/promtail/config.yaml
     command: -config.file=/etc/promtail/config.yaml
     networks:
       - public_network
