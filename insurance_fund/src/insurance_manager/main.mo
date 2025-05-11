@@ -1,4 +1,3 @@
-import ICPIndex "canister:icp_index_canister";
 import InsToken "canister:ins_token";
 import Debug "mo:base/Debug";
 import Blob "mo:base/Blob";
