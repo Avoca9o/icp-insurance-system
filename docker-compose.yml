@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: public_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./postgres-config/pg_hba.conf:/etc/postgresql/pg_hba.conf
+    restart: unless-stopped
+    networks:
+      - public_network
+
+volumes:
+  pg_data:
+
+networks:
+  public_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
