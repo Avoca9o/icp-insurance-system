@@ -10,12 +10,10 @@ from ic.candid import Types
 from config.canister_did import candid
 from utils.logger import logger
 
-CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai"
-# diman
-#CANISTER_ID = "bkyz2-fmaaa-aaaaa-qaaaq-cai"
+CANISTER_ID = "u6s2n-gx777-77774-qaaba-cai"
 
 iden = Identity()
-client = Client(url="http://127.0.0.1:4943")
+client = Client(url="http://158.160.79.17:9000")
 agent = Agent(iden, client)
 
 canister = Canister(agent=agent, canister_id=CANISTER_ID, candid=candid)
