@@ -23,7 +23,7 @@ export const fetchApi = async (url, method = "GET", body = null) => {
     options.body = JSON.stringify(body);
   }
 
-  const response = await fetch(`http://158.160.79.17:8001${url}`, options);
+  const response = await fetch(`http://insurer_backend:8001${url}`, options);
   const responseData = await response.json();
 
   if (!response.ok) {
