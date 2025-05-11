@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 
 from clients import db_client
 from utils.jwt import oauth2_scheme, decode_jwt_token
+from utils.logger import logger
 
 router = APIRouter()
 
@@ -20,7 +21,7 @@ def handle_v1_user_get(email: str, token: str = Depends(oauth2_scheme)):
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)
     except Exception as e:
-        print(str(e))
+        logger.error(str(e))
         return JSONResponse(content={"message": str(e)}, status_code=500)
 
 
@@ -35,5 +36,5 @@ def handle_v1_user_delete(email: str, token: str = Depends(oauth2_scheme)):
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)
     except Exception as e:
-        print(str(e))
+        logger.error(str(e))
         return JSONResponse(content={"message": str(e)}, status_code=500)

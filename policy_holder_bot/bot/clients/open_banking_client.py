@@ -26,4 +26,5 @@ class OpenBankingClient:
                     else:
                         return ''
             except Exception as e:
+                logger.error(f'OpenBankingClient error while connecting to Open Banking API {str(e)}')
                 raise Exception('Error while connecting to Open Banking API')

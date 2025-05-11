@@ -232,7 +232,7 @@ actor class InsuranceManager() {
 
     let timer = Timer.recurringTimer<system>(#seconds 60, refresh_all_wrapper);
 
-    public func add_approved_client(insurer: Types.InsurerWalletAddress, client_id: Nat, checksum: Types.Checksum) : async Result.Result<(), Text> {
+    public func add_approved_client(insurer: Principal, client_id: Nat, checksum: Text) : async Result.Result<(), Text> {
         try {
             insurers_data.add_client(insurer, Nat.toText(client_id), checksum);
             return #ok;

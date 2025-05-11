@@ -8,6 +8,7 @@ from entities.insurer_scheme import InsurerScheme
 from entities.payout import Payout
 
 from config.db_config import Base, SessionLocal
+from utils.logger import logger
 
 
 class DBClient:
@@ -17,7 +18,8 @@ class DBClient:
 
         if session.query(CompanyInfo).filter(CompanyInfo.login == company.login).first():
             raise ValueError("company with login {} already exists".format(company.login))
-        print('im here')
+
+        logger.debug('I am here')
 
         session.add(company)
         session.commit()
@@ -74,7 +76,7 @@ class DBClient:
         if db_user.is_approved:
             raise ValueError("user with email {} has already approved his info, can't change info".format(user.email))
 
-        print(user.email, user.insurance_amount)
+        logger.info(f'{user.email}, {user.insurance_amount}')
 
         if user.insurance_amount is not None:
             db_user.insurance_amount = user.insurance_amount
@@ -91,7 +93,7 @@ class DBClient:
 
     @staticmethod
     def add_scheme(scheme: InsurerScheme):
-        print(scheme.diagnoses_coefs)
+        logger.info(f'scheme.diagnoses_coefs')
         session = SessionLocal()
 
         session.add(scheme)
@@ -115,7 +117,7 @@ class DBClient:
         session.close()
 
         res = {'schemas': [{'id': x.global_version_num} for x in res]}
-        print(res)
+        logger.info(f'{res}')
 
         return res
 
@@ -181,5 +183,5 @@ class DBClient:
         ).all()
 
         session.close()
-        print(f'>>>> {[{"user": payout.user_id, "amount": payout.amount, "date": str(payout.date), "diagnoses": payout.diagnosis_code} for payout in payouts]}')
+        logger.debug(f'>>>> {[{"user": payout.user_id, "amount": payout.amount, "date": str(payout.date), "diagnoses": payout.diagnosis_code} for payout in payouts]}')
         return [{'user': payout.user_id, 'amount': payout.amount, 'date': str(payout.date), 'diagnoses': payout.diagnosis_code} for payout in payouts]

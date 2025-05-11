@@ -6,6 +6,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 from bot.clients.db_client import DBClient
 from bot.clients.icp_client import ICPClient
 from bot.clients.open_banking_client import OpenBankingClient
+from bot.config.prometheus_config import FAILURE_COUNTER, SUCCESS_COUNTER
 from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
 from bot.keyboards.approve_access_keyboard import get_approve_access_keyboard
 from bot.models.payout import Payout
@@ -25,30 +26,35 @@ async def request_payout_handler(update: Update, context: ContextTypes.DEFAULT_T
     telegram_id = query.from_user.id
 
     reply_markup = get_main_menu_keyboard()
+    try:
+        user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+        context.user_data['telegram_id'] = telegram_id
 
-    user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
-    context.user_data['telegram_id'] = telegram_id
+        if not user:
+            await query.edit_message_text(
+                'You are not authorized. Please authorize using the /start command.'
+            )
+            return ConversationHandler.END
+        
+        if not user.is_approved:
+            await query.edit_message_text(
+                'Your contract information is not approved yet. Please confirm your information before requesting a payout.',
+                reply_markup=reply_markup,
+            )
+            return ConversationHandler.END
+        
+        reply_markup = get_approve_access_keyboard()
 
-    if not user:
         await query.edit_message_text(
-            'You are not authorized. Please authorize using the /start command.'
-        )
-        return ConversationHandler.END
-    
-    if not user.is_approved:
-        await query.edit_message_text(
-            'Your contract information is not approved yet. Please confirm your information before requesting a payout.',
+            'To process payout request, please confirm that you provide access to your personal information:',
             reply_markup=reply_markup,
         )
+        return APPROVE_ACCESS
+    except Exception as e:
+        FAILURE_COUNTER.inc()
+        logger.error(f'Error while request payout: {str(e)}')
+        await query.edit_message_text('Error while request payout. Try again later', reply_markup=get_main_menu_keyboard())
         return ConversationHandler.END
-    
-    reply_markup = get_approve_access_keyboard()
-
-    await query.edit_message_text(
-        'To process payout request, please confirm that you provide access to your personal information:',
-        reply_markup=reply_markup,
-    )
-    return APPROVE_ACCESS
 
 async def approve_access(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -137,39 +143,39 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
     oauth_token = context.user_data['oauth_token']
     reply_markup = get_main_menu_keyboard()
 
-    user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
-
-    if user.sign_date.date() > diagnosis_date or user.expiration_date.date() < diagnosis_date:
-        await update.message.reply_text(
-            'The insured event is not relevant for the current contract by date.',
-            reply_markup=reply_markup,
-        )
-        return ConversationHandler.END
-
-    transaction = db_client.get_payout(user_id=user.id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date)
-    if transaction:
-        await update.message.reply_text(
-            'Transfer was already made.',
-            reply_markup=reply_markup,
-        )
-        return ConversationHandler.END
-    
-    if user.secondary_filters:
-        secondary_filters = json.loads(user.secondary_filters.replace('\'', '\"'))
-    else:
-        secondary_filters = {}
-
-    coefficient = 0
-    if diagnosis_code in secondary_filters:
-        coefficient = secondary_filters.get(diagnosis_code)
-    else:
-        schema = json.loads(db_client.get_insurer_scheme(user.insurer_id, user.schema_version).diagnoses_coefs)
-        coefficient = schema.get(diagnosis_code, 0)
-    
-    amount = user.insurance_amount * coefficient
-    insurer_crypto_wallet = db_client.get_insurance_company_by_id(user.insurer_id).pay_address
-
     try:
+        user = db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+
+        if user.sign_date.date() > diagnosis_date or user.expiration_date.date() < diagnosis_date:
+            await update.message.reply_text(
+                'The insured event is not relevant for the current contract by date.',
+                reply_markup=reply_markup,
+            )
+            return ConversationHandler.END
+
+        transaction = db_client.get_payout(user_id=user.id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date)
+        if transaction:
+            await update.message.reply_text(
+                'Transfer was already made.',
+                reply_markup=reply_markup,
+            )
+            return ConversationHandler.END
+        
+        if user.secondary_filters:
+            secondary_filters = json.loads(user.secondary_filters.replace('\'', '\"'))
+        else:
+            secondary_filters = {}
+
+        coefficient = 0
+        if diagnosis_code in secondary_filters:
+            coefficient = secondary_filters.get(diagnosis_code)
+        else:
+            schema = json.loads(db_client.get_insurer_scheme(user.insurer_id, user.schema_version).diagnoses_coefs)
+            coefficient = schema.get(diagnosis_code, 0)
+        
+        amount = user.insurance_amount * coefficient
+        insurer_crypto_wallet = db_client.get_insurance_company_by_id(user.insurer_id).pay_address
+
         is_valid = icp_client.payout_request(
             amount=amount,
             policy_number=policy_number,
@@ -182,17 +188,21 @@ async def process_payout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if is_valid:
             db_client.add_payout(payout=Payout(transaction_id='999', amount=amount, user_id=user.id, date=datetime.now(), company_id=user.insurer_id, diagnosis_code=diagnosis_code, diagnosis_date=diagnosis_date))
+            logger.info(f'Successfull insurance case validation. Client ID: {user.id}')
             await update.message.reply_text(
                 f'Your claim is approved! 🎉\n\n',
                 reply_markup=reply_markup,
             )
         else:
+            logger.info(f'Failed insurance case validation. Client ID: {user.id}')
             await update.message.reply_text(
                 f'Your claim is denied. ❌\n\n',
                 reply_markup=reply_markup,
             )
+        SUCCESS_COUNTER.inc()
     except Exception as e:
-        logger.error(f'Error while validating payout: {e}', exc_info=True)
+        FAILURE_COUNTER.inc()
+        logger.error(f'Error while processing request: {e}', exc_info=True)
         await update.message.reply_text(
             'An error occurred while processing your request. Please try again later.',
             reply_markup=reply_markup

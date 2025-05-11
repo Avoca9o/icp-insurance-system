@@ -1,3 +1,4 @@
+from prometheus_client import start_http_server
 from telegram.ext import Application
 
 from bot.config.bot_config import BOT_TOKEN
@@ -6,6 +7,8 @@ from bot.utils.register_handlers import register_handlers
 
 def main():
     application =  Application.builder().token(BOT_TOKEN).build()
+
+    start_http_server(8030, addr="0.0.0.0")
 
     register_handlers(application=application)
 

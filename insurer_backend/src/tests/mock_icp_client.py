@@ -1,6 +1,7 @@
 from typing import Dict, Optional
 import random
 
+from utils.logger import logger
 
 class MockICPClient:
     def __init__(self):
@@ -43,7 +44,7 @@ class MockICPClient:
         """
         if not self.canister_healthy:
             raise Exception("Canister is not healthy")
-        print("Canister is alive")
+        logger.info("Canister is alive")
 
     def register_company(self, payout_address: str) -> None:
         """
@@ -54,7 +55,7 @@ class MockICPClient:
         
         self.registered_companies.add(payout_address)
         self.balances[payout_address] = 0.0
-        print('company is registered in canister')
+        logger.info('company is registered in canister')
 
     def is_checksum_valid(self, company_id: int, user_tg_id: int, current_sum: str) -> bool:
         """
