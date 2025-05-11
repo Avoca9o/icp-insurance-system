@@ -64,6 +64,17 @@ services:
     networks:
       - public_network
 
+  insurer_frontend:
+    build:
+      context: ./insurer_frontend
+      dockerfile: Dockerfile
+    container_name: insurer_frontend
+    ports:
+      - "8080:80"
+      - "8443:443"
+    networks:
+      - public_network
+
   loki:
     image: grafana/loki:2.9.4
     container_name: loki
