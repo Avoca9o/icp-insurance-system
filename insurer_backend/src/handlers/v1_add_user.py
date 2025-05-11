@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 
 from clients import db_client
 from utils.jwt import oauth2_scheme, decode_jwt_token
+from utils.logger import logger
 from utils.request_validations import check_secondary_filters
 
 from pydantic import BaseModel
@@ -45,5 +46,5 @@ def handle_v1_add_user(req: AddUserRequest, token: str = Depends(oauth2_scheme))
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)
     except Exception as e:
-        print(str(e))
+        logger.error(str(e))
         return JSONResponse(content={"message": str(e)}, status_code=500)

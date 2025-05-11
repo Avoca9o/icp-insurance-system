@@ -20,5 +20,6 @@ class MailgunClient:
         
         if response.status_code != 200:
             logger.error(f'Error while sending verification code to {to}: {response.text}')
-        
+        logger.info(f'Sent verification code to {to}')
+
         return response.status_code == 200

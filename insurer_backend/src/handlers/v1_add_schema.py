@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from clients import db_client
 from entities.insurer_scheme import InsurerScheme
 from utils.jwt import oauth2_scheme, decode_jwt_token
+from utils.logger import logger
 
 import pandas as pd
 
@@ -44,7 +45,7 @@ def handle_v1_add_scheme_csv(file: UploadFile = File(...), token: str = Depends(
 
         df = pd.read_csv(file.file)
         result_dict = pd.Series(df.Coefficient.values, index=df.Code).to_dict()
-        print(result_dict)
+        logger.info(result_dict)
         company_id = decode_jwt_token(token)
         db.add_scheme(InsurerScheme(diagnoses_coefs=str(result_dict).replace("'", '"'), company_id=company_id))
         return JSONResponse(content=None, status_code=200)

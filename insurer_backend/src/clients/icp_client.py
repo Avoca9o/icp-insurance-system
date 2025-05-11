@@ -8,6 +8,7 @@ from ic.agent import Agent
 from ic.candid import Types
 
 from config.canister_did import candid
+from utils.logger import logger
 
 CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai"
 # diman
@@ -25,7 +26,7 @@ class ICPClient:
     def get_balance(company_pay_address: str):
         res = canister.get_insurer_balance(company_pay_address)
 
-        print(res)
+        logger.info(res)
 
         return res[0]['ok']
 
@@ -40,20 +41,20 @@ class ICPClient:
     def check_canister_health():
         res = canister.get_insurance_case_info()
         if res:
-            print("Canister is alive")
+            logger.info("Canister is alive")
         else:
-            print("Canister is not alive")
+            logger.error("Canister is not alive")
 
     @staticmethod
     def register_company(payout_address: str):
-        print('trying to register company in canister')
+        logger.info('trying to register company in canister')
         canister.register_insurer(payout_address)
-        print('company is registered in canister')
+        logger.info('company is registered in canister')
 
         return None
 
     @staticmethod
     def is_checksum_valid(company_id, user_tg_id, current_sum):
         # res = canister.check_sum(company_id, user_tg_id, current_sum)
-        # print(f'>>> {res}')
+        # logger.debug(f'>>> {res}')
         return random.choice([True, False])

@@ -7,6 +7,8 @@ import datetime
 import json
 from typing import Any, Dict
 
+from logger import logger
+
 router = APIRouter()
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
@@ -78,6 +80,7 @@ async def login(data: Dict[str, Any]): #OAuth2PasswordRequestForm = Depends()):
     user = get_user(fake_users, data['username'])
 
     if not user or not verify_password(data['password'], user['hashed_password']):
+        logger.error('Incorrect username or password')
         raise HTTPException(status_code=400, detail='Incorrect username or password')
     
     payload = {
@@ -85,7 +88,7 @@ async def login(data: Dict[str, Any]): #OAuth2PasswordRequestForm = Depends()):
         'exp': datetime.datetime.now() + datetime.timedelta(minutes=30)
     }
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-
+    logger.info('Authorization successfull')
     return token
 
 
@@ -94,6 +97,7 @@ async def get_data(policy_number: int,  diagnosis_code: str, date: str, user: di
     if user:
         for case in fake_cases['Data']['InsuranceCasesList']['InsuranceCases'][0]['InsuranceCaseInformation']:
             if case['documentName'] == 'Полис ОМС' and case['documentNumber'] == policy_number and case['date'] == date and case['diagnosisCode'] == diagnosis_code:
+                logger.info('Case found')
                 return case
-    
+        logger.error('Case does not exist')
         raise HTTPException(status_code=400, detail='Case does not exist')

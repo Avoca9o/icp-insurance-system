@@ -5,10 +5,6 @@ from ic.identity import Identity
 from ic.agent import Agent
 
 from bot.config.icp_config import ICP_CANISTER_ID, ICP_CANISTER_URL, candid
-from bot.utils.logger import logger
-
-import json
-import requests
 
 class ICPClient:
     def __init__(self):
@@ -40,7 +36,6 @@ class ICPClient:
         oauth_token: str,
     ) -> bool:
         response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
-        logger.info(f'>>> {response}')
         if 'Payout successful' in str(response):
             return True
         else:

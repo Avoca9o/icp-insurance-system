@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from clients import db_client
 from entities.insurer_scheme import InsurerScheme
 from utils.jwt import oauth2_scheme, decode_jwt_token
+from utils.logger import logger
 
 router = APIRouter()
 
@@ -28,7 +29,7 @@ def handle_v1_schema(global_version_id: int, token: str = Depends(oauth2_scheme)
         dc = dc.replace("'", '"')
         return JSONResponse(content={'scheme': dc}, status_code=200)
     except ValueError as e:
-        print(str(e))
+        logger.error(str(e))
         return JSONResponse(content={"message": str(e)}, status_code=400)
     except Exception as e:
         return JSONResponse(content={"message": str(e)}, status_code=500)

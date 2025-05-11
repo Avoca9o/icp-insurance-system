@@ -1,6 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
+from bot.config.prometheus_config import SUCCESS_COUNTER
 from bot.keyboards.authorization_keyboard import get_authorization_keyboard
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -15,5 +16,7 @@ async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     reply_markup = get_authorization_keyboard()
+
+    SUCCESS_COUNTER.inc()
 
     await update.message.reply_text(welcome_message, reply_markup=reply_markup)

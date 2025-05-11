@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from clients import icp_client, db_client
 
 from utils.jwt import oauth2_scheme, decode_jwt_token
+from utils.logger import logger
 
 router = APIRouter()
 
@@ -24,7 +25,7 @@ def handle_v1_withdraw_post(token: str = Depends(oauth2_scheme)):
                 raise ValueError('insurer has approved users, cannot withdraw money')
 
         icp.withdraw(insurer.pay_address)
-        print("money withdrew successfully")
+        logger.info("money withdrew successfully")
         return JSONResponse(content=None, status_code=200)
     except ValueError as e:
         return JSONResponse(content={"message": str(e)}, status_code=400)

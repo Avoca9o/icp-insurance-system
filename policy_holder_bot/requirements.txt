@@ -1,4 +1,6 @@
+aiohttp
 ic-py==1.0.1
+prometheus_client
 psycopg2==2.9.10
 python-telegram-bot==20.3
 python-dotenv==1.0.1
@@ -6,4 +8,7 @@ sqlalchemy==2.0.37
 pytest==8.0.2
 pytest-asyncio==0.23.5
 pytest-cov==4.1.0
-pytest-mock==4.1.0
+python-dateutil
+python-docx
+pytest-mock
+requests
