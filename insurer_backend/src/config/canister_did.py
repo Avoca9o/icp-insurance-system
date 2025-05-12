@@ -34,19 +34,23 @@ type InsurerWalletAddress = principal;
 type InsurerTokensAmount = nat64;
 type InsuranceManager = 
  service {
-   add_approved_client: (InsurerWalletAddress, nat, Checksum) -> (Result_1);
-   get_checksum: (InsurerWalletAddress, nat) -> (Result_3) query;
-   get_insurer_balance: (principal) -> (Result_2);
+   add_approved_client: (insurer: principal, client_id: nat, checksum:
+    text) -> (Result_1);
+   get_checksum: (insurer: InsurerWalletAddress, client_id: nat) ->
+    (Result_3) query;
+   get_insurer_balance: (wallet_address: principal) -> (Result_2);
    refresh_all: () -> ();
-   refresh_balance: (principal) -> (Result);
-   register_insurer: (principal) -> (Result_1);
-   request_payout: (text, text, text, principal, principal,
-    InsurerTokensAmount, text) -> (Result);
+   refresh_balance: (wallet_address: principal) -> (Result);
+   register_insurer: (wallet_address: principal) -> (Result_1);
+   request_payout: (policy_number: text, diagnosis_code: text,
+    diagnosis_date: text, insurer_crypto_wallet: principal,
+    policy_holder_crypto_wallet: principal, amount: nat, oauth_token:
+    text) -> (Result);
    transform: (record {
                  context: blob;
                  response: http_request_result;
                }) -> (http_request_result) query;
-   withdraw: (InsurerWalletAddress) -> (Result);
+   withdraw: (wallet_address: InsurerWalletAddress) -> (Result);
  };
 type Checksum = text;
 service : () -> InsuranceManager

@@ -155,7 +155,7 @@ actor class InsuranceManager() {
     };
 
     private func validate_insurance_case(policy_number: Text, diagnosis_code: Text, date: Text, oauth_token: Text): async Bool {
-        let host : Text = "127.0.0.1:8000";
+        let host : Text = "84.252.131.59:8000";
         let url = "http://" # host # "/open-data/v1.0/mfsp/insurance-cases?policy_number=" # policy_number # "&diagnosis_code=" # diagnosis_code # "&date=" # date;
 
         let request_headers = [

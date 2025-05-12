@@ -1,10 +1,11 @@
-fastapi
+fastapi>=0.103.0
 uvicorn
 psycopg2
 python-jose
 ic-py
 python-dotenv
 python-multipart
+prometheus-fastapi-instrumentator==7.1.0
 pandas
 pytest
 pytest-cov

@@ -13,7 +13,7 @@ from utils.logger import logger
 CANISTER_ID = "u6s2n-gx777-77774-qaaba-cai"
 
 iden = Identity()
-client = Client(url="http://158.160.79.17:9000")
+client = Client(url="http://84.252.131.59:9000")
 agent = Agent(iden, client)
 
 canister = Canister(agent=agent, canister_id=CANISTER_ID, candid=candid)

@@ -56,7 +56,7 @@ actor InsToken {
         }
     };
 
-    private let owner : Principal = Principal.fromText("43cc7-eee4i-b4tyu-qfapq-zmovy-v2se3-xct27-y2xgb-dgxr7-4yo4g-iqe");
+    private let owner : Principal = Principal.fromText("2dwjg-iy43r-cyvpn-lfsmn-moapu-hqbd3-ponaq-vqrqh-5agtt-qxiek-hqe");
     private var totalSupply: Nat = 0;
     private var balances = HashMap.HashMap<Account, Nat64>(0, func (a1: Account, a2: Account) : Bool { 
         Principal.equal(a1.owner, a2.owner)
