@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'policy_holder_bot'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['policy_holder_bot:8005']
+
+  - job_name: 'insurer_backend'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['insurer_backend:8001']
+  
+  - job_name: 'open_banking_api_mock'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['open_banking_api_mock:8000']

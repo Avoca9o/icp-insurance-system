@@ -20,7 +20,7 @@ const OperationsController = () => {
         return alert("Please select a date");
       }
 
-      fetch(`http://localhost:8001/v1/operations?date=${selectedDate}`, {
+      fetch(`http://84.252.131.59:8001/v1/operations?date=${selectedDate}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }

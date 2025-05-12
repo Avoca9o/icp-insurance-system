@@ -22,6 +22,8 @@ services:
       context: ./policy_holder_bot
       dockerfile: Dockerfile
     container_name: policy_holder_bot
+    ports:
+      - "8005:8005"
     volumes:
       - ./policy_holder_bot/bot.log:/app/bot.log
     environment:
@@ -61,19 +63,21 @@ services:
       - ./insurer_backend/insurer.log:/src/insurer.log
     environment:
       DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - postgres
     networks:
       - public_network
 
-  insurer_frontend:
-    build:
-      context: ./insurer_frontend
-      dockerfile: Dockerfile
-    container_name: insurer_frontend
-    ports:
-      - "8080:80"
-      - "8443:443"
-    networks:
-      - public_network
+  # insurer_frontend:
+  #   build:
+  #     context: ./insurer_frontend
+  #     dockerfile: Dockerfile
+  #   container_name: insurer_frontend
+  #   ports:
+  #     - "8080:80"
+  #     - "8443:443"
+  #   networks:
+  #     - public_network
 
   loki:
     image: grafana/loki:2.9.4
@@ -112,6 +116,16 @@ services:
     restart: unless-stopped
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=lyrics
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - public_network
 
 volumes:
   grafana_data:

@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 
 import clients.db_client as db_client
 from config.db_config import engine
@@ -25,6 +26,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+
+Instrumentator().instrument(app).expose(app)
 
 db_client.Base.metadata.create_all(bind=engine)
 

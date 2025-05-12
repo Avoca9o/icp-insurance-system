@@ -8,11 +8,10 @@ from bot.utils.register_handlers import register_handlers
 def main():
     application =  Application.builder().token(BOT_TOKEN).build()
 
-    start_http_server(8030, addr="0.0.0.0")
-
     register_handlers(application=application)
 
     logger.info("Bot is running!")
+    start_http_server(8005)
     application.run_polling()
 
 
