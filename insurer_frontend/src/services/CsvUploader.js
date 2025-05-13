@@ -21,7 +21,7 @@ export const CsvUploader = () => {
     formData.append("file", file);
 
     try {
-        const response = await fetch("http://84.252.131.59:8001/v1/add-scheme-csv", {
+        const response = await fetch(`${process.env.BACKEND_URL}/v1/add-scheme-csv`, {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${token}`

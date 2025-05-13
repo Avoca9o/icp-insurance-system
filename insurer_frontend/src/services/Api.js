@@ -23,7 +23,7 @@ export const fetchApi = async (url, method = "GET", body = null) => {
     options.body = JSON.stringify(body);
   }
 
-  const response = await fetch(`http://84.252.131.59:8001${url}`, options);
+  const response = await fetch(`${process.env.BACKEND_URL}${url}`, options);
   const responseData = await response.json();
 
   if (!response.ok) {
@@ -34,7 +34,7 @@ export const fetchApi = async (url, method = "GET", body = null) => {
 };
 
 export const logIn = async (login, password) => {
-  const response = await fetch("http://84.252.131.59:8001/v1/authorize", {
+  const response = await fetch(`${process.env.BACKEND_URL}/v1/authorize`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export const logIn = async (login, password) => {
 };
 
 export const register = async (formData) => {
-  const response = await fetch("http://84.252.131.59:8001/v1/register", {
+  const response = await fetch(`${process.env.BACKEND_URL}/v1/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

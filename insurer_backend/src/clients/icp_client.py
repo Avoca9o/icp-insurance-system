@@ -1,5 +1,6 @@
 import random
 
+import asyncio
 import os
 from ic.canister import Canister
 from ic.client import Client
