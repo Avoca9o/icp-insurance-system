@@ -1,11 +1,14 @@
 from jose import jwt
 
 from fastapi.security import OAuth2PasswordBearer
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/v1/authorize")
 
-# TODO: read this shit from .env file
-SECRET_KEY = "your_secret_key"
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 
 

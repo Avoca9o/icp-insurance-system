@@ -19,8 +19,6 @@ class DBClient:
         if session.query(CompanyInfo).filter(CompanyInfo.login == company.login).first():
             raise ValueError("company with login {} already exists".format(company.login))
 
-        logger.debug('I am here')
-
         session.add(company)
         session.commit()
         session.close()

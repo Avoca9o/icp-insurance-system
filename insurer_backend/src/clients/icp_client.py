@@ -1,6 +1,6 @@
 import random
 
-import asyncio
+import os
 from ic.canister import Canister
 from ic.client import Client
 from ic.identity import Identity
@@ -9,11 +9,16 @@ from ic.candid import Types
 
 from config.canister_did import candid
 from utils.logger import logger
+from dotenv import load_dotenv
 
-CANISTER_ID = "u6s2n-gx777-77774-qaaba-cai"
+load_dotenv()
+
+
+CANISTER_ID = os.getenv("CANISTER_ID")
+CANISTER_URL = os.getenv("CANISTER_URL")
 
 iden = Identity()
-client = Client(url="http://84.252.131.59:9000")
+client = Client(url=CANISTER_URL)
 agent = Agent(iden, client)
 
 canister = Canister(agent=agent, canister_id=CANISTER_ID, candid=candid)
