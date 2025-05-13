@@ -2,7 +2,6 @@ FROM python:3.9-slim AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV DATABASE_URL="postgresql://postgres:postgres@158.160.79.17:5432/app_db"
 
 WORKDIR /src
 
