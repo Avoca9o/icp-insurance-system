@@ -1,9 +1,7 @@
-# Python cache files
 __pycache__/
 *.py[cod]
 *.pyo
 
-# Виртуальные окружения
 .venv/
 env/
 venv/
@@ -11,27 +9,22 @@ ENV/
 env.bak/
 venv.bak/
 
-# Директории для сборки
 build/
 dist/
 *.egg-info/
 
-# Файлы конфигурации IDE
 .idea/
 .vscode/
 *.sublime-workspace
 *.sublime-project
 
-# Журнал автоматического тестирования, профилирования и другие временные файлы
 *.log
 *.tmp
 *.temp
 
-# Конфиденциальные файлы
 /.env
 *.env
 
-# Операционные системные файлы
 .DS_Store        # macOS
 Thumbs.db       # Windows
 desktop.ini     # Windows

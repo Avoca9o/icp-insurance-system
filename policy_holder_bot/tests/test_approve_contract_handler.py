@@ -35,13 +35,10 @@ def mock_icp_client():
 
 @pytest.mark.asyncio
 async def test_approve_contract_handler_not_authorized(mock_update, mock_context, mock_db_client):
-    # Подготовка
     mock_db_client.get_user_by_telegram_id.return_value = None
 
-    # Выполнение
     await approve_contract_handler(mock_update, mock_context)
 
-    # Проверка
     mock_update.callback_query.answer.assert_called_once()
     mock_update.callback_query.edit_message_text.assert_called_once_with(
         'You are not authorized or your data is missing. Please authorize again using the /start command'
@@ -49,22 +46,18 @@ async def test_approve_contract_handler_not_authorized(mock_update, mock_context
 
 @pytest.mark.asyncio
 async def test_approve_contract_handler_already_approved(mock_update, mock_context, mock_db_client):
-    # Подготовка
     mock_user = MagicMock(spec=UserInfo)
     mock_user.is_approved = True
     mock_db_client.get_user_by_telegram_id.return_value = mock_user
 
-    # Выполнение
     await approve_contract_handler(mock_update, mock_context)
 
-    # Проверка
     mock_update.callback_query.answer.assert_called_once()
     mock_update.callback_query.edit_message_text.assert_called_once()
     assert 'Your information is already approved!' in mock_update.callback_query.edit_message_text.call_args[0][0]
 
 @pytest.mark.asyncio
 async def test_approve_contract_handler_success(mock_update, mock_context, mock_db_client, mock_icp_client):
-    # Подготовка
     mock_user = MagicMock(spec=UserInfo)
     mock_user.is_approved = False
     mock_user.insurer_id = 1
@@ -82,10 +75,8 @@ async def test_approve_contract_handler_success(mock_update, mock_context, mock_
     mock_db_client.get_insurance_company_by_id.return_value = mock_insurer
     mock_db_client.update_user_info.return_value = True
 
-    # Выполнение
     await approve_contract_handler(mock_update, mock_context)
 
-    # Проверка
     mock_update.callback_query.answer.assert_called_once()
     mock_update.callback_query.edit_message_text.assert_called_once()
     assert 'Your information has been successfully approved!' in mock_update.callback_query.edit_message_text.call_args[0][0]
@@ -97,7 +88,6 @@ async def test_approve_contract_handler_success(mock_update, mock_context, mock_
 
 @pytest.mark.asyncio
 async def test_approve_contract_handler_with_special_conditions(mock_update, mock_context, mock_db_client, mock_icp_client):
-    # Подготовка
     mock_user = MagicMock(spec=UserInfo)
     mock_user.is_approved = False
     mock_user.insurer_id = 1
@@ -115,10 +105,8 @@ async def test_approve_contract_handler_with_special_conditions(mock_update, moc
     mock_db_client.get_insurance_company_by_id.return_value = mock_insurer
     mock_db_client.update_user_info.return_value = True
 
-    # Выполнение
     await approve_contract_handler(mock_update, mock_context)
 
-    # Проверка
     mock_update.callback_query.answer.assert_called_once()
     mock_update.callback_query.edit_message_text.assert_called_once()
     assert 'Your information has been successfully approved!' in mock_update.callback_query.edit_message_text.call_args[0][0]

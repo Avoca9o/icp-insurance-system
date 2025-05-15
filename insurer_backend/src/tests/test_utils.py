@@ -6,7 +6,7 @@ from utils.jwt import create_jwt_token, decode_jwt_token
 
 def test_check_secondary_filters_valid():
     valid_filters = {"key1": 1.0, "key2": 2.0}
-    check_secondary_filters(valid_filters)  # Should not raise any exception
+    check_secondary_filters(valid_filters)
 
 
 def test_check_secondary_filters_invalid_type():
@@ -25,14 +25,14 @@ def test_checksum():
     result = checksum(insurer_scheme, special_conditions)
     
     assert isinstance(result, str)
-    assert len(result) == 64  # SHA-256 produces 64 character hex string
-    assert result == checksum(insurer_scheme, special_conditions)  # Same input should produce same output
+    assert len(result) == 64
+    assert result == checksum(insurer_scheme, special_conditions)
 
 
 def test_checksum_different_inputs():
     result1 = checksum("scheme1", "conditions1")
     result2 = checksum("scheme2", "conditions2")
-    assert result1 != result2  # Different inputs should produce different outputs
+    assert result1 != result2
 
 
 def test_create_jwt_token():
@@ -50,5 +50,5 @@ def test_decode_jwt_token():
 
 
 def test_decode_jwt_token_invalid():
-    with pytest.raises(Exception):  # jwt.decode will raise an exception for invalid tokens
+    with pytest.raises(Exception):
         decode_jwt_token("invalid_token") 

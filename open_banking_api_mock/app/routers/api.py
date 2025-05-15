@@ -76,7 +76,7 @@ def get_user(db, email: str):
     return None
 
 @router.post('/open-data/v1.0/mfsp/token')
-async def login(data: Dict[str, Any]): #OAuth2PasswordRequestForm = Depends()):
+async def login(data: Dict[str, Any]):
     user = get_user(fake_users, data['username'])
 
     if not user or not verify_password(data['password'], user['hashed_password']):
