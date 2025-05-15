@@ -15,8 +15,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-CANISTER_ID = os.getenv("CANISTER_ID")
-CANISTER_URL = os.getenv("CANISTER_URL")
+CANISTER_ID = os.getenv("ICP_CANISTER_ID")
+CANISTER_URL = os.getenv("ICP_CANISTER_URL")
 
 iden = Identity()
 client = Client(url=CANISTER_URL)
