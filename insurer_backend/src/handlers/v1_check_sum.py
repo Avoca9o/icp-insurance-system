@@ -21,6 +21,7 @@ def handle_v1_check_sum(email: str, token: str = Depends(oauth2_scheme)):
         company_id = decode_jwt_token(token)
 
         user = db.get_user(email, company_id)
+        company = db.get_company(company_id)
 
         if not user["is_approved"]:
             raise ValueError("can't validate check sum while user's contract is not approved")
@@ -29,7 +30,7 @@ def handle_v1_check_sum(email: str, token: str = Depends(oauth2_scheme)):
 
         check_sum = checksum(str(schema), str(user['secondary_filters']))
 
-        return JSONResponse(content={"is_valid": icp.is_checksum_valid(company_id, user['telegram_id'], check_sum)},
+        return JSONResponse(content={"is_valid": icp.is_checksum_valid(company["id"], user['id'], check_sum)},
                             status_code=200)
 
     except ValueError as e:

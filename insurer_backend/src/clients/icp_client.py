@@ -58,7 +58,7 @@ class ICPClient:
         return None
 
     @staticmethod
-    def is_checksum_valid(company_id, user_tg_id, current_sum):
-        # res = canister.check_sum(company_id, user_tg_id, current_sum)
-        # logger.debug(f'>>> {res}')
-        return random.choice([True, False])
+    def is_checksum_valid(company_address, client_id, current_check_sum):
+        res = canister.check_sum(company_address, client_id)
+        logger.debug(f'>>> {res}')
+        return current_check_sum == res[0]['ok']
