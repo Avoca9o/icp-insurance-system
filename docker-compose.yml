@@ -49,6 +49,8 @@ services:
       - "8000:8000"
     volumes:
       - ./open_banking_api_mock/mock.log:/app/mock.log
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
     networks:
       - public_network
 
@@ -65,6 +67,7 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       ICP_CANISTER_ID: ${ICP_CANISTER_ID}
       ICP_CANISTER_URL: ${ICP_CANISTER_URL}
+      SECRET_KEY: ${SECRET_KEY}
     depends_on:
       - postgres
     networks:
