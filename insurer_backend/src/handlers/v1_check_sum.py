@@ -30,7 +30,7 @@ def handle_v1_check_sum(email: str, token: str = Depends(oauth2_scheme)):
 
         check_sum = checksum(str(schema), str(user['secondary_filters']))
 
-        return JSONResponse(content={"is_valid": icp.is_checksum_valid(company["id"], user['id'], check_sum)},
+        return JSONResponse(content={"is_valid": icp.is_checksum_valid(company.id, user['id'], check_sum)},
                             status_code=200)
 
     except ValueError as e:
