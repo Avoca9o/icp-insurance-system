@@ -11,7 +11,6 @@ from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
 from bot.keyboards.approve_access_keyboard import get_approve_access_keyboard
 from bot.models.payout import Payout
 from bot.utils.logger import logger
-from bot.utils.validation import validate_diagnosis_code, validate_policy_number
 
 db_client = DBClient()
 icp_client = ICPClient()
@@ -74,12 +73,6 @@ async def approve_access(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def request_policy_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
     policy_number = update.message.text
-
-    if not validate_policy_number(policy_number=policy_number):
-        await update.message.reply_text(
-            'Invalid policy number. Try again'
-        )
-        return REQUEST_POLICY_NUMBER
     
     context.user_data['policy_number'] = policy_number
 
@@ -89,12 +82,6 @@ async def request_policy_number(update: Update, context: ContextTypes.DEFAULT_TY
 
 async def request_diagnosis_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
     diagnosis_code = update.message.text
-
-    if not validate_diagnosis_code(diagnosis_code=diagnosis_code):
-        await update.message.reply_text(
-            'Invalid diagnosis code. Try again using this source: https://www.cito-priorov.ru/cito/files/telemed/Perechen_kodov_MKB.pdf'
-        )
-        return REQUEST_DIAGNOSIS_CODE
 
     context.user_data['diagnosis_code'] = diagnosis_code
 
