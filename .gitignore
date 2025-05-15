@@ -1,3 +1,2 @@
 postgres-config/
 .env
-*.log

@@ -1,0 +1,1453 @@
+2025-01-18 22:10:11,482 - policy_holder_bot - INFO - Bot is running!
+2025-01-18 22:11:14,915 - policy_holder_bot - INFO - Bot is running!
+2025-01-18 22:35:36,595 - policy_holder_bot - INFO - Bot is running!
+2025-01-18 22:36:20,326 - policy_holder_bot - INFO - Bot is running!
+2025-01-18 23:47:45,676 - policy_holder_bot - INFO - Bot is running!
+2025-01-18 23:48:29,766 - policy_holder_bot - ERROR - Error while validating payout: Arguments length not match
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 236, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 82, in payout_request
+    response = self.canister.validate_insurance_case()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 50, in __call__
+    raise ValueError("Arguments length not match")
+ValueError: Arguments length not match
+2025-01-19 00:00:03,104 - policy_holder_bot - INFO - Bot is running!
+2025-01-19 00:02:51,522 - policy_holder_bot - INFO - Bot is running!
+2025-01-19 00:05:31,039 - policy_holder_bot - INFO - Bot is running!
+2025-01-19 00:06:24,746 - policy_holder_bot - INFO - [{'ok': 'Tokens sent to policy holder'}]
+2025-01-19 00:06:24,747 - policy_holder_bot - INFO - Canister is alive
+2025-01-19 00:17:05,948 - policy_holder_bot - INFO - Bot is running!
+2025-01-19 00:17:14,264 - policy_holder_bot - ERROR - Failed to send help video: <class 'str'>
+2025-01-19 00:17:45,252 - policy_holder_bot - INFO - Bot is running!
+2025-01-19 00:17:50,277 - policy_holder_bot - ERROR - Failed to send help video: [Errno 2] No such file or directory: 'media/help_video.mp4'
+2025-01-19 00:18:24,643 - policy_holder_bot - INFO - Bot is running!
+2025-01-19 00:28:28,558 - policy_holder_bot - INFO - Bot is running!
+2025-01-19 10:49:18,595 - policy_holder_bot - INFO - Bot is running!
+2025-01-19 10:53:59,516 - policy_holder_bot - INFO - [{'ok': 'Tokens sent to policy holder'}]
+2025-01-19 10:53:59,516 - policy_holder_bot - INFO - Canister is alive
+2025-01-19 11:16:21,665 - policy_holder_bot - INFO - [{'ok': 'Tokens sent to policy holder'}]
+2025-01-19 11:16:21,665 - policy_holder_bot - INFO - Canister is alive
+2025-01-19 11:17:31,495 - policy_holder_bot - ERROR - Error while validating payout: [Errno 111] Connection refused
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 10, in map_exceptions
+    yield
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_backends/sync.py", line 100, in connect_tcp
+    sock = socket.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/socket.py", line 853, in create_connection
+    raise exceptions[0]
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/socket.py", line 838, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 60, in map_httpcore_exceptions
+    yield
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 218, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 262, in handle_request
+    raise exc
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 245, in handle_request
+    response = connection.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection.py", line 92, in handle_request
+    raise exc
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection.py", line 69, in handle_request
+    stream = self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection.py", line 117, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_backends/sync.py", line 99, in connect_tcp
+    with map_exceptions(exc_map):
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 260, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 88, in payout_request
+    response = self.canister.validate_insurance_case(crypto_wallet)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 65, in __call__
+    res = self.agent.update_raw(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 112, in update_raw
+    _ = self.call_endpoint(eid, req_id, data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 50, in call_endpoint
+    self.client.call(canister_id, request_id, data)
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/client.py", line 18, in call
+    ret = httpx.post(endpoint, data = data, headers=headers)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_api.py", line 304, in post
+    return request(
+           ^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_api.py", line 100, in request
+    return client.request(
+           ^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 814, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 901, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 929, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 966, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1002, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 217, in handle_request
+    with map_httpcore_exceptions():
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 77, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 111] Connection refused
+2025-01-19 11:25:21,645 - policy_holder_bot - INFO - Bot is running!
+2025-01-19 11:26:27,190 - policy_holder_bot - ERROR - Error while validating payout: [Errno 111] Connection refused
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 10, in map_exceptions
+    yield
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_backends/sync.py", line 100, in connect_tcp
+    sock = socket.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/socket.py", line 853, in create_connection
+    raise exceptions[0]
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/socket.py", line 838, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 60, in map_httpcore_exceptions
+    yield
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 218, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 262, in handle_request
+    raise exc
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 245, in handle_request
+    response = connection.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection.py", line 92, in handle_request
+    raise exc
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection.py", line 69, in handle_request
+    stream = self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_sync/connection.py", line 117, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_backends/sync.py", line 99, in connect_tcp
+    with map_exceptions(exc_map):
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 263, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 88, in payout_request
+    response = self.canister.validate_insurance_case(crypto_wallet)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 65, in __call__
+    res = self.agent.update_raw(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 112, in update_raw
+    _ = self.call_endpoint(eid, req_id, data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 50, in call_endpoint
+    self.client.call(canister_id, request_id, data)
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/client.py", line 18, in call
+    ret = httpx.post(endpoint, data = data, headers=headers)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_api.py", line 304, in post
+    return request(
+           ^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_api.py", line 100, in request
+    return client.request(
+           ^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 814, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 901, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 929, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 966, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1002, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 217, in handle_request
+    with map_httpcore_exceptions():
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 77, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 111] Connection refused
+2025-01-23 14:54:10,508 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 14:56:49,103 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:03:13,961 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:09:14,460 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:10:46,868 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:11:52,976 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:15:36,864 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:16:08,637 - policy_holder_bot - ERROR - Error while validating payout: Invalid text argument: 2024-03-25
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 268, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 89, in payout_request
+    response = self.canister.request_payout(diagnosis_code, diagnosis_time, insurer_crypto_wallet, crypto_wallet, amount)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1262, in encode
+    raise TypeError("Invalid {} argument: {}".format(t.display(), str(args[i])))
+TypeError: Invalid text argument: 2024-03-25
+2025-01-23 15:16:41,435 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:17:07,996 - policy_holder_bot - ERROR - Error while validating payout: Invalid text argument: 2024-03-25
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 269, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 89, in payout_request
+    response = self.canister.request_payout(diagnosis_code, diagnosis_time, insurer_crypto_wallet, crypto_wallet, amount)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1262, in encode
+    raise TypeError("Invalid {} argument: {}".format(t.display(), str(args[i])))
+TypeError: Invalid text argument: 2024-03-25
+2025-01-23 15:17:49,256 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:18:13,041 - policy_holder_bot - ERROR - Error while validating payout: Invalid text argument: 2024-03-25
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 269, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 89, in payout_request
+    response = self.canister.request_payout(diagnosis_code, diagnosis_time, insurer_crypto_wallet, crypto_wallet, amount)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1262, in encode
+    raise TypeError("Invalid {} argument: {}".format(t.display(), str(args[i])))
+TypeError: Invalid text argument: 2024-03-25
+2025-01-23 15:19:55,360 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:20:12,978 - policy_holder_bot - ERROR - Error while validating payout: required argument is not an integer
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 269, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 89, in payout_request
+    response = self.canister.request_payout(diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, amount)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1263, in encode
+    vals += t.encodeValue(args[i])
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 487, in encodeValue
+    buf = pack('Q', val) # unsigned long long -> Nat64
+          ^^^^^^^^^^^^^^
+struct.error: required argument is not an integer
+2025-01-23 15:20:45,687 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 15:21:01,002 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-23 15:21:01,002 - policy_holder_bot - INFO - Canister is alive
+2025-01-23 16:19:01,354 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 16:20:17,056 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 16:20:39,237 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 16:24:35,803 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 16:27:25,990 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 16:27:57,429 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 16:31:01,574 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 16:31:37,687 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 16:57:32,844 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 16:57:43,748 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 17:00:16,213 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 17:02:02,192 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 17:02:38,645 - policy_holder_bot - ERROR - Error during searching transaction: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = date
+LINE 3: ...nosis_code = 'tr' AND transactions.diagnosis_date = '2024-03...
+                                                             ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT transactions.id AS transactions_id, transactions.amount AS transactions_amount, transactions.user_id AS transactions_user_id, transactions.diagnosis_code AS transactions_diagnosis_code, transactions.diagnosis_date AS transactions_diagnosis_date 
+FROM transactions 
+WHERE transactions.user_id = %(user_id_1)s AND transactions.diagnosis_code = %(diagnosis_code_1)s AND transactions.diagnosis_date = %(diagnosis_date_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'user_id_1': 1110461851, 'diagnosis_code_1': 'tr', 'diagnosis_date_1': datetime.date(2024, 3, 25), 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-23 17:02:42,787 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-23 17:02:42,787 - policy_holder_bot - INFO - Canister is alive
+2025-01-23 17:02:42,797 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.ForeignKeyViolation) insert or update on table "transactions" violates foreign key constraint "transactions_user_id_fkey"
+DETAIL:  Key (user_id)=(1110461851) is not present in table "users".
+
+[SQL: INSERT INTO transactions (amount, user_id, diagnosis_code, diagnosis_date) VALUES (%(amount)s, %(user_id)s, %(diagnosis_code)s, %(diagnosis_date)s) RETURNING transactions.id]
+[parameters: {'amount': 1000.0, 'user_id': 1110461851, 'diagnosis_code': 'tr', 'diagnosis_date': datetime.date(2024, 3, 25)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-01-23 17:04:41,023 - policy_holder_bot - ERROR - Error during searching transaction: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = date
+LINE 3: ...nosis_code = 'tr' AND transactions.diagnosis_date = '2024-03...
+                                                             ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT transactions.id AS transactions_id, transactions.amount AS transactions_amount, transactions.user_id AS transactions_user_id, transactions.diagnosis_code AS transactions_diagnosis_code, transactions.diagnosis_date AS transactions_diagnosis_date 
+FROM transactions 
+WHERE transactions.user_id = %(user_id_1)s AND transactions.diagnosis_code = %(diagnosis_code_1)s AND transactions.diagnosis_date = %(diagnosis_date_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'user_id_1': 1110461851, 'diagnosis_code_1': 'tr', 'diagnosis_date_1': datetime.date(2024, 3, 25), 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-23 17:04:46,161 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-23 17:04:46,161 - policy_holder_bot - INFO - Canister is alive
+2025-01-23 17:04:46,162 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.ForeignKeyViolation) insert or update on table "transactions" violates foreign key constraint "transactions_user_id_fkey"
+DETAIL:  Key (user_id)=(1110461851) is not present in table "users".
+
+[SQL: INSERT INTO transactions (amount, user_id, diagnosis_code, diagnosis_date) VALUES (%(amount)s, %(user_id)s, %(diagnosis_code)s, %(diagnosis_date)s) RETURNING transactions.id]
+[parameters: {'amount': 1000.0, 'user_id': 1110461851, 'diagnosis_code': 'tr', 'diagnosis_date': datetime.date(2024, 3, 25)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-01-23 17:07:21,645 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 17:07:43,532 - policy_holder_bot - ERROR - Error during searching transaction: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = date
+LINE 3: ...nosis_code = 'tr' AND transactions.diagnosis_date = '2024-03...
+                                                             ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT transactions.id AS transactions_id, transactions.amount AS transactions_amount, transactions.user_id AS transactions_user_id, transactions.diagnosis_code AS transactions_diagnosis_code, transactions.diagnosis_date AS transactions_diagnosis_date 
+FROM transactions 
+WHERE transactions.user_id = %(user_id_1)s AND transactions.diagnosis_code = %(diagnosis_code_1)s AND transactions.diagnosis_date = %(diagnosis_date_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'user_id_1': 1110461851, 'diagnosis_code_1': 'tr', 'diagnosis_date_1': datetime.date(2024, 3, 25), 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-23 17:07:48,678 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-23 17:07:48,678 - policy_holder_bot - INFO - Canister is alive
+2025-01-23 17:08:12,091 - policy_holder_bot - ERROR - Error during searching transaction: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = date
+LINE 3: ...nosis_code = 'tr' AND transactions.diagnosis_date = '2024-03...
+                                                             ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT transactions.id AS transactions_id, transactions.amount AS transactions_amount, transactions.user_id AS transactions_user_id, transactions.diagnosis_code AS transactions_diagnosis_code, transactions.diagnosis_date AS transactions_diagnosis_date 
+FROM transactions 
+WHERE transactions.user_id = %(user_id_1)s AND transactions.diagnosis_code = %(diagnosis_code_1)s AND transactions.diagnosis_date = %(diagnosis_date_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'user_id_1': 1110461851, 'diagnosis_code_1': 'tr', 'diagnosis_date_1': datetime.date(2024, 3, 25), 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-23 17:08:16,205 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-23 17:08:16,206 - policy_holder_bot - INFO - Canister is alive
+2025-01-23 17:08:58,235 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 17:09:16,164 - policy_holder_bot - ERROR - Error during searching transaction: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = date
+LINE 3: ...nosis_code = 'tr' AND transactions.diagnosis_date = '2024-03...
+                                                             ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT transactions.id AS transactions_id, transactions.amount AS transactions_amount, transactions.user_id AS transactions_user_id, transactions.diagnosis_code AS transactions_diagnosis_code, transactions.diagnosis_date AS transactions_diagnosis_date 
+FROM transactions 
+WHERE transactions.user_id = %(user_id_1)s AND transactions.diagnosis_code = %(diagnosis_code_1)s AND transactions.diagnosis_date = %(diagnosis_date_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'user_id_1': 1, 'diagnosis_code_1': 'tr', 'diagnosis_date_1': datetime.date(2024, 3, 25), 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-23 17:09:20,290 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-23 17:09:20,290 - policy_holder_bot - INFO - Canister is alive
+2025-01-23 17:11:14,364 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 17:11:54,750 - policy_holder_bot - ERROR - Error during searching transaction: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = date
+LINE 3: ...nosis_code = 'tr' AND transactions.diagnosis_date = '2024-03...
+                                                             ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT transactions.id AS transactions_id, transactions.amount AS transactions_amount, transactions.user_id AS transactions_user_id, transactions.diagnosis_code AS transactions_diagnosis_code, transactions.diagnosis_date AS transactions_diagnosis_date 
+FROM transactions 
+WHERE transactions.user_id = %(user_id_1)s AND transactions.diagnosis_code = %(diagnosis_code_1)s AND transactions.diagnosis_date = %(diagnosis_date_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'user_id_1': 1, 'diagnosis_code_1': 'tr', 'diagnosis_date_1': datetime.date(2024, 3, 25), 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-23 17:11:59,917 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-23 17:11:59,917 - policy_holder_bot - INFO - Canister is alive
+2025-01-23 17:13:06,674 - policy_holder_bot - INFO - Bot is running!
+2025-01-23 17:13:41,583 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-23 17:13:41,583 - policy_holder_bot - INFO - Canister is alive
+2025-01-23 17:28:24,084 - policy_holder_bot - INFO - Bot is running!
+2025-01-24 21:25:24,352 - policy_holder_bot - INFO - Bot is running!
+2025-01-24 21:27:16,716 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-24 21:27:16,716 - policy_holder_bot - INFO - Canister is alive
+2025-01-24 22:12:04,614 - policy_holder_bot - INFO - Bot is running!
+2025-01-24 22:13:41,846 - policy_holder_bot - ERROR - Error while validating payout: Rejected: Error from Canister br5f7-7uaaa-aaaaa-qaaca-cai: Canister has no update method 'request_payout'..
+Check that the method being called is exported by the target canister. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#method-not-found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 301, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 111, in payout_request
+    response = self.canister.request_payout(diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 65, in __call__
+    res = self.agent.update_raw(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 116, in update_raw
+    raise Exception('Rejected: ' + result.decode())
+Exception: Rejected: Error from Canister br5f7-7uaaa-aaaaa-qaaca-cai: Canister has no update method 'request_payout'..
+Check that the method being called is exported by the target canister. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#method-not-found
+2025-01-24 22:14:57,281 - policy_holder_bot - INFO - Bot is running!
+2025-01-24 22:15:23,552 - policy_holder_bot - ERROR - Error while validating payout: Rejected: Error from Canister br5f7-7uaaa-aaaaa-qaaca-cai: Canister has no update method 'request_payout'..
+Check that the method being called is exported by the target canister. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#method-not-found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 301, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 111, in payout_request
+    response = self.canister.request_payout(diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 65, in __call__
+    res = self.agent.update_raw(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 116, in update_raw
+    raise Exception('Rejected: ' + result.decode())
+Exception: Rejected: Error from Canister br5f7-7uaaa-aaaaa-qaaca-cai: Canister has no update method 'request_payout'..
+Check that the method being called is exported by the target canister. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#method-not-found
+2025-01-24 22:16:03,684 - policy_holder_bot - INFO - Bot is running!
+2025-01-24 22:16:39,959 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-24 22:16:39,959 - policy_holder_bot - INFO - Canister is alive
+2025-01-24 22:22:12,670 - policy_holder_bot - INFO - Bot is running!
+2025-01-24 22:23:01,160 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-24 22:23:01,160 - policy_holder_bot - INFO - Canister is alive
+2025-01-26 15:51:15,299 - policy_holder_bot - INFO - Bot is running!
+2025-01-26 15:54:09,894 - policy_holder_bot - INFO - Bot is running!
+2025-01-26 16:34:10,246 - policy_holder_bot - ERROR - Error during searching user by telegram_id: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = integer
+LINE 3: WHERE users.telegram_id = 1110461851 
+                                ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT users.id AS users_id, users.email AS users_email, users.telegram_id AS users_telegram_id, users.insurance_amount AS users_insurance_amount, users.payout_address AS users_payout_address, users.insurer_id AS users_insurer_id, users.schema_version AS users_schema_version, users.secondary_filters AS users_secondary_filters, users.is_approved AS users_is_approved 
+FROM users 
+WHERE users.telegram_id = %(telegram_id_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'telegram_id_1': 1110461851, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-26 16:37:26,362 - policy_holder_bot - INFO - Bot is running!
+2025-01-26 16:41:52,154 - policy_holder_bot - INFO - Bot is running!
+2025-01-26 16:42:35,727 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-26 16:42:35,727 - policy_holder_bot - INFO - Canister is alive
+2025-01-28 13:57:23,853 - policy_holder_bot - INFO - Bot is running!
+2025-01-28 13:57:36,177 - policy_holder_bot - INFO - Bot is running!
+2025-01-28 14:08:49,796 - policy_holder_bot - ERROR - Error while validating payout: invalid literal for int() with base 10: '0.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers.py", line 303, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients.py", line 111, in payout_request
+    response = self.canister.request_payout(diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
+                                                                                                                       ^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '0.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50.50
+2025-01-28 14:19:22,046 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-28 14:19:22,046 - policy_holder_bot - INFO - Canister is alive
+2025-01-28 14:19:22,051 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "payouts_transaction_id_key"
+DETAIL:  Key (transaction_id)=(999) already exists.
+
+[SQL: INSERT INTO payouts (transaction_id, amount, user_id, date, company_id, diagnosis_code, diagnosis_date) VALUES (%(transaction_id)s, %(amount)s, %(user_id)s, %(date)s, %(company_id)s, %(diagnosis_code)s, %(diagnosis_date)s) RETURNING payouts.id]
+[parameters: {'transaction_id': '999', 'amount': 100000.0, 'user_id': 3, 'date': datetime.datetime(2025, 1, 28, 14, 19, 22, 46365), 'company_id': 3, 'diagnosis_code': 'tr', 'diagnosis_date': datetime.date(2024, 3, 25)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-01-28 16:50:22,886 - policy_holder_bot - INFO - Bot is running!
+2025-01-28 17:30:33,087 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-01-28 17:30:33,087 - policy_holder_bot - INFO - Canister is alive
+2025-02-03 13:27:35,135 - policy_holder_bot - INFO - Bot is running!
+2025-02-23 00:53:23,766 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 16:47:58,179 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 16:54:06,313 - policy_holder_bot - ERROR - Failed to fetch most popular insurance companies
+2025-03-06 16:55:06,608 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 16:55:10,281 - policy_holder_bot - ERROR - Failed to fetch most popular insurance companies
+2025-03-06 16:55:57,102 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 16:55:59,360 - policy_holder_bot - ERROR - Failed to fetch most popular insurance companies: Method <bound method ColumnOperators.desc of <sqlalchemy.sql.functions.count at 0x7fb52a373b60; count>> may not be passed as a SQL expression
+2025-03-06 16:56:32,026 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 16:57:01,874 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 16:58:36,109 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 17:44:37,815 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 17:46:19,229 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 17:47:45,696 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 17:59:06,750 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 18:00:30,895 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 18:03:10,537 - policy_holder_bot - INFO - Bot is running!
+2025-03-06 18:06:29,660 - policy_holder_bot - INFO - Bot is running!
+2025-03-07 17:28:10,031 - policy_holder_bot - INFO - Bot is running!
+2025-03-07 17:29:08,610 - policy_holder_bot - INFO - Bot is running!
+2025-03-07 17:33:00,788 - policy_holder_bot - INFO - Bot is running!
+2025-03-07 17:34:57,291 - policy_holder_bot - INFO - Bot is running!
+2025-03-07 17:35:56,583 - policy_holder_bot - INFO - Bot is running!
+2025-03-07 17:37:13,608 - policy_holder_bot - INFO - Bot is running!
+2025-03-07 17:37:31,129 - policy_holder_bot - ERROR - Error while sending verification code to lyrics.red@yandex.ru
+2025-03-07 17:39:01,920 - policy_holder_bot - INFO - Bot is running!
+2025-03-07 17:39:49,578 - policy_holder_bot - INFO - Bot is running!
+2025-03-07 17:40:05,371 - policy_holder_bot - ERROR - Error while sending verification code to lyrics.red@yandex.ru: Forbidden
+2025-03-07 17:41:27,658 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 16:07:59,652 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 16:10:40,654 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 16:13:01,374 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 16:14:16,192 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 16:18:10,949 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 23:01:27,221 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 23:07:31,171 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 23:08:53,877 - policy_holder_bot - ERROR - Error while validating payout: Incorrect padding
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 134, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 37, in payout_request
+    response = self.canister.request_payout(diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1261, in encode
+    if not t.covariant(args[i]):
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 879, in covariant
+    p = P.from_str(x)
+        ^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/principal.py", line 60, in from_str
+    b = base64.b32decode(s1.upper().encode() + b'=' * pad_len)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 254, in b32decode
+    return _b32decode(_b32alphabet, s, casefold, map01)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 240, in _b32decode
+    raise binascii.Error('Incorrect padding')
+binascii.Error: Incorrect padding
+2025-03-08 23:15:03,958 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 23:16:27,365 - policy_holder_bot - ERROR - Error while validating payout: Arguments length not match
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 135, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 38, in payout_request
+    response = self.canister.request_payout(diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 50, in __call__
+    raise ValueError("Arguments length not match")
+ValueError: Arguments length not match
+2025-03-08 23:17:00,248 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 23:17:29,740 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-08 23:17:29,740 - policy_holder_bot - INFO - Canister is alive
+2025-03-08 23:22:41,671 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-08 23:22:41,671 - policy_holder_bot - INFO - Canister is alive
+2025-03-08 23:22:41,673 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "payouts_transaction_id_key"
+DETAIL:  Key (transaction_id)=(999) already exists.
+
+[SQL: INSERT INTO payouts (transaction_id, amount, user_id, date, company_id, diagnosis_code, diagnosis_date) VALUES (%(transaction_id)s, %(amount)s, %(user_id)s, %(date)s, %(company_id)s, %(diagnosis_code)s, %(diagnosis_date)s) RETURNING payouts.id]
+[parameters: {'transaction_id': '999', 'amount': 50000.0, 'user_id': 1, 'date': datetime.datetime(2025, 3, 8, 23, 22, 41, 672021), 'company_id': 1, 'diagnosis_code': 'C94.2', 'diagnosis_date': datetime.date(2024, 6, 25)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-03-08 23:27:22,232 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-08 23:27:22,232 - policy_holder_bot - INFO - Canister is alive
+2025-03-08 23:27:22,233 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "payouts_transaction_id_key"
+DETAIL:  Key (transaction_id)=(999) already exists.
+
+[SQL: INSERT INTO payouts (transaction_id, amount, user_id, date, company_id, diagnosis_code, diagnosis_date) VALUES (%(transaction_id)s, %(amount)s, %(user_id)s, %(date)s, %(company_id)s, %(diagnosis_code)s, %(diagnosis_date)s) RETURNING payouts.id]
+[parameters: {'transaction_id': '999', 'amount': 35000.0, 'user_id': 1, 'date': datetime.datetime(2025, 3, 8, 23, 27, 22, 232397), 'company_id': 1, 'diagnosis_code': 'A00.0', 'diagnosis_date': datetime.date(2024, 1, 12)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-03-08 23:35:49,546 - policy_holder_bot - INFO - Bot is running!
+2025-03-08 23:36:55,143 - policy_holder_bot - INFO - [{'err': 'Insurance case is not approved'}]
+2025-03-09 11:01:45,773 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 14:53:33,936 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 15:13:23,395 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 15:16:05,910 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 15:23:08,545 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 15:26:15,499 - policy_holder_bot - ERROR - Error while validating payout: Invalid text argument: <coroutine object OpenBankingClient.get_oauth_token at 0x7fd096b5eb00>
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 160, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 39, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1262, in encode
+    raise TypeError("Invalid {} argument: {}".format(t.display(), str(args[i])))
+TypeError: Invalid text argument: <coroutine object OpenBankingClient.get_oauth_token at 0x7fd096b5eb00>
+2025-03-15 15:27:39,889 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 15:28:03,654 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-15 15:37:01,803 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 15:37:36,131 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-15 15:38:36,711 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 15:38:59,998 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-15 15:39:00,003 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "payouts_transaction_id_key"
+DETAIL:  Key (transaction_id)=(999) already exists.
+
+[SQL: INSERT INTO payouts (transaction_id, amount, user_id, date, company_id, diagnosis_code, diagnosis_date) VALUES (%(transaction_id)s, %(amount)s, %(user_id)s, %(date)s, %(company_id)s, %(diagnosis_code)s, %(diagnosis_date)s) RETURNING payouts.id]
+[parameters: {'transaction_id': '999', 'amount': 100000.0, 'user_id': 1, 'date': datetime.datetime(2025, 3, 15, 15, 38, 59, 998640), 'company_id': 1, 'diagnosis_code': 'B23.0', 'diagnosis_date': datetime.date(2024, 6, 25)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-03-15 15:40:29,474 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 15:40:55,418 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-15 15:40:55,423 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "payouts_transaction_id_key"
+DETAIL:  Key (transaction_id)=(999) already exists.
+
+[SQL: INSERT INTO payouts (transaction_id, amount, user_id, date, company_id, diagnosis_code, diagnosis_date) VALUES (%(transaction_id)s, %(amount)s, %(user_id)s, %(date)s, %(company_id)s, %(diagnosis_code)s, %(diagnosis_date)s) RETURNING payouts.id]
+[parameters: {'transaction_id': '999', 'amount': 100000.0, 'user_id': 1, 'date': datetime.datetime(2025, 3, 15, 15, 40, 55, 419198), 'company_id': 1, 'diagnosis_code': 'B23.0', 'diagnosis_date': datetime.date(2024, 6, 25)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-03-15 15:41:58,306 - policy_holder_bot - INFO - Bot is running!
+2025-03-15 15:42:33,207 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-15 15:45:00,304 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-16 10:44:06,168 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 10:45:05,248 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 10:49:57,695 - policy_holder_bot - INFO - [{'err': 'Insurance case is not approved'}]
+2025-03-16 10:53:48,960 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 10:54:09,783 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-16 12:02:50,100 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 12:26:15,958 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 12:31:58,535 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 12:35:12,298 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 12:36:41,257 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-16 13:55:16,079 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 14:07:42,089 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 14:10:36,229 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 14:18:10,994 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-16 17:40:15,337 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 19:30:35,055 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 19:33:37,228 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 19:37:23,813 - policy_holder_bot - INFO - Bot is running!
+2025-03-16 20:30:31,417 - policy_holder_bot - INFO - [{'ok': 'Transfer was approved'}]
+2025-03-16 20:35:37,669 - policy_holder_bot - INFO - [{'err': 'Insurance case is not approved'}]
+2025-04-05 12:41:29,368 - policy_holder_bot - INFO - Bot is running!
+2025-04-05 13:12:25,392 - policy_holder_bot - INFO - Bot is running!
+2025-04-05 13:46:04,161 - policy_holder_bot - INFO - Bot is running!
+2025-04-05 14:47:06,891 - policy_holder_bot - INFO - Bot is running!
+2025-04-05 17:10:51,305 - policy_holder_bot - INFO - Bot is running!
+2025-04-05 17:11:12,383 - policy_holder_bot - ERROR - Error during searching user by telegram_id: (psycopg2.errors.UndefinedColumn) column users.sign_date does not exist
+LINE 1: ..._filters, users.is_approved AS users_is_approved, users.sign...
+                                                             ^
+
+[SQL: SELECT users.id AS users_id, users.email AS users_email, users.telegram_id AS users_telegram_id, users.insurance_amount AS users_insurance_amount, users.payout_address AS users_payout_address, users.insurer_id AS users_insurer_id, users.schema_version AS users_schema_version, users.secondary_filters AS users_secondary_filters, users.is_approved AS users_is_approved, users.sign_date AS users_sign_date, users.expiration_date AS users_expiration_date 
+FROM users 
+WHERE users.telegram_id = %(telegram_id_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'telegram_id_1': 1110461851, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-05 17:11:24,650 - policy_holder_bot - ERROR - Error during searching user by email: (psycopg2.errors.UndefinedColumn) column users.sign_date does not exist
+LINE 1: ..._filters, users.is_approved AS users_is_approved, users.sign...
+                                                             ^
+
+[SQL: SELECT users.id AS users_id, users.email AS users_email, users.telegram_id AS users_telegram_id, users.insurance_amount AS users_insurance_amount, users.payout_address AS users_payout_address, users.insurer_id AS users_insurer_id, users.schema_version AS users_schema_version, users.secondary_filters AS users_secondary_filters, users.is_approved AS users_is_approved, users.sign_date AS users_sign_date, users.expiration_date AS users_expiration_date 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'email_1': 'lyrics.red@yandex.ru', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-05 17:12:26,043 - policy_holder_bot - INFO - Bot is running!
+2025-04-05 17:16:34,689 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 15:27:44,764 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:27:45,266 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:27:45,268 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 15:33:12,037 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:33:12,154 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:33:12,396 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:33:12,412 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:33:12,422 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 15:34:41,197 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:34:41,316 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:34:41,545 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:34:41,561 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:34:41,566 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 15:35:48,263 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:35:48,307 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:35:48,508 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:35:48,529 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:35:48,536 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 15:37:12,449 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:37:12,556 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:37:12,756 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:37:12,772 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:37:12,777 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 15:37:33,042 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:37:33,163 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:37:33,394 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:37:33,413 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:37:33,418 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 15:40:00,336 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:40:00,406 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:40:00,592 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:40:00,601 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:40:00,604 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 15:40:42,151 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:40:42,242 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:40:42,460 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:40:42,476 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:40:42,481 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 15:42:04,049 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:42:04,160 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:42:04,380 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:42:04,391 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:42:04,394 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 15:42:37,471 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 15:42:37,557 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:42:37,724 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 15:42:37,730 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 15:42:37,732 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:00:49,374 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 16:00:49,504 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:00:49,859 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:00:49,888 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 16:00:49,897 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:02:48,284 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 16:02:48,420 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:02:48,687 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:02:48,711 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 16:02:48,719 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:04:53,028 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 16:04:53,167 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:04:53,428 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:04:53,444 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 16:04:53,452 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:06:18,713 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 16:06:18,808 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:06:19,097 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:06:19,124 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 16:06:19,132 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:07:20,650 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 16:07:20,741 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:07:20,942 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:07:20,965 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 16:07:20,973 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:08:17,636 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 16:08:17,756 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:08:18,031 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:08:18,055 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 16:08:18,062 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:14:33,417 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 16:14:33,488 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:14:33,738 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:14:33,752 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 16:14:33,755 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:18:20,104 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 16:18:20,256 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:18:20,428 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:18:20,435 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 16:18:20,438 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:18:20,927 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 16:33:15,213 - policy_holder_bot - ERROR - Missing required data in context.user_data: 'policy_number'
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 133, in process_payout
+    policy_number = context.user_data['policy_number']
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'policy_number'
+2025-04-12 16:33:15,240 - policy_holder_bot - ERROR - Missing required data in context.user_data: 'policy_number'
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 133, in process_payout
+    policy_number = context.user_data['policy_number']
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'policy_number'
+2025-04-12 16:33:15,267 - policy_holder_bot - ERROR - Error in request_payout_handler: Database error
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 30, in request_payout_handler
+    user = await db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/unittest/mock.py", line 2262, in _execute_mock_call
+    raise effect
+Exception: Database error
+2025-04-12 16:35:04,073 - policy_holder_bot - ERROR - Error while validating payout: object bool can't be used in 'await' expression
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 176, in process_payout
+    is_valid = await icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object bool can't be used in 'await' expression
+2025-04-12 16:35:04,128 - policy_holder_bot - ERROR - Missing required data in context.user_data: 'policy_number'
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 133, in process_payout
+    policy_number = context.user_data['policy_number']
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'policy_number'
+2025-04-12 16:35:04,157 - policy_holder_bot - ERROR - Missing required data in context.user_data: 'policy_number'
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 133, in process_payout
+    policy_number = context.user_data['policy_number']
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'policy_number'
+2025-04-12 16:35:04,185 - policy_holder_bot - ERROR - Error in request_payout_handler: Database error
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 30, in request_payout_handler
+    user = await db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/unittest/mock.py", line 2262, in _execute_mock_call
+    raise effect
+Exception: Database error
+2025-04-12 16:35:04,219 - policy_holder_bot - ERROR - Error while validating payout: Non-base32 digit found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 176, in process_payout
+    is_valid = await icp_client.payout_request(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 39, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1261, in encode
+    if not t.covariant(args[i]):
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 879, in covariant
+    p = P.from_str(x)
+        ^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/principal.py", line 60, in from_str
+    b = base64.b32decode(s1.upper().encode() + b'=' * pad_len)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 254, in b32decode
+    return _b32decode(_b32alphabet, s, casefold, map01)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 236, in _b32decode
+    raise binascii.Error('Non-base32 digit found') from None
+binascii.Error: Non-base32 digit found
+2025-04-12 16:36:57,137 - policy_holder_bot - ERROR - Missing required data in context.user_data: 'crypto_wallet'
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 136, in process_payout
+    crypto_wallet = context.user_data['crypto_wallet']
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'crypto_wallet'
+2025-04-12 16:36:57,185 - policy_holder_bot - ERROR - Missing required data in context.user_data: 'crypto_wallet'
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 136, in process_payout
+    crypto_wallet = context.user_data['crypto_wallet']
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'crypto_wallet'
+2025-04-12 16:36:57,213 - policy_holder_bot - ERROR - Error in request_payout_handler: Database error
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 30, in request_payout_handler
+    user = await db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/unittest/mock.py", line 2262, in _execute_mock_call
+    raise effect
+Exception: Database error
+2025-04-12 16:36:57,221 - policy_holder_bot - ERROR - Error while validating payout: Non-base32 digit found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 176, in process_payout
+    is_valid = await icp_client.payout_request(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 39, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1261, in encode
+    if not t.covariant(args[i]):
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 879, in covariant
+    p = P.from_str(x)
+        ^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/principal.py", line 60, in from_str
+    b = base64.b32decode(s1.upper().encode() + b'=' * pad_len)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 254, in b32decode
+    return _b32decode(_b32alphabet, s, casefold, map01)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 236, in _b32decode
+    raise binascii.Error('Non-base32 digit found') from None
+binascii.Error: Non-base32 digit found
+2025-04-12 16:38:57,732 - policy_holder_bot - ERROR - Missing required data in context.user_data: 'crypto_wallet'
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 136, in process_payout
+    crypto_wallet = context.user_data['crypto_wallet']
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'crypto_wallet'
+2025-04-12 16:38:57,780 - policy_holder_bot - ERROR - Missing required data in context.user_data: 'crypto_wallet'
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 136, in process_payout
+    crypto_wallet = context.user_data['crypto_wallet']
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'crypto_wallet'
+2025-04-12 16:38:57,809 - policy_holder_bot - ERROR - Error in request_payout_handler: Database error
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 30, in request_payout_handler
+    user = await db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/unittest/mock.py", line 2262, in _execute_mock_call
+    raise effect
+Exception: Database error
+2025-04-12 16:38:57,817 - policy_holder_bot - ERROR - Error while validating payout: Non-base32 digit found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 176, in process_payout
+    is_valid = await icp_client.payout_request(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 39, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1261, in encode
+    if not t.covariant(args[i]):
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 879, in covariant
+    p = P.from_str(x)
+        ^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/principal.py", line 60, in from_str
+    b = base64.b32decode(s1.upper().encode() + b'=' * pad_len)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 254, in b32decode
+    return _b32decode(_b32alphabet, s, casefold, map01)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 236, in _b32decode
+    raise binascii.Error('Non-base32 digit found') from None
+binascii.Error: Non-base32 digit found
+2025-04-12 16:39:29,293 - policy_holder_bot - ERROR - Error in request_payout_handler: Database error
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 30, in request_payout_handler
+    user = await db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/unittest/mock.py", line 2262, in _execute_mock_call
+    raise effect
+Exception: Database error
+2025-04-12 16:39:29,298 - policy_holder_bot - ERROR - Error while validating payout: Non-base32 digit found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 177, in process_payout
+    is_valid = await icp_client.payout_request(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 39, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1261, in encode
+    if not t.covariant(args[i]):
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 879, in covariant
+    p = P.from_str(x)
+        ^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/principal.py", line 60, in from_str
+    b = base64.b32decode(s1.upper().encode() + b'=' * pad_len)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 254, in b32decode
+    return _b32decode(_b32alphabet, s, casefold, map01)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 236, in _b32decode
+    raise binascii.Error('Non-base32 digit found') from None
+binascii.Error: Non-base32 digit found
+2025-04-12 16:40:16,692 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 16:40:16,766 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:40:16,961 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 16:40:16,971 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 16:40:16,975 - policy_holder_bot - INFO - Transfer was denied
+2025-04-12 16:40:17,120 - policy_holder_bot - ERROR - Error in request_payout_handler: Database error
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 30, in request_payout_handler
+    user = await db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/unittest/mock.py", line 2262, in _execute_mock_call
+    raise effect
+Exception: Database error
+2025-04-12 16:40:17,129 - policy_holder_bot - ERROR - Error while validating payout: Non-base32 digit found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 177, in process_payout
+    is_valid = await icp_client.payout_request(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 39, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1261, in encode
+    if not t.covariant(args[i]):
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 879, in covariant
+    p = P.from_str(x)
+        ^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/principal.py", line 60, in from_str
+    b = base64.b32decode(s1.upper().encode() + b'=' * pad_len)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 254, in b32decode
+    return _b32decode(_b32alphabet, s, casefold, map01)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 236, in _b32decode
+    raise binascii.Error('Non-base32 digit found') from None
+binascii.Error: Non-base32 digit found
+2025-04-12 16:40:17,147 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 18:21:29,181 - policy_holder_bot - INFO - Transfer was approved
+2025-04-12 18:26:56,053 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_pkey"
+DETAIL:  Key (id)=(1) already exists.
+
+[SQL: INSERT INTO users (email, telegram_id, insurance_amount, payout_address, insurer_id, schema_version, secondary_filters, is_approved, sign_date, expiration_date) VALUES (%(email)s, %(telegram_id)s, %(insurance_amount)s, %(payout_address)s, %(insurer_id)s, %(schema_version)s, %(secondary_filters)s, %(is_approved)s, %(sign_date)s, %(expiration_date)s) RETURNING users.id]
+[parameters: {'email': 'test@example.com', 'telegram_id': None, 'insurance_amount': 1000, 'payout_address': '0x123', 'insurer_id': 1, 'schema_version': 1, 'secondary_filters': None, 'is_approved': False, 'sign_date': datetime.datetime(2024, 1, 1, 0, 0), 'expiration_date': datetime.datetime(2024, 12, 31, 0, 0)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-12 18:32:29,843 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(test@example.com) already exists.
+
+[SQL: INSERT INTO users (email, telegram_id, insurance_amount, payout_address, insurer_id, schema_version, secondary_filters, is_approved, sign_date, expiration_date) VALUES (%(email)s, %(telegram_id)s, %(insurance_amount)s, %(payout_address)s, %(insurer_id)s, %(schema_version)s, %(secondary_filters)s, %(is_approved)s, %(sign_date)s, %(expiration_date)s) RETURNING users.id]
+[parameters: {'email': 'test@example.com', 'telegram_id': None, 'insurance_amount': 1000, 'payout_address': 'rrkah-fqaaa-aaaaa-aaaaq-cai', 'insurer_id': 1, 'schema_version': 1, 'secondary_filters': None, 'is_approved': False, 'sign_date': datetime.datetime(2024, 1, 1, 0, 0), 'expiration_date': datetime.datetime(2024, 12, 31, 0, 0)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-12 18:37:38,183 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(test@example.com) already exists.
+
+[SQL: INSERT INTO users (email, telegram_id, insurance_amount, payout_address, insurer_id, schema_version, secondary_filters, is_approved, sign_date, expiration_date) VALUES (%(email)s, %(telegram_id)s, %(insurance_amount)s, %(payout_address)s, %(insurer_id)s, %(schema_version)s, %(secondary_filters)s, %(is_approved)s, %(sign_date)s, %(expiration_date)s) RETURNING users.id]
+[parameters: {'email': 'test@example.com', 'telegram_id': None, 'insurance_amount': 1000, 'payout_address': 'rrkah-fqaaa-aaaaa-aaaaq-cai', 'insurer_id': 1, 'schema_version': 1, 'secondary_filters': None, 'is_approved': False, 'sign_date': datetime.datetime(2024, 1, 1, 0, 0), 'expiration_date': datetime.datetime(2024, 12, 31, 0, 0)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-12 18:38:40,000 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(test@example.com) already exists.
+
+[SQL: INSERT INTO users (email, telegram_id, insurance_amount, payout_address, insurer_id, schema_version, secondary_filters, is_approved, sign_date, expiration_date) VALUES (%(email)s, %(telegram_id)s, %(insurance_amount)s, %(payout_address)s, %(insurer_id)s, %(schema_version)s, %(secondary_filters)s, %(is_approved)s, %(sign_date)s, %(expiration_date)s) RETURNING users.id]
+[parameters: {'email': 'test@example.com', 'telegram_id': None, 'insurance_amount': 1000, 'payout_address': 'rrkah-fqaaa-aaaaa-aaaaq-cai', 'insurer_id': 1, 'schema_version': 1, 'secondary_filters': None, 'is_approved': False, 'sign_date': datetime.datetime(2024, 1, 1, 0, 0), 'expiration_date': datetime.datetime(2024, 12, 31, 0, 0)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-12 18:39:23,314 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(test@example.com) already exists.
+
+[SQL: INSERT INTO users (email, telegram_id, insurance_amount, payout_address, insurer_id, schema_version, secondary_filters, is_approved, sign_date, expiration_date) VALUES (%(email)s, %(telegram_id)s, %(insurance_amount)s, %(payout_address)s, %(insurer_id)s, %(schema_version)s, %(secondary_filters)s, %(is_approved)s, %(sign_date)s, %(expiration_date)s) RETURNING users.id]
+[parameters: {'email': 'test@example.com', 'telegram_id': None, 'insurance_amount': 1000, 'payout_address': 'rrkah-fqaaa-aaaaa-aaaaq-cai', 'insurer_id': 1, 'schema_version': 1, 'secondary_filters': None, 'is_approved': False, 'sign_date': datetime.datetime(2024, 1, 1, 0, 0), 'expiration_date': datetime.datetime(2024, 12, 31, 0, 0)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-12 18:40:42,685 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(test@example.com) already exists.
+
+[SQL: INSERT INTO users (email, telegram_id, insurance_amount, payout_address, insurer_id, schema_version, secondary_filters, is_approved, sign_date, expiration_date) VALUES (%(email)s, %(telegram_id)s, %(insurance_amount)s, %(payout_address)s, %(insurer_id)s, %(schema_version)s, %(secondary_filters)s, %(is_approved)s, %(sign_date)s, %(expiration_date)s) RETURNING users.id]
+[parameters: {'email': 'test@example.com', 'telegram_id': None, 'insurance_amount': 1000, 'payout_address': 'rrkah-fqaaa-aaaaa-aaaaq-cai', 'insurer_id': 1, 'schema_version': 1, 'secondary_filters': None, 'is_approved': False, 'sign_date': datetime.datetime(2024, 1, 1, 0, 0), 'expiration_date': datetime.datetime(2024, 12, 31, 0, 0)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-12 18:40:42,773 - policy_holder_bot - ERROR - Error to fetch insurer scheme for company_id 1: (psycopg2.errors.UndefinedColumn) column insurer_schemas.id does not exist
+LINE 1: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_sch...
+               ^
+
+[SQL: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_schemas.global_version_num AS insurer_schemas_global_version_num, insurer_schemas.version AS insurer_schemas_version, insurer_schemas.company_id AS insurer_schemas_company_id, insurer_schemas.diagnoses_coefs AS insurer_schemas_diagnoses_coefs 
+FROM insurer_schemas 
+WHERE insurer_schemas.company_id = %(company_id_1)s AND insurer_schemas.global_version_num = %(global_version_num_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'company_id_1': 1, 'global_version_num_1': 1, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-12 18:42:23,065 - policy_holder_bot - ERROR - Error during updating uses: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(test@example.com) already exists.
+
+[SQL: INSERT INTO users (email, telegram_id, insurance_amount, payout_address, insurer_id, schema_version, secondary_filters, is_approved, sign_date, expiration_date) VALUES (%(email)s, %(telegram_id)s, %(insurance_amount)s, %(payout_address)s, %(insurer_id)s, %(schema_version)s, %(secondary_filters)s, %(is_approved)s, %(sign_date)s, %(expiration_date)s) RETURNING users.id]
+[parameters: {'email': 'test@example.com', 'telegram_id': None, 'insurance_amount': 1000, 'payout_address': 'rrkah-fqaaa-aaaaa-aaaaq-cai', 'insurer_id': 1, 'schema_version': 1, 'secondary_filters': None, 'is_approved': False, 'sign_date': datetime.datetime(2024, 1, 1, 0, 0), 'expiration_date': datetime.datetime(2024, 12, 31, 0, 0)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-12 18:42:23,147 - policy_holder_bot - ERROR - Error to fetch insurer scheme for company_id 1: (psycopg2.errors.UndefinedColumn) column insurer_schemas.id does not exist
+LINE 1: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_sch...
+               ^
+
+[SQL: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_schemas.global_version_num AS insurer_schemas_global_version_num, insurer_schemas.version AS insurer_schemas_version, insurer_schemas.company_id AS insurer_schemas_company_id, insurer_schemas.diagnoses_coefs AS insurer_schemas_diagnoses_coefs 
+FROM insurer_schemas 
+WHERE insurer_schemas.company_id = %(company_id_1)s AND insurer_schemas.global_version_num = %(global_version_num_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'company_id_1': 1, 'global_version_num_1': 1, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-12 18:44:46,321 - policy_holder_bot - ERROR - Error to fetch insurer scheme for company_id 1: (psycopg2.errors.UndefinedColumn) column insurer_schemas.id does not exist
+LINE 1: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_sch...
+               ^
+
+[SQL: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_schemas.global_version_num AS insurer_schemas_global_version_num, insurer_schemas.version AS insurer_schemas_version, insurer_schemas.company_id AS insurer_schemas_company_id, insurer_schemas.diagnoses_coefs AS insurer_schemas_diagnoses_coefs 
+FROM insurer_schemas 
+WHERE insurer_schemas.company_id = %(company_id_1)s AND insurer_schemas.global_version_num = %(global_version_num_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'company_id_1': 1, 'global_version_num_1': 1, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-12 18:46:13,468 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7febfe6d4050>' is already attached to session '1' (this is '2')
+2025-04-12 18:49:09,269 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7fa73f30aff0>' is already attached to session '1' (this is '2')
+2025-04-12 18:49:54,256 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7fb7d51efb00>' is already attached to session '1' (this is '2')
+2025-04-12 18:50:46,180 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7fd589e26150>' is already attached to session '1' (this is '2')
+2025-04-12 18:54:38,416 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7fa674ca8110>' is already attached to session '1' (this is '2')
+2025-04-12 18:55:11,516 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7f9a9c0084d0>' is already attached to session '1' (this is '2')
+2025-04-12 18:55:39,084 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7f37bb305070>' is already attached to session '1' (this is '2')
+2025-04-12 18:56:14,054 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7efeb88f06e0>' is already attached to session '1' (this is '2')
+2025-04-12 18:58:24,138 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7f60ba4dc0e0>' is already attached to session '1' (this is '2')
+2025-04-12 18:58:43,626 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7f85092ca9f0>' is already attached to session '1' (this is '2')
+2025-04-12 19:16:22,189 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7f2d1d1f17f0>' is already attached to session '1' (this is '2')
+2025-04-12 19:17:14,754 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7f8e024361b0>' is already attached to session '1' (this is '2')
+2025-04-12 19:19:27,114 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 19:19:27,202 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 19:19:27,378 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 19:19:27,801 - policy_holder_bot - ERROR - Error in request_payout_handler: Database error
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 30, in request_payout_handler
+    user = await db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/unittest/mock.py", line 2262, in _execute_mock_call
+    raise effect
+Exception: Database error
+2025-04-12 19:19:27,822 - policy_holder_bot - ERROR - Error while validating payout: Non-base32 digit found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 177, in process_payout
+    is_valid = await icp_client.payout_request(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 44, in payout_request
+    Principal.from_str(insurer_crypto_wallet),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/principal.py", line 60, in from_str
+    b = base64.b32decode(s1.upper().encode() + b'=' * pad_len)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 254, in b32decode
+    return _b32decode(_b32alphabet, s, casefold, map01)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 236, in _b32decode
+    raise binascii.Error('Non-base32 digit found') from None
+binascii.Error: Non-base32 digit found
+2025-04-12 19:19:27,947 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 19:19:30,143 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7f8012d81ca0>' is already attached to session '1' (this is '2')
+2025-04-12 19:19:58,998 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 19:19:59,092 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 19:19:59,262 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 19:19:59,280 - policy_holder_bot - INFO - Payout successful
+2025-04-12 19:19:59,285 - policy_holder_bot - INFO - Payout failed
+2025-04-12 19:19:59,558 - policy_holder_bot - ERROR - Error in request_payout_handler: Database error
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 30, in request_payout_handler
+    user = await db_client.get_user_by_telegram_id(telegram_id=telegram_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/unittest/mock.py", line 2262, in _execute_mock_call
+    raise effect
+Exception: Database error
+2025-04-12 19:19:59,578 - policy_holder_bot - ERROR - Error while validating payout: Non-base32 digit found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 177, in process_payout
+    is_valid = await icp_client.payout_request(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 44, in payout_request
+    Principal.from_str(insurer_crypto_wallet),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/principal.py", line 60, in from_str
+    b = base64.b32decode(s1.upper().encode() + b'=' * pad_len)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 254, in b32decode
+    return _b32decode(_b32alphabet, s, casefold, map01)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 236, in _b32decode
+    raise binascii.Error('Non-base32 digit found') from None
+binascii.Error: Non-base32 digit found
+2025-04-12 19:19:59,678 - policy_holder_bot - INFO - Payout successful
+2025-04-12 19:19:59,684 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 19:20:01,885 - policy_holder_bot - ERROR - Error during updating uses: Object '<UserInfo at 0x7fc1fefe96a0>' is already attached to session '1' (this is '2')
+2025-04-12 19:54:02,598 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 19:54:34,051 - policy_holder_bot - ERROR - Error to fetch insurer scheme for company_id 1: (psycopg2.errors.UndefinedColumn) column insurer_schemas.id does not exist
+LINE 1: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_sch...
+               ^
+
+[SQL: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_schemas.global_version_num AS insurer_schemas_global_version_num, insurer_schemas.version AS insurer_schemas_version, insurer_schemas.company_id AS insurer_schemas_company_id, insurer_schemas.diagnoses_coefs AS insurer_schemas_diagnoses_coefs 
+FROM insurer_schemas 
+WHERE insurer_schemas.company_id = %(company_id_1)s AND insurer_schemas.global_version_num = %(global_version_num_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'company_id_1': 1, 'global_version_num_1': 1, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-12 19:54:45,980 - policy_holder_bot - ERROR - Error to fetch insurer scheme for company_id 1: (psycopg2.errors.UndefinedColumn) column insurer_schemas.id does not exist
+LINE 1: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_sch...
+               ^
+
+[SQL: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_schemas.global_version_num AS insurer_schemas_global_version_num, insurer_schemas.version AS insurer_schemas_version, insurer_schemas.company_id AS insurer_schemas_company_id, insurer_schemas.diagnoses_coefs AS insurer_schemas_diagnoses_coefs 
+FROM insurer_schemas 
+WHERE insurer_schemas.company_id = %(company_id_1)s AND insurer_schemas.global_version_num = %(global_version_num_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'company_id_1': 1, 'global_version_num_1': 1, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-12 20:02:44,402 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:02:50,166 - policy_holder_bot - ERROR - Error to fetch insurer scheme for company_id 1: (psycopg2.errors.UndefinedColumn) column insurer_schemas.id does not exist
+LINE 1: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_sch...
+               ^
+
+[SQL: SELECT insurer_schemas.id AS insurer_schemas_id, insurer_schemas.global_version_num AS insurer_schemas_global_version_num, insurer_schemas.version AS insurer_schemas_version, insurer_schemas.company_id AS insurer_schemas_company_id, insurer_schemas.diagnoses_coefs AS insurer_schemas_diagnoses_coefs 
+FROM insurer_schemas 
+WHERE insurer_schemas.company_id = %(company_id_1)s AND insurer_schemas.global_version_num = %(global_version_num_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'company_id_1': 1, 'global_version_num_1': 1, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-12 20:03:41,785 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:04:18,385 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:05:33,588 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:08:53,734 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:08:53,801 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:08:53,873 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:08:54,059 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:08:54,060 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:08:54,090 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:08:54,092 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:08:54,092 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:08:54,120 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:08:54,121 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:08:54,122 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:08:54,151 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:08:54,378 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:08:54,378 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:08:54,410 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:08:54,509 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:08:54,510 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:08:54,541 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:08:54,649 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:17:54,819 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:17:54,877 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:17:54,951 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:17:55,099 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:17:55,100 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:17:55,130 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:17:55,132 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:17:55,133 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:17:55,166 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:17:55,167 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:17:55,167 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:17:55,199 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:17:55,401 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:17:55,402 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:17:55,432 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:17:55,526 - policy_holder_bot - INFO - Initializing DBClient with DATABASE_URL: postgresql://postgres:KaKaDu-2106@localhost:5432/postgres
+2025-04-12 20:17:55,527 - policy_holder_bot - INFO - Creating database tables...
+2025-04-12 20:17:55,553 - policy_holder_bot - INFO - Database tables created successfully
+2025-04-12 20:17:55,646 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:36:17,255 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:36:41,405 - policy_holder_bot - ERROR - Error during searching user by email: (psycopg2.errors.UndefinedColumn) column users.payout_address does not exist
+LINE 1: ...users.insurance_amount AS users_insurance_amount, users.payo...
+                                                             ^
+
+[SQL: SELECT users.id AS users_id, users.email AS users_email, users.telegram_id AS users_telegram_id, users.insurance_amount AS users_insurance_amount, users.payout_address AS users_payout_address, users.insurer_id AS users_insurer_id, users.schema_version AS users_schema_version, users.secondary_filters AS users_secondary_filters, users.is_approved AS users_is_approved 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'email_1': 'lyrics.red@yandex.ru', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-12 20:37:22,625 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:41:23,262 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:48:23,866 - policy_holder_bot - INFO - [{'err': 'Invalid insurance case'}]
+2025-04-12 20:51:10,339 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 20:51:56,746 - policy_holder_bot - INFO - [{'ok': 'Payout successful'}]
+2025-04-12 21:06:50,052 - policy_holder_bot - INFO - [{'ok': 'Payout successful'}]
+2025-04-12 21:08:12,039 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 21:09:54,459 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 21:10:52,353 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 21:11:33,157 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 21:12:43,449 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 22:21:39,563 - policy_holder_bot - ERROR - Error while validating payout: Non-base32 digit found
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 175, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 42, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1261, in encode
+    if not t.covariant(args[i]):
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 879, in covariant
+    p = P.from_str(x)
+        ^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/principal.py", line 60, in from_str
+    b = base64.b32decode(s1.upper().encode() + b'=' * pad_len)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 254, in b32decode
+    return _b32decode(_b32alphabet, s, casefold, map01)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/anaconda3/lib/python3.12/base64.py", line 236, in _b32decode
+    raise binascii.Error('Non-base32 digit found') from None
+binascii.Error: Non-base32 digit found
+2025-04-12 22:25:39,841 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 22:25:39,880 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:25:39,970 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:27:19,944 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 22:27:19,980 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:27:20,059 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:37:31,596 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 22:37:31,631 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:37:31,708 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:54:12,149 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 22:54:12,187 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:54:12,263 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:55:42,980 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 22:55:43,019 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:55:43,099 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:56:31,340 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 22:56:31,378 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 22:56:31,453 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 23:00:17,025 - policy_holder_bot - INFO - Payout successful
+2025-04-12 23:00:17,034 - policy_holder_bot - INFO - Payout failed
+2025-04-12 23:00:58,011 - policy_holder_bot - INFO - Payout successful
+2025-04-12 23:00:58,021 - policy_holder_bot - INFO - Payout failed
+2025-04-12 23:01:34,251 - policy_holder_bot - ERROR - Error during searching user by email: Database error
+2025-04-12 23:01:34,290 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 23:01:34,366 - policy_holder_bot - ERROR - Error during updating uses: Database error
+2025-04-12 23:01:34,409 - policy_holder_bot - INFO - Payout successful
+2025-04-12 23:01:34,416 - policy_holder_bot - INFO - Payout failed
+2025-04-12 23:03:41,566 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 23:05:41,095 - policy_holder_bot - INFO - Bot is running!
+2025-04-12 23:06:59,871 - policy_holder_bot - INFO - [{'err': 'Invalid insurance case'}]
+2025-04-13 10:16:18,163 - policy_holder_bot - ERROR - Error during searching user by email test@example.com: Database error
+2025-04-13 10:16:18,406 - policy_holder_bot - ERROR - Error during updating user <MagicMock name='mock.id' id='139901193680368'>: Database error
+2025-04-13 10:16:18,872 - policy_holder_bot - ERROR - Error during adding payout for user <MagicMock name='mock.user_id' id='139901193616944'>: Database error
+2025-04-13 10:16:19,109 - policy_holder_bot - INFO - Payout successful
+2025-04-13 10:16:19,116 - policy_holder_bot - INFO - Payout failed
+2025-04-13 10:19:54,372 - policy_holder_bot - ERROR - Error during searching user by email test@example.com: Database error
+2025-04-13 10:19:54,414 - policy_holder_bot - ERROR - Error during updating user <MagicMock name='mock.id' id='140294411436256'>: Database error
+2025-04-13 10:19:54,497 - policy_holder_bot - ERROR - Error during adding payout for user <MagicMock name='mock.user_id' id='140294411292208'>: Database error
+2025-04-13 10:19:54,541 - policy_holder_bot - INFO - Payout successful
+2025-04-13 10:19:54,548 - policy_holder_bot - INFO - Payout failed
+2025-04-13 10:20:52,213 - policy_holder_bot - ERROR - Error during searching user by email test@example.com: Database error
+2025-04-13 10:20:52,252 - policy_holder_bot - ERROR - Error during updating user <MagicMock name='mock.id' id='139641048895216'>: Database error
+2025-04-13 10:20:52,327 - policy_holder_bot - ERROR - Error during adding payout for user <MagicMock name='mock.user_id' id='139641047949264'>: Database error
+2025-04-13 10:20:52,366 - policy_holder_bot - INFO - Payout successful
+2025-04-13 10:20:52,372 - policy_holder_bot - INFO - Payout failed
+2025-04-13 10:25:36,251 - policy_holder_bot - ERROR - Error during searching user by email test@example.com: Database error
+2025-04-13 10:25:36,292 - policy_holder_bot - ERROR - Error during updating user <MagicMock name='mock.id' id='140457762909376'>: Database error
+2025-04-13 10:25:36,374 - policy_holder_bot - ERROR - Error during adding payout for user <MagicMock name='mock.user_id' id='140457761348576'>: Database error
+2025-04-13 10:25:36,422 - policy_holder_bot - INFO - Payout successful
+2025-04-13 10:25:36,429 - policy_holder_bot - INFO - Payout failed
+2025-04-23 20:32:34,600 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:00:08,501 - policy_holder_bot - ERROR - Error while validating payout: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 173, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 42, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 65, in __call__
+    res = self.agent.update_raw(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 116, in update_raw
+    raise Exception('Rejected: ' + result.decode())
+Exception: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+2025-04-23 21:13:00,780 - policy_holder_bot - ERROR - Error while validating payout: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 173, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 42, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 65, in __call__
+    res = self.agent.update_raw(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 116, in update_raw
+    raise Exception('Rejected: ' + result.decode())
+Exception: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+2025-04-23 21:17:58,915 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:18:30,566 - policy_holder_bot - ERROR - Error while validating payout: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 173, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 42, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount), oauth_token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 65, in __call__
+    res = self.agent.update_raw(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 116, in update_raw
+    raise Exception('Rejected: ' + result.decode())
+Exception: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+2025-04-23 21:21:11,190 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:21:31,325 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:23:43,214 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:24:06,913 - policy_holder_bot - INFO - >>> [{'ok': 'Good'}]
+2025-04-23 21:25:57,777 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:26:45,758 - policy_holder_bot - INFO - >>> [{'ok': 'Good'}]
+2025-04-23 21:28:13,396 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:28:45,198 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:29:12,572 - policy_holder_bot - INFO - >>> [{'ok': 'Good'}]
+2025-04-23 21:31:03,110 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:31:21,491 - policy_holder_bot - ERROR - Error while validating payout: required argument is not an integer
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 173, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 43, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, amount)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 68, in __call__
+    encode(arguments),
+    ^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 1263, in encode
+    vals += t.encodeValue(args[i])
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 843, in encodeValue
+    return self._type.encodeValue(val)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/candid.py", line 487, in encodeValue
+    buf = pack('Q', val) # unsigned long long -> Nat64
+          ^^^^^^^^^^^^^^
+struct.error: required argument is not an integer
+2025-04-23 21:32:01,590 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:32:50,457 - policy_holder_bot - ERROR - Error while validating payout: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 173, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 43, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 65, in __call__
+    res = self.agent.update_raw(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 116, in update_raw
+    raise Exception('Rejected: ' + result.decode())
+Exception: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+2025-04-23 21:33:31,674 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:33:52,747 - policy_holder_bot - ERROR - 70000.0
+2025-04-23 21:33:54,977 - policy_holder_bot - ERROR - Error while validating payout: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+Traceback (most recent call last):
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/handlers/request_payout_handler.py", line 173, in process_payout
+    is_valid = icp_client.payout_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/bot/clients/icp_client.py", line 44, in payout_request
+    response = self.canister.request_payout(policy_number, diagnosis_code, str(diagnosis_date), insurer_crypto_wallet, crypto_wallet, int(amount))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/canister.py", line 65, in __call__
+    res = self.agent.update_raw(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kirillkrasn/diploma/icppp-insurance-system/policy_holder_bot/venv/lib/python3.12/site-packages/ic/agent.py", line 116, in update_raw
+    raise Exception('Rejected: ' + result.decode())
+Exception: Rejected: Error from Canister be2us-64aaa-aaaaa-qaabq-cai: Canister called `ic0.trap` with message: IDL error: illegal type table.
+Consider gracefully handling failures from this canister or altering the canister to handle exceptions. See documentation: http://internetcomputer.org/docs/current/references/execution-errors#trapped-explicitly
+2025-04-23 21:35:55,196 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:36:28,064 - policy_holder_bot - ERROR - 70000.0
+2025-04-23 21:36:30,301 - policy_holder_bot - INFO - >>> [{'ok': 'Good'}]
+2025-04-23 21:38:52,527 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:39:11,973 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 21:39:40,660 - policy_holder_bot - INFO - >>> [{'ok': 'Payout successful'}]
+2025-04-23 22:39:09,800 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 22:42:36,649 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 22:44:57,094 - policy_holder_bot - INFO - Bot is running!
+2025-04-23 22:58:19,952 - policy_holder_bot - INFO - >>> [{'err': 'Invalid insurance case'}]
+2025-04-23 22:59:10,221 - policy_holder_bot - INFO - >>> [{'ok': 'Payout successful'}]
+2025-04-23 23:13:13,270 - policy_holder_bot - INFO - >>> [{'err': 'Invalid insurance case'}]
+2025-04-23 23:13:38,088 - policy_holder_bot - INFO - >>> [{'err': 'Invalid insurance case'}]
+2025-04-23 23:13:58,511 - policy_holder_bot - INFO - >>> [{'ok': 'Payout successful'}]
+2025-04-23 23:22:34,496 - policy_holder_bot - INFO - >>> [{'ok': 'Payout successful'}]
+2025-05-08 12:03:45,271 - policy_holder_bot - INFO - Bot is running!
+2025-05-08 12:04:58,952 - policy_holder_bot - INFO - Bot is running!
+2025-05-08 12:09:11,915 - policy_holder_bot - INFO - Bot is running!
+2025-05-08 12:09:19,387 - policy_holder_bot - ERROR - be2us-64aaa-aaaaa-qaabq-cai 9 a550bc6d23674e9fb6e98920de0138ce256155f4c689f96ecba75f53922c1fdd
+2025-05-08 12:10:12,399 - policy_holder_bot - INFO - Bot is running!
+2025-05-08 12:10:20,010 - policy_holder_bot - ERROR - be2us-64aaa-aaaaa-qaabq-cai 9 a550bc6d23674e9fb6e98920de0138ce256155f4c689f96ecba75f53922c1fdd
+2025-05-08 12:12:15,936 - policy_holder_bot - INFO - Bot is running!
+2025-05-08 12:13:03,768 - policy_holder_bot - ERROR - be2us-64aaa-aaaaa-qaabq-cai 9 a550bc6d23674e9fb6e98920de0138ce256155f4c689f96ecba75f53922c1fdd
+2025-05-09 12:04:45,598 - policy_holder_bot - INFO - Bot is running!
+2025-05-09 15:06:06,105 - policy_holder_bot - INFO - Bot is running!
+2025-05-09 15:09:30,316 - policy_holder_bot - INFO - Database search list of the most popular insurers
+2025-05-09 15:32:21,068 - policy_holder_bot - INFO - Bot is running!
+2025-05-09 15:37:58,603 - policy_holder_bot - INFO - Bot is running!
+2025-05-09 15:38:04,818 - policy_holder_bot - INFO - Bot is running!
+2025-05-09 15:43:40,479 - policy_holder_bot - INFO - Bot is running!
