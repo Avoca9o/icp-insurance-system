@@ -18,7 +18,7 @@ actor InsToken {
     private let name : Text = "Insurance Token";
     private let symbol : Text = "INS";
     private let decimals : Nat8 = 8;
-    private let fee : Nat = 10_000;  // 0.0001 INS
+    private let fee : Nat = 10_000;
     
     public type Account = {
         owner : Principal;
