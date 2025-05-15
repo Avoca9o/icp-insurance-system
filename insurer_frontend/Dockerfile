@@ -1,6 +1,6 @@
-FROM node:18-alpine as builder
+FROM node:18
 
-WORKDIR /src
+WORKDIR /usr/src/app
 
 COPY package*.json ./
 
@@ -8,12 +8,8 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+ENV PORT=4000
 
-FROM nginx:alpine
+EXPOSE ${PORT}
 
-COPY --from=builder /src/build /usr/share/nginx/html
-
-EXPOSE 80 443
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "start"]
