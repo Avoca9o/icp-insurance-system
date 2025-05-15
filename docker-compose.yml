@@ -63,6 +63,8 @@ services:
       - ./insurer_backend/insurer.log:/src/insurer.log
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      ICP_CANISTER_ID: ${ICP_CANISTER_ID}
+      ICP_CANISTER_URL: ${ICP_CANISTER_URL}
     depends_on:
       - postgres
     networks:
