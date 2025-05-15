@@ -129,7 +129,6 @@ async def test_approve_access_confirm(mock_update, mock_context):
 
 @pytest.mark.asyncio
 async def test_approve_access_cancel(mock_update, mock_context):
-    # Подготовка
     mock_update.callback_query = AsyncMock()
     mock_update.callback_query.data = 'cancel'
     mock_update.callback_query.message = AsyncMock()
@@ -141,10 +140,8 @@ async def test_approve_access_cancel(mock_update, mock_context):
         mock_banking_client.get_oauth_token = AsyncMock(return_value='test_token')
         mock_keyboard.return_value = None
 
-        # Выполнение
         result = await approve_access(mock_update, mock_context)
 
-        # Проверка
         mock_update.callback_query.answer.assert_called_once()
         mock_update.callback_query.edit_message_text.assert_called_once_with(
             'Payout request canceled. ❌',
@@ -196,16 +193,13 @@ async def test_request_diagnosis_code_valid(mock_update, mock_context):
 
 @pytest.mark.asyncio
 async def test_request_diagnosis_code_invalid(mock_update, mock_context):
-    # Подготовка
     mock_message = MagicMock(spec=Message)
     mock_message.text = "invalid"
     mock_update.message = mock_message
     mock_update.message.reply_text = AsyncMock()
 
-    # Выполнение
     result = await request_diagnosis_code(mock_update, mock_context)
 
-    # Проверка
     mock_update.message.reply_text.assert_called_once_with(
         'Invalid diagnosis code. Try again using this source: https://www.cito-priorov.ru/cito/files/telemed/Perechen_kodov_MKB.pdf'
     )

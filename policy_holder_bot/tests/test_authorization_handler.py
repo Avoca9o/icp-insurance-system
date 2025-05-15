@@ -37,15 +37,12 @@ def mock_mailgun_client():
 
 @pytest.mark.asyncio
 async def test_authorization_handler(mock_update, mock_context):
-    # Подготовка
     mock_update.callback_query = AsyncMock(spec=CallbackQuery)
     mock_update.callback_query.answer = AsyncMock()
     mock_update.callback_query.edit_message_text = AsyncMock()
 
-    # Выполнение
     result = await authorization_handler(mock_update, mock_context)
 
-    # Проверка
     mock_update.callback_query.answer.assert_called_once()
     mock_update.callback_query.edit_message_text.assert_called_once_with(
         'Please, enter your email address for authorization:'
@@ -54,15 +51,12 @@ async def test_authorization_handler(mock_update, mock_context):
 
 @pytest.mark.asyncio
 async def test_email_handler_invalid_email(mock_update, mock_context):
-    # Подготовка
     mock_update.message = AsyncMock(spec=Message)
     mock_update.message.text = "invalid_email"
     mock_update.message.reply_text = AsyncMock()
 
-    # Выполнение
     result = await email_handler(mock_update, mock_context)
 
-    # Проверка
     mock_update.message.reply_text.assert_called_once_with(
         'The email you entered is not valid. Please try again.'
     )
@@ -70,16 +64,13 @@ async def test_email_handler_invalid_email(mock_update, mock_context):
 
 @pytest.mark.asyncio
 async def test_email_handler_user_not_found(mock_update, mock_context, mock_db_client):
-    # Подготовка
     mock_update.message = AsyncMock(spec=Message)
     mock_update.message.text = "test@example.com"
     mock_update.message.reply_text = AsyncMock()
     mock_db_client.get_user_by_email.return_value = None
 
-    # Выполнение
     result = await email_handler(mock_update, mock_context)
 
-    # Проверка
     mock_update.message.reply_text.assert_called_once_with(
         'No user was found with this email. Please try again with a different email or contact support.'
     )
@@ -87,7 +78,6 @@ async def test_email_handler_user_not_found(mock_update, mock_context, mock_db_c
 
 @pytest.mark.asyncio
 async def test_email_handler_success(mock_update, mock_context, mock_db_client, mock_mailgun_client):
-    # Подготовка
     mock_update.message = AsyncMock(spec=Message)
     mock_update.message.text = "test@example.com"
     mock_update.message.reply_text = AsyncMock()
@@ -96,10 +86,8 @@ async def test_email_handler_success(mock_update, mock_context, mock_db_client, 
     mock_db_client.get_user_by_email.return_value = mock_user
     mock_mailgun_client.send_email.return_value = True
 
-    # Выполнение
     result = await email_handler(mock_update, mock_context)
 
-    # Проверка
     mock_update.message.reply_text.assert_called_once()
     assert 'verification code' in mock_update.message.reply_text.call_args[0][0]
     assert result == REQUEST_VERIFICATION_CODE
@@ -110,7 +98,6 @@ async def test_email_handler_success(mock_update, mock_context, mock_db_client, 
 
 @pytest.mark.asyncio
 async def test_email_handler_send_email_failed(mock_update, mock_context, mock_db_client, mock_mailgun_client):
-    # Подготовка
     mock_update.message = AsyncMock(spec=Message)
     mock_update.message.text = "test@example.com"
     mock_update.message.reply_text = AsyncMock()
@@ -119,10 +106,8 @@ async def test_email_handler_send_email_failed(mock_update, mock_context, mock_d
     mock_db_client.get_user_by_email.return_value = mock_user
     mock_mailgun_client.send_email.return_value = False
 
-    # Выполнение
     result = await email_handler(mock_update, mock_context)
 
-    # Проверка
     mock_update.message.reply_text.assert_called_once_with(
         'Failed to send verification code. Please contact support. Write /start to try again'
     )
@@ -130,7 +115,7 @@ async def test_email_handler_send_email_failed(mock_update, mock_context, mock_d
 
 @pytest.mark.asyncio
 async def test_verify_code_success(mock_update, mock_context, mock_db_client):
-    # Подготовка
+
     mock_update.message = AsyncMock(spec=Message)
     mock_update.message.text = "123456"
     mock_update.message.reply_text = AsyncMock()
@@ -144,10 +129,8 @@ async def test_verify_code_success(mock_update, mock_context, mock_db_client):
     mock_user = MagicMock(spec=UserInfo)
     mock_db_client.get_user_by_email.return_value = mock_user
 
-    # Выполнение
     result = await verify_code(mock_update, mock_context)
 
-    # Проверка
     mock_update.message.reply_text.assert_called_once()
     assert 'Authorization successful!' in mock_update.message.reply_text.call_args[0][0]
     assert result == ConversationHandler.END
@@ -156,7 +139,6 @@ async def test_verify_code_success(mock_update, mock_context, mock_db_client):
 
 @pytest.mark.asyncio
 async def test_verify_code_incorrect_with_attempts(mock_update, mock_context):
-    # Подготовка
     mock_update.message = AsyncMock(spec=Message)
     mock_update.message.text = "654321"
     mock_update.message.reply_text = AsyncMock()
@@ -166,10 +148,8 @@ async def test_verify_code_incorrect_with_attempts(mock_update, mock_context):
         'attempts_left': 3
     }
 
-    # Выполнение
     result = await verify_code(mock_update, mock_context)
 
-    # Проверка
     mock_update.message.reply_text.assert_called_once()
     assert 'Incorrect code' in mock_update.message.reply_text.call_args[0][0]
     assert result == REQUEST_VERIFICATION_CODE
@@ -177,7 +157,6 @@ async def test_verify_code_incorrect_with_attempts(mock_update, mock_context):
 
 @pytest.mark.asyncio
 async def test_verify_code_no_attempts_left(mock_update, mock_context):
-    # Подготовка
     mock_update.message = AsyncMock(spec=Message)
     mock_update.message.text = "654321"
     mock_update.message.reply_text = AsyncMock()
@@ -187,12 +166,10 @@ async def test_verify_code_no_attempts_left(mock_update, mock_context):
         'attempts_left': 1
     }
 
-    # Выполнение
     result = await verify_code(mock_update, mock_context)
 
-    # Проверка
     mock_update.message.reply_text.assert_called_once_with(
         'You have exceeded the number of attempts. Please start the authorization process again via /start'
     )
     assert result == ConversationHandler.END
-    assert not mock_context.user_data  # user_data должен быть очищен 
+    assert not mock_context.user_data

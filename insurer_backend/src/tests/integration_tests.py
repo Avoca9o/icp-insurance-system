@@ -54,7 +54,6 @@ def test_authorize():
 
 def test_user():
     with httpx.Client(base_url="http://localhost:8001") as client:
-        # Сначала авторизуемся
         auth_response = client.post(
             "/v1/authorize",
             json={
@@ -65,8 +64,6 @@ def test_user():
         assert auth_response.status_code == 200
         token = auth_response.json()['access_token']
 
-        # Тестируем получение информации о пользователе
-        # Успешный случай
         response = client.get(
             "/v1/user",
             params={"email": "b@b.ru"},

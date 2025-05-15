@@ -23,7 +23,6 @@ from unittest.mock import patch, MagicMock, ANY
 from fastapi.responses import JSONResponse, Response
 from utils.jwt import create_jwt_token
 
-# Создаем тестовое приложение
 test_app = FastAPI()
 test_app.include_router(ping_router)
 test_app.include_router(register_router)
@@ -31,7 +30,6 @@ test_app.include_router(auth_router)
 client = TestClient(test_app)
 
 
-# Тесты для ping
 def test_handle_ping():
     response = handle_ping()
     assert isinstance(response, JSONResponse)
@@ -39,7 +37,6 @@ def test_handle_ping():
     assert response.body == b'{"message":"Hello world"}'
 
 
-# Тесты для register
 def test_register_request_validity():
     valid_request = RegisterRequest(
         login="test",
@@ -48,7 +45,7 @@ def test_register_request_validity():
         email="test@test.com",
         pay_address="test_address"
     )
-    valid_request.check_validity()  # Should not raise any exception
+    valid_request.check_validity()
 
 
 def test_register_request_invalid_login():
@@ -123,7 +120,6 @@ def test_register_request_as_company_info():
 
 
 def test_handle_v1_register_success():
-    # Создаем моки
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
 
@@ -146,7 +142,6 @@ def test_handle_v1_register_success():
 
 
 def test_handle_v1_register_duplicate_login():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
     init_mock_db_with_test_data(mock_db)
@@ -154,7 +149,7 @@ def test_handle_v1_register_duplicate_login():
     with patch('handlers.v1_register.db', mock_db), \
          patch('handlers.v1_register.icp', mock_icp):
         request = RegisterRequest(
-            login=TEST_COMPANY_1.login,  # Используем существующий логин
+            login=TEST_COMPANY_1.login,
             password="password",
             name="New Company",
             email="new@company.com",
@@ -168,14 +163,13 @@ def test_handle_v1_register_duplicate_login():
 
 
 def test_handle_v1_register_validation_error():
-    # Создаем моки
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
 
     with patch('handlers.v1_register.db', mock_db), \
          patch('handlers.v1_register.icp', mock_icp):
         request = RegisterRequest(
-            login="",  # Невалидный логин
+            login="",
             password="password",
             name="New Company",
             email="new@company.com",
@@ -188,10 +182,9 @@ def test_handle_v1_register_validation_error():
         assert b"login should not be empty" in response.body
 
 
-# Тесты для authorize
 def test_authorization_request_validity():
     valid_request = AuthorizationRequest(login="test", password="test")
-    valid_request.check_validity()  # Should not raise any exception
+    valid_request.check_validity()
 
 
 def test_authorization_request_invalid_login():
@@ -205,7 +198,6 @@ def test_authorization_request_invalid_password():
 
 
 def test_handle_v1_authorize_success():
-    # Создаем мок с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
@@ -222,7 +214,6 @@ def test_handle_v1_authorize_success():
 
 
 def test_handle_v1_authorize_invalid_input():
-    # Создаем мок
     mock_db = MockDBClient()
 
     with patch('handlers.v1_authorize.db', mock_db):
@@ -235,7 +226,6 @@ def test_handle_v1_authorize_invalid_input():
 
 
 def test_handle_v1_authorize_wrong_credentials():
-    # Создаем мок с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
@@ -252,11 +242,9 @@ def test_handle_v1_authorize_wrong_credentials():
 
 
 def test_handle_v1_authorize_server_error():
-    # Создаем мок с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -274,17 +262,13 @@ def test_handle_v1_authorize_server_error():
         assert b"Database error" in response.body
 
 
-# Тесты для balance
 def test_handle_v1_balance_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Регистрируем компанию и устанавливаем баланс
     mock_icp.register_company(TEST_COMPANY_1.pay_address)
     mock_icp.set_balance(TEST_COMPANY_1.pay_address, 100.0)
 
@@ -299,11 +283,9 @@ def test_handle_v1_balance_success():
 
 
 def test_handle_v1_balance_company_not_found():
-    # Создаем моки
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
 
-    # Создаем токен для несуществующей компании
     token = create_jwt_token(data={"id": 999})
 
     with patch('handlers.v1_balance.db', mock_db), \
@@ -316,7 +298,6 @@ def test_handle_v1_balance_company_not_found():
 
 
 def test_handle_v1_balance_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
 
@@ -330,15 +311,12 @@ def test_handle_v1_balance_invalid_token():
 
 
 def test_handle_v1_balance_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -353,13 +331,10 @@ def test_handle_v1_balance_server_error():
         assert b"Database error" in response.body
 
 
-# Тесты для schemas
 def test_handle_v1_schemas_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
     with patch('handlers.v1_schemas.db', mock_db):
@@ -367,15 +342,12 @@ def test_handle_v1_schemas_success():
 
         assert isinstance(response, JSONResponse)
         assert response.status_code == 200
-        # Проверяем, что в ответе есть схемы
         assert len(response.body) > 0
 
 
 def test_handle_v1_schemas_company_not_found():
-    # Создаем моки
     mock_db = MockDBClient()
 
-    # Создаем токен для несуществующей компании
     token = create_jwt_token(data={"id": 999})
 
     with patch('handlers.v1_schemas.db', mock_db):
@@ -387,7 +359,6 @@ def test_handle_v1_schemas_company_not_found():
 
 
 def test_handle_v1_schemas_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
 
     with patch('handlers.v1_schemas.db', mock_db):
@@ -399,14 +370,11 @@ def test_handle_v1_schemas_invalid_token():
 
 
 def test_handle_v1_schemas_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -421,14 +389,11 @@ def test_handle_v1_schemas_server_error():
 
 
 def test_handle_v1_schema_invalid_json():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он возвращал невалидный JSON
     def get_invalid_schema(global_version_id):
         from entities.insurer_scheme import InsurerScheme
         return InsurerScheme(
@@ -449,14 +414,11 @@ def test_handle_v1_schema_invalid_json():
 
 
 def test_handle_v1_schema_value_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ValueError
     def raise_value_error(*args, **kwargs):
         raise ValueError("Custom value error")
 
@@ -471,14 +433,11 @@ def test_handle_v1_schema_value_error():
 
 
 def test_handle_v1_schema_single_quotes():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он возвращал валидный JSON
     def get_schema_with_valid_json(global_version_id):
         from entities.insurer_scheme import InsurerScheme
         return InsurerScheme(
@@ -499,16 +458,12 @@ def test_handle_v1_schema_single_quotes():
         assert b'{"scheme":"{\\"key\\": \\"value\\"}"}' == response.body
 
 
-# Тесты для add_schema
 def test_handle_v1_add_scheme_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос
     request = AddSchemaRequest(diagnoses_coefs='{"key": "value"}')
 
     with patch('handlers.v1_add_schema.db', mock_db):
@@ -520,10 +475,8 @@ def test_handle_v1_add_scheme_success():
 
 
 def test_handle_v1_add_scheme_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
 
-    # Создаем запрос
     request = AddSchemaRequest(diagnoses_coefs='{"key": "value"}')
 
     with patch('handlers.v1_add_schema.db', mock_db):
@@ -535,17 +488,13 @@ def test_handle_v1_add_scheme_invalid_token():
 
 
 def test_handle_v1_add_scheme_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос
     request = AddSchemaRequest(diagnoses_coefs='{"key": "value"}')
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -560,14 +509,11 @@ def test_handle_v1_add_scheme_server_error():
 
 
 def test_handle_v1_add_scheme_csv_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем мок файла
     mock_file = MagicMock()
     mock_file.content_type = 'text/csv'
     mock_file.file = MagicMock()
@@ -576,7 +522,6 @@ def test_handle_v1_add_scheme_csv_success():
 
     with patch('handlers.v1_add_schema.db', mock_db), \
          patch('handlers.v1_add_schema.pd.read_csv') as mock_read_csv:
-        # Настраиваем мок pandas
         mock_df = MagicMock()
         mock_df.Coefficient.values = [1.0]
         mock_df.Code = ['C34.9']
@@ -592,14 +537,11 @@ def test_handle_v1_add_scheme_csv_success():
 
 
 def test_handle_v1_add_scheme_csv_invalid_format():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем мок файла с неправильным форматом
     mock_file = MagicMock()
     mock_file.content_type = 'text/plain'
 
@@ -612,10 +554,8 @@ def test_handle_v1_add_scheme_csv_invalid_format():
 
 
 def test_handle_v1_add_scheme_csv_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
 
-    # Создаем мок файла
     mock_file = MagicMock()
     mock_file.content_type = 'text/csv'
 
@@ -628,21 +568,17 @@ def test_handle_v1_add_scheme_csv_invalid_token():
 
 
 def test_handle_v1_add_scheme_csv_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем мок файла
     mock_file = MagicMock()
     mock_file.content_type = 'text/csv'
     mock_file.file = MagicMock()
     mock_file.file.seek = MagicMock()
     mock_file.file.read = MagicMock(return_value=b'Code,Coefficient\nC34.9,1.0')
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -650,7 +586,6 @@ def test_handle_v1_add_scheme_csv_server_error():
 
     with patch('handlers.v1_add_schema.db', mock_db), \
          patch('handlers.v1_add_schema.pd.read_csv') as mock_read_csv:
-        # Настраиваем мок pandas
         mock_df = MagicMock()
         mock_df.Coefficient.values = [1.0]
         mock_df.Code = ['C34.9']
@@ -663,21 +598,17 @@ def test_handle_v1_add_scheme_csv_server_error():
         assert b"Database error" in response.body
 
 
-# Тесты для add_user
 def test_handle_v1_add_user_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос
     request = AddUserRequest(
         email="test@example.com",
         insurance_amount=1000,
         schema_version=1,
-        secondary_filters={"C34.9": 1.0}  # Используем правильный формат: строка -> float
+        secondary_filters={"C34.9": 1.0}
     )
 
     with patch('handlers.v1_add_user.db', mock_db):
@@ -689,19 +620,16 @@ def test_handle_v1_add_user_success():
 
 
 def test_handle_v1_add_user_invalid_email():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос с пустым email
     request = AddUserRequest(
         email="",
         insurance_amount=1000,
         schema_version=1,
-        secondary_filters={"C34.9": 1.0}  # Используем правильный формат: строка -> float
+        secondary_filters={"C34.9": 1.0}
     )
 
     with patch('handlers.v1_add_user.db', mock_db):
@@ -713,15 +641,13 @@ def test_handle_v1_add_user_invalid_email():
 
 
 def test_handle_v1_add_user_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
 
-    # Создаем запрос
     request = AddUserRequest(
         email="test@example.com",
         insurance_amount=1000,
         schema_version=1,
-        secondary_filters={"C34.9": 1.0}  # Используем правильный формат: строка -> float
+        secondary_filters={"C34.9": 1.0}
     )
 
     with patch('handlers.v1_add_user.db', mock_db):
@@ -733,22 +659,18 @@ def test_handle_v1_add_user_invalid_token():
 
 
 def test_handle_v1_add_user_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос
     request = AddUserRequest(
         email="test@example.com",
         insurance_amount=1000,
         schema_version=1,
-        secondary_filters={"C34.9": 1.0}  # Используем правильный формат: строка -> float
+        secondary_filters={"C34.9": 1.0}
     )
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -763,15 +685,12 @@ def test_handle_v1_add_user_server_error():
 
 
 def test_handle_v1_check_sum_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Настраиваем мок для get_user
     mock_user = {
         "is_approved": True,
         "scheme_version": 1,
@@ -780,12 +699,10 @@ def test_handle_v1_check_sum_success():
     }
     mock_db.get_user = MagicMock(return_value=mock_user)
 
-    # Настраиваем мок для get_schema
     mock_schema = MagicMock()
     mock_schema.diagnoses_coefs = '{"C34.9": 1.0}'
     mock_db.get_schema = MagicMock(return_value=mock_schema)
 
-    # Настраиваем мок для is_checksum_valid
     mock_icp.is_checksum_valid = MagicMock(return_value=True)
 
     with patch('handlers.v1_check_sum.db', mock_db), \
@@ -802,15 +719,12 @@ def test_handle_v1_check_sum_success():
 
 
 def test_handle_v1_check_sum_not_approved():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Настраиваем мок для get_user с неутвержденным контрактом
     mock_user = {
         "is_approved": False,
         "scheme_version": 1,
@@ -830,7 +744,6 @@ def test_handle_v1_check_sum_not_approved():
 
 
 def test_handle_v1_check_sum_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
 
@@ -844,15 +757,12 @@ def test_handle_v1_check_sum_invalid_token():
 
 
 def test_handle_v1_check_sum_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -868,10 +778,8 @@ def test_handle_v1_check_sum_server_error():
 
 
 def test_handle_v1_icp_address_get_success():
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Настраиваем мок для CANISTER_ID
     mock_canister_id = "test_canister_id"
 
     with patch('handlers.v1_icp_address.CANISTER_ID', mock_canister_id):
@@ -884,7 +792,6 @@ def test_handle_v1_icp_address_get_success():
 
 
 def test_handle_v1_icp_address_get_invalid_token():
-    # Создаем мок для CANISTER_ID
     mock_canister_id = "test_canister_id"
 
     with patch('handlers.v1_icp_address.CANISTER_ID', mock_canister_id):
@@ -896,25 +803,20 @@ def test_handle_v1_icp_address_get_invalid_token():
 
 
 def test_get_operations_request_validity():
-    # Тестируем валидный запрос
     valid_request = GetOperationsRequest(company_id=1, date="2024-03-20")
-    valid_request.check_validity()  # Не должно вызывать исключение
+    valid_request.check_validity()
 
-    # Тестируем невалидный запрос с пустой датой
     with pytest.raises(ValueError, match="Date cannot be empty"):
         invalid_request = GetOperationsRequest(company_id=1, date="")
         invalid_request.check_validity()
 
 
 def test_handle_v1_operations_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Настраиваем мок для get_payouts_by_company_and_date
     mock_operations = [
         {"user": "user1", "amount": 100, "date": "2024-03-20 10:00:00", "diagnoses": "C34.9"},
         {"user": "user2", "amount": 200, "date": "2024-03-20 11:00:00", "diagnoses": "C34.8"}
@@ -929,7 +831,6 @@ def test_handle_v1_operations_success():
         assert "Content-Disposition" in response.headers
         assert "attachment; filename=data.csv" in response.headers["Content-Disposition"]
         
-        # Проверяем содержимое CSV
         content = response.body.decode('utf-8')
         assert "User,Amount,Date,Diagnoses" in content
         assert "user1,100,2024-03-20 ,C34.9" in content
@@ -939,14 +840,11 @@ def test_handle_v1_operations_success():
 
 
 def test_handle_v1_operations_empty_date():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ValueError
     def raise_error(*args, **kwargs):
         raise ValueError("Date cannot be empty")
 
@@ -961,7 +859,6 @@ def test_handle_v1_operations_empty_date():
 
 
 def test_handle_v1_operations_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
 
     with patch('handlers.v1_operations.db', mock_db):
@@ -973,14 +870,11 @@ def test_handle_v1_operations_invalid_token():
 
 
 def test_handle_v1_operations_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -994,34 +888,28 @@ def test_handle_v1_operations_server_error():
         assert b"Database error" in response.body
 
 
-# Тесты для update_user
 def test_update_user_request_validity():
-    # Тестируем валидный запрос
     valid_request = UpdateUserRequest(
         email="test@example.com",
         insurance_amount=1000,
         insurer_schema=1,
         secondary_filters={"C34.9": 1.0}
     )
-    valid_request.check_validity()  # Не должно вызывать исключение
+    valid_request.check_validity()
 
-    # Тестируем невалидный запрос с пустым email
     with pytest.raises(ValueError, match="Phone number name cannot be empty in update user request"):
         invalid_request = UpdateUserRequest(email="")
         invalid_request.check_validity()
 
 
 def test_handle_v1_update_user_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос
     request = UpdateUserRequest(
-        email="user1@test.com",  # Используем существующий email из тестовых данных
+        email="user1@test.com",
         insurance_amount=2000,
         insurer_schema=2,
         secondary_filters={"C34.9": 1.5}
@@ -1036,14 +924,11 @@ def test_handle_v1_update_user_success():
 
 
 def test_handle_v1_update_user_invalid_email():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос с пустым email
     request = UpdateUserRequest(email="")
 
     with patch('handlers.v1_update_user.db', mock_db):
@@ -1055,14 +940,11 @@ def test_handle_v1_update_user_invalid_email():
 
 
 def test_handle_v1_update_user_not_found():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос для несуществующего пользователя
     request = UpdateUserRequest(
         email="nonexistent@example.com",
         insurance_amount=1000,
@@ -1079,16 +961,13 @@ def test_handle_v1_update_user_not_found():
 
 
 def test_handle_v1_update_user_wrong_company():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен для другой компании
     token = create_jwt_token(data={"id": 2})
 
-    # Создаем запрос для пользователя из другой компании
     request = UpdateUserRequest(
-        email="user1@test.com",  # Пользователь из компании 1
+        email="user1@test.com",
         insurance_amount=1000,
         insurer_schema=1,
         secondary_filters={"C34.9": 1.0}
@@ -1103,16 +982,13 @@ def test_handle_v1_update_user_wrong_company():
 
 
 def test_handle_v1_update_user_already_approved():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос для уже утвержденного пользователя
     request = UpdateUserRequest(
-        email="user2@test.com",  # Пользователь с is_approved=True
+        email="user2@test.com",
         insurance_amount=1000,
         insurer_schema=1,
         secondary_filters={"C34.9": 1.0}
@@ -1127,10 +1003,8 @@ def test_handle_v1_update_user_already_approved():
 
 
 def test_handle_v1_update_user_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
 
-    # Создаем запрос
     request = UpdateUserRequest(email="user1@test.com")
 
     with patch('handlers.v1_update_user.db', mock_db):
@@ -1142,14 +1016,11 @@ def test_handle_v1_update_user_invalid_token():
 
 
 def test_handle_v1_update_user_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Создаем запрос
     request = UpdateUserRequest(
         email="user1@test.com",
         insurance_amount=1000,
@@ -1157,7 +1028,6 @@ def test_handle_v1_update_user_server_error():
         secondary_filters={"C34.9": 1.0}
     )
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -1171,16 +1041,12 @@ def test_handle_v1_update_user_server_error():
         assert b"Database error" in response.body
 
 
-# Тесты для user
 def test_handle_v1_user_get_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Настраиваем мок для get_user
     mock_user = {
         "email": "user1@test.com",
         "scheme_version": 1,
@@ -1200,14 +1066,11 @@ def test_handle_v1_user_get_success():
 
 
 def test_handle_v1_user_get_not_found():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Настраиваем мок для get_user, чтобы он вызывал ValueError
     def raise_error(*args, **kwargs):
         raise ValueError("user with email nonexistent@example.com not exists")
 
@@ -1223,7 +1086,6 @@ def test_handle_v1_user_get_not_found():
 
 
 def test_handle_v1_user_get_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
 
     with patch('handlers.v1_user.db', mock_db):
@@ -1235,14 +1097,11 @@ def test_handle_v1_user_get_invalid_token():
 
 
 def test_handle_v1_user_get_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -1257,15 +1116,13 @@ def test_handle_v1_user_get_server_error():
 
 
 def test_handle_v1_user_delete_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
     with patch('handlers.v1_user.db', mock_db):
-        response = handle_v1_user_delete("user1@test.com", token)  # Используем существующий email
+        response = handle_v1_user_delete("user1@test.com", token)
 
         assert isinstance(response, JSONResponse)
         assert response.status_code == 200
@@ -1273,11 +1130,9 @@ def test_handle_v1_user_delete_success():
 
 
 def test_handle_v1_user_delete_not_found():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
     with patch('handlers.v1_user.db', mock_db):
@@ -1290,7 +1145,6 @@ def test_handle_v1_user_delete_not_found():
 
 
 def test_handle_v1_user_delete_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
 
     with patch('handlers.v1_user.db', mock_db):
@@ -1302,14 +1156,11 @@ def test_handle_v1_user_delete_invalid_token():
 
 
 def test_handle_v1_user_delete_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -1323,16 +1174,12 @@ def test_handle_v1_user_delete_server_error():
         assert b"Database error" in response.body
 
 
-# Тесты для users
 def test_handle_v1_users_get_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Настраиваем мок для get_users
     mock_users = {
         "users": [
             {"email": "user1@test.com"},
@@ -1350,7 +1197,6 @@ def test_handle_v1_users_get_success():
 
 
 def test_handle_v1_users_get_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
 
     with patch('handlers.v1_users.db', mock_db):
@@ -1362,14 +1208,11 @@ def test_handle_v1_users_get_invalid_token():
 
 
 def test_handle_v1_users_get_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 
@@ -1383,25 +1226,19 @@ def test_handle_v1_users_get_server_error():
         assert b"Database error" in response.body
 
 
-# Тесты для withdraw
 def test_handle_v1_withdraw_post_success():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Настраиваем мок для get_users, чтобы вернуть пустой список пользователей
     mock_db.get_users = MagicMock(return_value={"users": []})
 
-    # Настраиваем мок для get_company
     mock_company = MagicMock()
     mock_company.pay_address = "test_address"
     mock_db.get_company = MagicMock(return_value=mock_company)
 
-    # Настраиваем мок для withdraw
     mock_icp.withdraw = MagicMock()
 
     with patch('handlers.v1_withdraw.db', mock_db), \
@@ -1415,15 +1252,12 @@ def test_handle_v1_withdraw_post_success():
 
 
 def test_handle_v1_withdraw_post_has_approved_users():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Настраиваем мок для get_users, чтобы вернуть список с утвержденным пользователем
     mock_db.get_users = MagicMock(return_value={"users": [{"email": "user2@test.com"}]})
     mock_db.get_user = MagicMock(return_value={"is_approved": True})
 
@@ -1437,7 +1271,6 @@ def test_handle_v1_withdraw_post_has_approved_users():
 
 
 def test_handle_v1_withdraw_post_invalid_token():
-    # Создаем моки
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
 
@@ -1451,15 +1284,12 @@ def test_handle_v1_withdraw_post_invalid_token():
 
 
 def test_handle_v1_withdraw_post_server_error():
-    # Создаем моки с тестовыми данными
     mock_db = MockDBClient()
     mock_icp = MockICPClient()
     init_mock_db_with_test_data(mock_db)
 
-    # Создаем валидный токен
     token = create_jwt_token(data={"id": 1})
 
-    # Модифицируем мок, чтобы он вызывал ошибку
     def raise_error(*args, **kwargs):
         raise Exception("Database error")
 

@@ -20,8 +20,7 @@ class GetSchemaRequest(BaseModel):
 def handle_v1_schemas(token: str = Depends(oauth2_scheme)):
     try:
         company_id = decode_jwt_token(token)
-        
-        # Проверяем существование компании
+
         company = db.get_company(company_id)
         if not company:
             raise ValueError(f"Company does not exist")

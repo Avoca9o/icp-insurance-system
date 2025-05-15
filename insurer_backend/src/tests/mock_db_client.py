@@ -15,12 +15,10 @@ class MockDBClient:
         self.next_scheme_id = 1
 
     def add_company(self, company: CompanyInfo) -> None:
-        # Проверяем существование логина
         for existing_company in self.companies.values():
             if existing_company.login == company.login:
                 raise ValueError(f"company with login {company.login} already exists")
 
-        # Добавляем компанию
         company.id = self.next_company_id
         self.companies[self.next_company_id] = company
         self.next_company_id += 1
@@ -29,7 +27,6 @@ class MockDBClient:
         return self.companies.get(comp_id)
 
     def authorize_company(self, login: str, password: str) -> int:
-        # Ищем компанию по логину
         for company in self.companies.values():
             if company.login == login:
                 if company.password == password:
@@ -53,7 +50,6 @@ class MockDBClient:
         if db_user.is_approved:
             raise ValueError(f"user with email {user.email} has already approved his info, can't change info")
 
-        # Обновляем только указанные поля
         if user.insurance_amount is not None:
             db_user.insurance_amount = user.insurance_amount
         if user.schema_version is not None:

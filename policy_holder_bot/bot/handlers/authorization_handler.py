@@ -9,7 +9,6 @@ from bot.config.prometheus_config import FAILURE_COUNTER, SUCCESS_COUNTER
 from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
 from bot.keyboards.authorization_keyboard import get_authorization_keyboard
 from bot.utils.logger import logger
-from bot.utils.validation import validate_email
 
 db_client = DBClient()
 mailgun_client = MailgunClient()
@@ -26,9 +25,6 @@ async def authorization_handler(update: Update, context: ContextTypes.DEFAULT_TY
 async def email_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     email = update.message.text
 
-    if not validate_email(email):
-        await update.message.reply_text('The email you entered is not valid. Please try again.')
-        return REQUEST_EMAIL
     try:
         user = db_client.get_user_by_email(email)
         if user:
