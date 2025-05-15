@@ -14,6 +14,7 @@ ALGORITHM = "HS256"
 
 def create_jwt_token(data: dict):
     to_encode = data.copy()
+    print('secret key = ', SECRET_KEY)
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
