@@ -6,6 +6,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 from bot.clients.db_client import DBClient
 from bot.clients.icp_client import ICPClient
 from bot.clients.open_banking_client import OpenBankingClient
+from bot.config.diagnosis_config import DIAGNOSIS_LIST
 from bot.config.prometheus_config import FAILURE_COUNTER, SUCCESS_COUNTER
 from bot.keyboards.main_menu_keyboard import get_main_menu_keyboard
 from bot.keyboards.approve_access_keyboard import get_approve_access_keyboard
@@ -82,6 +83,12 @@ async def request_policy_number(update: Update, context: ContextTypes.DEFAULT_TY
 
 async def request_diagnosis_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
     diagnosis_code = update.message.text
+
+    if diagnosis_code not in DIAGNOSIS_LIST:
+        await update.message.reply_text(
+            'Invalid diagnosis code. Try again using this source: https://www.cito-priorov.ru/cito/files/telemed/Perechen_kodov_MKB.pdf'
+        )
+        return REQUEST_DIAGNOSIS_CODE
 
     context.user_data['diagnosis_code'] = diagnosis_code
 
