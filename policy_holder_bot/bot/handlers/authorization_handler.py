@@ -25,6 +25,9 @@ async def authorization_handler(update: Update, context: ContextTypes.DEFAULT_TY
 async def email_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     email = update.message.text
 
+    if '@' not in email:
+        await update.message.reply_text('The email you entered is not valid. Please try again.')
+        return REQUEST_EMAIL
     try:
         user = db_client.get_user_by_email(email)
         if user:
